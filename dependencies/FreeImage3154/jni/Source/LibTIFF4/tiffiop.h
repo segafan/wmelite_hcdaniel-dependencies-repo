@@ -40,7 +40,7 @@
 # include <sys/types.h>
 #endif
 
-#ifdef HAVE_STRING_H
+#ifdef HAVE_STRING_H_DISABLED
 # include <string.h>
 #endif
 
@@ -50,7 +50,7 @@
 # define assert(x) 
 #endif
 
-#ifdef HAVE_SEARCH_H
+#ifdef HAVE_SEARCH_H_DISABLED
 # include <search.h>
 #else
 extern void *lfind(const void *, const void *, size_t *, size_t,
