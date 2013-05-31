@@ -2,12 +2,46 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
+LOCAL_MODULE := boost_filesystem
+LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libboost_filesystem-gcc-mt-1_53.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := boost_system
+LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libboost_system-gcc-mt-1_53.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+LOCAL_MODULE := freetype
+LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libfreetype.a
+include $(PREBUILT_STATIC_LIBRARY)
+
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := SDL2
+LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libSDL2.so
+
+include $(PREBUILT_SHARED_LIBRARY)
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := bass
+LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libbass.so
+
+include $(PREBUILT_SHARED_LIBRARY)
+include $(CLEAR_VARS)
+
+LOCAL_MODULE := freeimage
+LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libfreeimage.so
+
+include $(PREBUILT_SHARED_LIBRARY)
+
+include $(CLEAR_VARS)
 
 LOCAL_MODULE := main
 
 SDL_PATH := ../../../dependencies/SDL/jni/
 
-LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include ../dependencies/bass/ ../dependencies/libfreetype-android/jni/include/ ../dependencies/FreeImage3154/Source/ ../dependencies/boost-1_53/build/include/boost-1_53/
+LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include ../dependencies/bass/ ../dependencies/libfreetype-android/jni/include/ ../dependencies/FreeImage3154/jni/Source/ ../dependencies/boost-1_53/build/include/boost-1_53/
 
 LOCAL_CPPFLAGS += -fexceptions -frtti
 
@@ -129,8 +163,8 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \
 ../../../src/Vector2.cpp \
 
 
-LOCAL_SHARED_LIBRARIES := SDL2
-
+LOCAL_SHARED_LIBRARIES := SDL2 freeimage bass
+LOCAL_STATIC_LIBRARIES := boost_filesystem boost_system freetype
 LOCAL_LDLIBS := -lGLESv1_CM -llog
 
 include $(BUILD_SHARED_LIBRARY)

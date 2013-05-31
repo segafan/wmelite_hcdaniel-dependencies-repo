@@ -22,6 +22,7 @@ it under the terms of the one of three licenses as you choose:
 */
 
 #include <math.h>
+#include <unistd.h>
 #define CLASS LibRaw::
 #include "libraw/libraw_types.h"
 #define LIBRAW_LIBRARY_BUILD
@@ -43,6 +44,28 @@ char *my_memmem (char *haystack, size_t haystacklen,
 }
 #define memmem my_memmem
 #endif
+
+
+void
+swab (const void *bfrom, void *bto, ssize_t n)
+{
+  const char *from = (const char *) bfrom;
+
+  char *to = (char *) bto;
+
+
+  n &= ~((ssize_t) 1);
+
+  while (n > 1)
+    {
+
+      const char b0 = from[--n], b1 = from[--n];
+
+      to[n] = b0;
+      to[n + 1] = b1;
+
+    }
+}
 
 
 ushort CLASS sget2 (uchar *s)
