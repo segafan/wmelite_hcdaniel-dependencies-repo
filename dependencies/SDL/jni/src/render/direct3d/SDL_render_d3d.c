@@ -384,6 +384,7 @@ D3D_Reset(SDL_Renderer * renderer)
                                     D3DCULL_NONE);
     IDirect3DDevice9_SetRenderState(data->device, D3DRS_LIGHTING, FALSE);
     IDirect3DDevice9_GetRenderTarget(data->device, 0, &data->defaultRenderTarget);
+    data->scaleMode = D3DTEXF_FORCE_DWORD;
     return 0;
 }
 
@@ -866,23 +867,25 @@ D3D_UpdateViewport(SDL_Renderer * renderer)
     IDirect3DDevice9_SetViewport(data->device, &viewport);
 
     /* Set an orthographic projection matrix */
-    matrix.m[0][0] = 2.0f / renderer->viewport.w;
-    matrix.m[0][1] = 0.0f;
-    matrix.m[0][2] = 0.0f;
-    matrix.m[0][3] = 0.0f;
-    matrix.m[1][0] = 0.0f;
-    matrix.m[1][1] = -2.0f / renderer->viewport.h;
-    matrix.m[1][2] = 0.0f;
-    matrix.m[1][3] = 0.0f;
-    matrix.m[2][0] = 0.0f;
-    matrix.m[2][1] = 0.0f;
-    matrix.m[2][2] = 1.0f;
-    matrix.m[2][3] = 0.0f;
-    matrix.m[3][0] = -1.0f;
-    matrix.m[3][1] = 1.0f;
-    matrix.m[3][2] = 0.0f;
-    matrix.m[3][3] = 1.0f;
-    IDirect3DDevice9_SetTransform(data->device, D3DTS_PROJECTION, &matrix);
+    if (renderer->viewport.w && renderer->viewport.h) {
+        matrix.m[0][0] = 2.0f / renderer->viewport.w;
+        matrix.m[0][1] = 0.0f;
+        matrix.m[0][2] = 0.0f;
+        matrix.m[0][3] = 0.0f;
+        matrix.m[1][0] = 0.0f;
+        matrix.m[1][1] = -2.0f / renderer->viewport.h;
+        matrix.m[1][2] = 0.0f;
+        matrix.m[1][3] = 0.0f;
+        matrix.m[2][0] = 0.0f;
+        matrix.m[2][1] = 0.0f;
+        matrix.m[2][2] = 1.0f;
+        matrix.m[2][3] = 0.0f;
+        matrix.m[3][0] = -1.0f;
+        matrix.m[3][1] = 1.0f;
+        matrix.m[3][2] = 0.0f;
+        matrix.m[3][3] = 1.0f;
+        IDirect3DDevice9_SetTransform(data->device, D3DTS_PROJECTION, &matrix);
+    }
 
     return 0;
 }

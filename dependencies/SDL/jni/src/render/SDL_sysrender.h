@@ -78,6 +78,7 @@ struct SDL_Renderer
     const void *magic;
 
     void (*WindowEvent) (SDL_Renderer * renderer, const SDL_WindowEvent *event);
+    int (*GetOutputSize) (SDL_Renderer * renderer, int *w, int *h);
     int (*CreateTexture) (SDL_Renderer * renderer, SDL_Texture * texture);
     int (*SetTextureColorMod) (SDL_Renderer * renderer,
                                SDL_Texture * texture);
@@ -122,7 +123,6 @@ struct SDL_Renderer
     /* The window associated with the renderer */
     SDL_Window *window;
     SDL_bool hidden;
-    SDL_bool resized;
 
     /* The logical resolution for rendering */
     int logical_w;

@@ -110,29 +110,11 @@ SDL_RendererEventWatch(void *userdata, SDL_Event *event)
                 renderer->WindowEvent(renderer, &event->window);
             }
 
-            if (event->window.event == SDL_WINDOWEVENT_RESIZED) {
-                if (renderer->logical_w) {
-                    /* We'll update the renderer in the SIZE_CHANGED event */
-                } else {
-                    /* Try to keep the previous viewport centered */
-                    int w, h;
-
-                    SDL_GetWindowSize(window, &w, &h);
-                    if (renderer->target) {
-                        renderer->viewport_backup.x = (w - renderer->viewport_backup.w) / 2;
-                        renderer->viewport_backup.y = (h - renderer->viewport_backup.h) / 2;
-                    } else {
-                        renderer->viewport.x = (w - renderer->viewport.w) / 2;
-                        renderer->viewport.y = (h - renderer->viewport.h) / 2;
-                        renderer->UpdateViewport(renderer);
-                    }
-                }
-                renderer->resized = SDL_TRUE;
-            } else if (event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+            if (event->window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
                 if (renderer->logical_w) {
                     UpdateLogicalSize(renderer);
-                } else if (!renderer->resized) {
-                    /* Window was programmatically resized, reset viewport */
+                } else {
+                    /* Window was resized, reset viewport */
                     int w, h;
 
                     SDL_GetWindowSize(window, &w, &h);
@@ -149,7 +131,6 @@ SDL_RendererEventWatch(void *userdata, SDL_Event *event)
                         renderer->UpdateViewport(renderer);
                     }
                 }
-                renderer->resized = SDL_FALSE;
             } else if (event->window.event == SDL_WINDOWEVENT_HIDDEN) {
                 renderer->hidden = SDL_TRUE;
             } else if (event->window.event == SDL_WINDOWEVENT_SHOWN) {
@@ -335,6 +316,25 @@ SDL_GetRendererInfo(SDL_Renderer * renderer, SDL_RendererInfo * info)
 
     *info = renderer->info;
     return 0;
+}
+
+int
+SDL_GetRendererOutputSize(SDL_Renderer * renderer, int *w, int *h)
+{
+    CHECK_RENDERER_MAGIC(renderer, -1);
+
+    if (renderer->target) {
+        return SDL_QueryTexture(renderer->target, NULL, NULL, w, h);
+    } else if (renderer->window) {
+        SDL_GetWindowSize(renderer->window, w, h);
+        return 0;
+    } else if (renderer->GetOutputSize) {
+        return renderer->GetOutputSize(renderer, w, h);
+    } else {
+        /* This should never happen */
+        SDL_SetError("Renderer doesn't support querying output size");
+        return -1;
+    }
 }
 
 static SDL_bool
@@ -985,13 +985,8 @@ UpdateLogicalSize(SDL_Renderer *renderer)
     float scale;
     SDL_Rect viewport;
 
-    if (renderer->target) {
-        SDL_QueryTexture(renderer->target, NULL, NULL, &w, &h);
-    } else if (renderer->window) {
-        SDL_GetWindowSize(renderer->window, &w, &h);
-    } else {
-        /* FIXME */
-        return SDL_SetError("Internal error: No way to get output resolution");
+    if (SDL_GetRendererOutputSize(renderer, &w, &h) < 0) {
+        return -1;
     }
 
     want_aspect = (float)renderer->logical_w / renderer->logical_h;
@@ -1074,16 +1069,8 @@ SDL_RenderSetViewport(SDL_Renderer * renderer, const SDL_Rect * rect)
     } else {
         renderer->viewport.x = 0;
         renderer->viewport.y = 0;
-        if (renderer->target) {
-            SDL_QueryTexture(renderer->target, NULL, NULL,
-                              &renderer->viewport.w, &renderer->viewport.h);
-        } else if (renderer->window) {
-            SDL_GetWindowSize(renderer->window,
-                              &renderer->viewport.w, &renderer->viewport.h);
-        } else {
-            /* This will be filled in by UpdateViewport() */
-            renderer->viewport.w = 0;
-            renderer->viewport.h = 0;
+        if (SDL_GetRendererOutputSize(renderer, &renderer->viewport.w, &renderer->viewport.h) < 0) {
+            return -1;
         }
     }
     return renderer->UpdateViewport(renderer);
