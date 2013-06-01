@@ -1,0 +1,65 @@
+AnsiString PathUtil::GetSafeLogFileName()
+AnsiString PathUtil::GetUserDirectory()
+
+CUIEdit::CUIEdit(CBGame* inGame):CUIObject(inGame)
+
+CBGame::CBGame():CBObject(this)
+void CBGame::DEBUG_DebugEnable(const char* Filename)
+void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
+	else if(strcmp(Name, "OpenDocument")==0)
+	else if(strcmp(Name, "ShowStatusLine")==0)
+	else if(strcmp(Name, "HideStatusLine")==0)
+bool CBGame::HandleKeypress(SDL_Event* event)
+AnsiString CBGame::GetDataDir()
+bool CBGame::IsDoubleClick(int buttonIndex)
+AnsiString CBGame::GetDeviceType() const
+
+FILE* TiXmlFOpen( const char* filename, const char* mode )
+
+HRESULT CBRenderSDL::InitRenderer(int width, int height, bool windowed)
+HRESULT CBRenderSDL::Flip()
+HRESULT CBRenderSDL::SetViewport(int left, int top, int right, int bottom)
+
+HRESULT CBFileManager::InitPaths()
+CBFile* CBFileManager::OpenFile(const char *Filename, bool AbsPathWarning)
+
+AnsiString CBRegistry::ReadString(const AnsiString& subKey, const AnsiString& key, const AnsiString& init)
+int CBRegistry::ReadInt(const AnsiString& subKey, const AnsiString& key, int init)
+
+CScEngine::CScEngine(CBGame* inGame):CBBase(inGame)
+CScEngine::~CScEngine()
+
+HRESULT CBSoundMgr::Initialize()
+
+int CBPlatform::Initialize(CBGame* inGame, int argc, char* argv[])
+void CBPlatform::HandleEvent(SDL_Event* event)
+HINSTANCE CBPlatform::ShellExecute(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd)
+void CBPlatform::OutputDebugString(LPCSTR lpOutputString)
+BOOL CBPlatform::ShowWindow(HWND hWnd, int nCmdShow)
+HWND CBPlatform::SetCapture(HWND hWnd)
+BOOL CBPlatform::ReleaseCapture()
+BOOL CBPlatform::SetForegroundWindow(HWND hWnd)
+AnsiString CBPlatform::GetSystemFontPath()
+int CBPlatform::stricmp(const char* str1, const char* str2)
+int CBPlatform::strnicmp(const char* str1, const char* str2, size_t maxCount)
+
+int main(int argc, char* argv[])
+
+HRESULT CScScript::ExternalCall(CScStack *Stack, CScStack *ThisStack, CScScript::TExternalFunction *Function)
+
+CSXStore::CSXStore(CBGame* inGame) : CBObject(inGame)
+void CSXStore::AfterLoad()
+void CSXStore::SetEventsEnabled(CScScript* script, bool val)
+void CSXStore::ValidateProducts(const char* prodIdList)
+bool CSXStore::IsAvailable()
+bool CSXStore::Purchase(CScScript* script, const char* productId)
+bool CSXStore::FinishTransaction(CScScript* script, const char* transId)
+void CSXStore::RestoreTransactions(CScScript* script)
+
+
+
+
+
+
+
+
