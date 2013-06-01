@@ -36,7 +36,9 @@ THE SOFTWARE.
 #	include <unistd.h>
 #endif
 
-
+#ifdef ANDROID
+#	include <android/log.h>
+#endif
 
 using namespace boost::filesystem;
 
@@ -388,7 +390,11 @@ BOOL CBPlatform::GetCursorPos(LPPOINT lpPoint)
 	lpPoint->x = x;
 	lpPoint->y = y;
 
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Before %d %d\n", x, y);
+
 	renderer->PointFromScreen(lpPoint);
+
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "After %d %d\n", lpPoint->x, lpPoint->y);
 
 	return TRUE;
 }

@@ -29,6 +29,9 @@ THE SOFTWARE.
 #include "FreeImage.h"
 #include "MathUtil.h"
 
+#ifdef ANDROID
+#	include <android/log.h>
+#endif
 
 //////////////////////////////////////////////////////////////////////////
 CBRenderSDL::CBRenderSDL(CBGame* inGame) : CBRenderer(inGame)
@@ -67,7 +70,7 @@ HRESULT CBRenderSDL::InitRenderer(int width, int height, bool windowed)
 
 
 	// find suitable resolution
-#ifdef __IPHONEOS__
+#if defined(__IPHONEOS__) || defined(ANDROID)
 	m_RealWidth = 480;
 	m_RealHeight = 320;
 
@@ -388,8 +391,17 @@ void CBRenderSDL::PointFromScreen(POINT* point)
 	SDL_Rect viewportRect;
 	SDL_RenderGetViewport(GetSdlRenderer(), &viewportRect);
 
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Before %d %d\n", point->x, point->y);
+
 	point->x = point->x / m_RatioX - m_BorderLeft / m_RatioX + viewportRect.x;
 	point->y = point->y / m_RatioY - m_BorderTop / m_RatioY + viewportRect.y;
+
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Ratio %.02f %.02f\n", m_RatioX, m_RatioY);
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Border %d %d\n", m_BorderLeft, m_BorderTop);
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Viewport %d %d\n", viewportRect.x, viewportRect.y);
+
+
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "After %d %d\n", point->x, point->y);
 }
 
 
