@@ -42,6 +42,9 @@ THE SOFTWARE.
 #	include "ios_utils.h"
 #endif
 
+#ifdef ANDROID
+#       include <android/log.h>
+#endif
 
 //////////////////////////////////////////////////////////////////////
 // Construction/Destruction
@@ -500,7 +503,7 @@ void CBGame::DEBUG_DebugDisable()
 void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
 {
 #ifndef __IPHONEOS__
-	if(!m_DEBUG_DebugMode) return;
+//	if(!m_DEBUG_DebugMode) return;
 #endif
 	time_t timeNow;
 	time(&timeNow);		
@@ -517,6 +520,9 @@ void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
 	printf("%02d:%02d:%02d: %s\n", tm->tm_hour, tm->tm_min, tm->tm_sec, buff);
 	fflush(stdout);
 #else
+#ifdef ANDROID
+	__android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "%02d:%02d:%02d: %s\n", tm->tm_hour, tm->tm_min, tm->tm_sec, buff);
+#else
 	if (m_DEBUG_LogFile == NULL) return;
 
 	// redirect to an engine's own callback
@@ -528,6 +534,7 @@ void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
 
 	fprintf(m_DEBUG_LogFile, "%02d:%02d: %s\n", tm->tm_hour, tm->tm_min, buff);
 	fflush(m_DEBUG_LogFile);
+#endif
 #endif	
 
 	//QuickMessage(buff);

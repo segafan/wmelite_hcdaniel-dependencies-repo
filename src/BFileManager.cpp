@@ -312,6 +312,8 @@ HRESULT CBFileManager::InitPaths()
 	// package files paths
 	AddPath(PATH_PACKAGE, "./");
 	AddPath(PATH_PACKAGE, "/mnt/sdcard/");
+	AddPath(PATH_SINGLE, "/mnt/sdcard/");
+
 
 #ifdef __APPLE__
 	// search .app path and Resources dir in the bundle
