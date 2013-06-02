@@ -35,10 +35,6 @@ THE SOFTWARE.
 #	include <unistd.h>
 #endif
 
-#ifdef __ANDROID__
-#	include "android.h"
-#endif
-
 
 CBGame* CBPlatform::Game = NULL;
 
