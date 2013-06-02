@@ -1,3 +1,3 @@
 #!/bin/bash
-ndk-build
+ndk-build NDK_DEBUG=1
 

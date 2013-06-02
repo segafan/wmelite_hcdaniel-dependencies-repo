@@ -100,8 +100,8 @@ void android_getGamePackagePath(char *buffer, int length)
 	const char *tmp;
 
 	// get the proper jni env from SDL
-	JNIEnv *env = Android_JNI_GetEnv();
-	// JNIEnv *env = localEnv;
+	// JNIEnv *env = Android_JNI_GetEnv();
+	JNIEnv *env = localEnv;
 	__android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "android_getGamePackagePath() env=%s", (env == NULL) ? "NULL" : "OK");
 
 	jmethodID callbackID = (*env)->GetMethodID(env, callbackClass, "getGamePackagePath", "()Ljava/lang/String;");
