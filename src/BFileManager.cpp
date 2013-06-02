@@ -38,6 +38,9 @@ THE SOFTWARE.
 #	include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#ifdef __ANDROID__
+#	include "android.h"
+#endif
 
 #if _DEBUG
 	#pragma comment(lib, "zlib_d.lib")

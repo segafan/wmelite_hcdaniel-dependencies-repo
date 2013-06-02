@@ -37,6 +37,9 @@ THE SOFTWARE.
 #   include <sys/stat.h>
 #endif
 
+#ifdef __ANDROID__
+#	include "android.h"
+#endif
 
 CBGame* CBPlatform::Game = NULL;
 
