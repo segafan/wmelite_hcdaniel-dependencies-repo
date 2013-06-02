@@ -27,7 +27,6 @@ THE SOFTWARE.
 #include "BFileManager.h"
 #include "StringUtil.h"
 #include "PathUtil.h"
-#include <boost/filesystem.hpp>
 
 #ifdef __WIN32__
 #	include <direct.h>
@@ -42,8 +41,6 @@ THE SOFTWARE.
 #ifdef __ANDROID__
 #	include "android.h"
 #endif
-
-using namespace boost::filesystem;
 
 
 #if _DEBUG

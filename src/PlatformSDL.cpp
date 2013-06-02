@@ -27,7 +27,6 @@ THE SOFTWARE.
 #include "PlatformSDL.h"
 #include "BRenderSDL.h"
 #include "PathUtil.h"
-#include <boost/filesystem.hpp>
 
 #ifdef __WIN32__
 #	include <dbghelp.h>
@@ -39,8 +38,6 @@ THE SOFTWARE.
 #ifdef __ANDROID__
 #	include "android.h"
 #endif
-
-using namespace boost::filesystem;
 
 
 CBGame* CBPlatform::Game = NULL;
