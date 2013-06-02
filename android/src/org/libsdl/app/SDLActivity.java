@@ -69,6 +69,8 @@ public class SDLActivity extends Activity {
         //Log.v("SDL", "onCreate()");
         super.onCreate(savedInstanceState);
         
+        wmeLiteFuncs.setContext(getApplicationContext());
+        
         // So we can call stuff from static callbacks
         mSingleton = this;
 
@@ -488,7 +490,10 @@ public class SDLActivity extends Activity {
     Simple nativeInit() runnable
 */
 class SDLMain implements Runnable {
-    @Override
+    
+    public SDLMain() {
+    }
+    
     public void run() {
     	
     	// init wmelite Java callbacks

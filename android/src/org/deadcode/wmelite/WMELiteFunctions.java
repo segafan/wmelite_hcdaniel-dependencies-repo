@@ -1,41 +1,64 @@
 package org.deadcode.wmelite;
 
+import android.content.Context;
+import android.content.res.Configuration;
+import android.os.Environment;
+
 public class WMELiteFunctions {
 
+	private Context c;
+	
+	public WMELiteFunctions() {
+	}
+	
+	public void setContext(Context c) {
+		this.c = c;
+	}
+	
 	public native void nativeInit();
 	
 	public String getLogFileDirectory() {
-		// FIXME needs proper path detection
-		return "/mnt/sdcard";
+		// this assumed the "external" storage exists and is mounted r/w
+		// return Environment.getExternalStorageDirectory().getAbsolutePath();
+		
+		return "/mnt/sdcard/";
 	}
 	
 	public String getPrivateFilesPath() {
-		// FIXME create a Java callback to retrieve the path
-		return "/data/data/org.libsdl.app/files/";
-		
+		// this returns the app-private storage for user data
+		return c.getFilesDir().getAbsolutePath();
 	}
 
 	public String getDeviceTypeHint() {
-		// FIXME ask Android about screen size and decide
-		return "tablet";
-		
+		if (c != null) {
+			return ((c.getResources().getConfiguration().screenLayout
+	            & Configuration.SCREENLAYOUT_SIZE_MASK)
+	            >= Configuration.SCREENLAYOUT_SIZE_LARGE) ? "tablet" : "phone";
+		} else {
+			return "tablet";
+		}
 	}
 
 	public String getGamePackagePath() {
-		// FIXME create a Java callback to retrieve the path
-		return "/mnt/sdcard/";
+		// change to fit your needs, maybe to point to the expansion files downloaded from Google play
+		// return Environment.getExternalStorageDirectory().getAbsolutePath();
 		
+		return "/mnt/sdcard/";
 	}
 
 	public String getGameFilePath() {
-		// FIXME create a Java callback to retrieve the path
-		return "/mnt/sdcard/";
+		// change to fit your needs, maybe to point to the expansion files downloaded from Google play
+		// return Environment.getExternalStorageDirectory().getAbsolutePath();
 		
+		return "/mnt/sdcard/";
 	}
 
 	public String getFontPath() {
-		// FIXME create a Java callback to retrieve the path
-		return "/data/data/org.libsdl.app/assets/fonts/";
-		
+		if (c != null) {
+			// FIXME is this correct?
+			return c.getPackageResourcePath() + "/assets/files/";
+		} else {
+			return ".";
+		}
 	}
 }
