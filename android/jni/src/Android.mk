@@ -49,6 +49,7 @@ LOCAL_ARM_MODE := arm
 
 # Add your application source files here...
 LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \
+../../../src/android.c \
 ../../../src/utils.cpp \
 ../../../src/BFileManager.cpp \
 ../../../src/PlatformSDL.cpp \

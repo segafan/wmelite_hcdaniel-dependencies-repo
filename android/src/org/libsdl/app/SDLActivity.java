@@ -486,7 +486,7 @@ public class SDLActivity extends Activity {
 class SDLMain implements Runnable {
     @Override
     public void run() {
-        // Runs SDL_main()
+    	// Runs SDL_main()
         SDLActivity.nativeInit();
 
         //Log.v("SDL", "SDL thread terminated");

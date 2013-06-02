@@ -39,6 +39,10 @@ THE SOFTWARE.
 #	include <CoreFoundation/CoreFoundation.h>
 #endif
 
+#ifdef __ANDROID__
+#	include "android.h"
+#endif
+
 using namespace boost::filesystem;
 
 
@@ -311,9 +315,6 @@ HRESULT CBFileManager::InitPaths()
 
 	// package files paths
 	AddPath(PATH_PACKAGE, "./");
-	AddPath(PATH_PACKAGE, "/mnt/sdcard/");
-	AddPath(PATH_SINGLE, "/mnt/sdcard/");
-
 
 #ifdef __APPLE__
 	// search .app path and Resources dir in the bundle
@@ -339,6 +340,9 @@ HRESULT CBFileManager::InitPaths()
 	CFRelease(appUrlRef);
 	CFRelease(macPath);
 #endif
+#elif __ANDROID__
+	AddPath(PATH_PACKAGE, android_getGamePackagePath());
+	AddPath(PATH_SINGLE, android_getGameFilePath());
 #endif
 	
 

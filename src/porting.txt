@@ -5,7 +5,8 @@ AnsiString PathUtil::GetUserDirectory()
 - implement it with the "app internal internal storage" of Android
 
 CBGame::CBGame():CBObject(this)
-- what are the two booleans used for?
+- m_TouchInterface --> true (easier to select in dialogues)
+- m_ConstrainedMemory --> no (should not be necessary anymore)
 
 void CBGame::DEBUG_DebugEnable(const char* Filename)
 - should be fine for Android already
@@ -14,10 +15,10 @@ void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
 - implement logging to Android ringbuffer and file
 
 	else if(strcmp(Name, "ShowStatusLine")==0)
-- what is it?
+- ignore for the moment
 
 	else if(strcmp(Name, "HideStatusLine")==0)
-- what is it?
+- ignore for the moment
 
 bool CBGame::HandleKeypress(SDL_Event* event)
 - leave as is
@@ -35,10 +36,10 @@ HRESULT CBRenderSDL::InitRenderer(int width, int height, bool windowed)
 - probably do the same as IOS?
 
 HRESULT CBRenderSDL::Flip()
-- what's the bug in IOS?
+- what's the bug in IOS? --> ignore for android
 
 HRESULT CBRenderSDL::SetViewport(int left, int top, int right, int bottom)
-- what's the bug in IOS?
+- what's the bug in IOS? --> ignore for android
 
 HRESULT CBFileManager::InitPaths()
 - somehow the Java part shall set the search paths before running the engine
@@ -56,13 +57,13 @@ CScEngine::~CScEngine()
 - ignore
 
 HRESULT CBSoundMgr::Initialize()
-- what is the IOS specific tweak?
+- what is the IOS specific tweak? --> probably ignore for Android
 
 int CBPlatform::Initialize(CBGame* inGame, int argc, char* argv[])
-- what's the event watch for?
+- what's the event watch for? --> don't know whether I'll need it.
 
 void CBPlatform::HandleEvent(SDL_Event* event)
-- don't know what the IOS specialities mean
+- don't know what the IOS specialities mean --> do the same for Android
 
 HINSTANCE CBPlatform::ShellExecute(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd)
 - ignore
@@ -99,5 +100,5 @@ bool CSXStore::IsAvailable()
 bool CSXStore::Purchase(CScScript* script, const char* productId)
 bool CSXStore::FinishTransaction(CScScript* script, const char* transId)
 void CSXStore::RestoreTransactions(CScScript* script)
-- what is this?
+- what is this? --> ignore for the moment
 

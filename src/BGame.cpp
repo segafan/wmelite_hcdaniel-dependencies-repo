@@ -42,8 +42,9 @@ THE SOFTWARE.
 #	include "ios_utils.h"
 #endif
 
-#ifdef ANDROID
-#       include <android/log.h>
+#ifdef __ANDROID__
+#	include <android/log.h>
+#	include "android.h"
 #endif
 
 //////////////////////////////////////////////////////////////////////
@@ -239,6 +240,9 @@ CBGame::CBGame():CBObject(this)
 #ifdef __IPHONEOS__
 	m_TouchInterface = true;
 	m_ConstrainedMemory = true; // TODO differentiate old and new iOS devices
+#elif __ANDROID__
+	m_TouchInterface = true;
+	m_ConstrainedMemory = false;
 #else
 	m_TouchInterface = false;
 	m_ConstrainedMemory = false;
@@ -502,8 +506,8 @@ void CBGame::DEBUG_DebugDisable()
 //////////////////////////////////////////////////////////////////////
 void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
 {
-#ifndef __IPHONEOS__
-//	if(!m_DEBUG_DebugMode) return;
+#if !defined(__IPHONEOS__) && !defined(__ANDROID__)
+	if(!m_DEBUG_DebugMode) return;
 #endif
 	time_t timeNow;
 	time(&timeNow);		
@@ -520,9 +524,12 @@ void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
 	printf("%02d:%02d:%02d: %s\n", tm->tm_hour, tm->tm_min, tm->tm_sec, buff);
 	fflush(stdout);
 #else
-#ifdef ANDROID
+
+#ifdef __ANDROID__
+	// that one should not have performance impact
 	__android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "%02d:%02d:%02d: %s\n", tm->tm_hour, tm->tm_min, tm->tm_sec, buff);
-#else
+#endif
+
 	if (m_DEBUG_LogFile == NULL) return;
 
 	// redirect to an engine's own callback
@@ -535,7 +542,6 @@ void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
 	fprintf(m_DEBUG_LogFile, "%02d:%02d: %s\n", tm->tm_hour, tm->tm_min, buff);
 	fflush(m_DEBUG_LogFile);
 #endif
-#endif	
 
 	//QuickMessage(buff);
 }
@@ -4071,7 +4077,7 @@ HRESULT CBGame::GetSaveSlotFilename(int Slot, char *Buffer)
 AnsiString CBGame::GetDataDir()
 {
 	AnsiString userDir = PathUtil::GetUserDirectory();
-#ifdef __IPHONEOS__
+#if defined(__IPHONEOS__) || defined(__ANDROID__)
 	return userDir;
 #else
 	AnsiString baseDir = m_Registry->GetBasePath();
@@ -4765,6 +4771,10 @@ bool CBGame::IsDoubleClick(int buttonIndex)
 #elif __IPHONEOS__
 	maxMoveX = 16;
 	maxMoveY = 16;
+#elif __ANDROID__
+	// do the same as IOS does
+	maxMoveX = 16;
+	maxMoveY = 16;
 #endif
 
 	POINT pos;
@@ -4813,6 +4823,8 @@ AnsiString CBGame::GetDeviceType() const
 	char devType[128];
 	IOS_GetDeviceType(devType);
 	return AnsiString(devType);
+#elif __ANDROID__
+	return android_getDeviceTypeHint();
 #else
 	return "computer";
 #endif
