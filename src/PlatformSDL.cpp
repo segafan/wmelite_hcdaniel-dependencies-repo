@@ -88,6 +88,8 @@ int CBPlatform::Initialize(CBGame* inGame, int argc, char* argv[])
 
 	if(Game->m_Registry->ReadBool("Debug", "DebugMode")) Game->DEBUG_DebugEnable("./wme.log");
 
+	//Game->DEBUG_DebugEnable("/mnt/sdcard/wme.log");
+
 	Game->m_DEBUG_ShowFPS = Game->m_Registry->ReadBool("Debug", "ShowFPS");
 
 	if(Game->m_Registry->ReadBool("Debug", "DisableSmartCache"))
@@ -234,7 +236,7 @@ void CBPlatform::HandleEvent(SDL_Event* event)
 
 	case SDL_MOUSEBUTTONDOWN:
 
-#ifdef __IPHONEOS__
+#if defined(__IPHONEOS__) || defined(__ANDROID)
 		{
 			CBRenderSDL* renderer = static_cast<CBRenderSDL*>(Game->m_Renderer);
 			POINT p;
@@ -304,7 +306,7 @@ void CBPlatform::HandleEvent(SDL_Event* event)
 			break;
 		case SDL_WINDOWEVENT_FOCUS_LOST:
 		case SDL_WINDOWEVENT_MINIMIZED:
-#ifndef __IPHONEOS__
+#if !defined(__IPHONEOS__) && !defined(__ANDROID__)
 			if (Game) Game->OnActivate(false, false);
 			SDL_ShowCursor(SDL_ENABLE);
 #endif
@@ -317,7 +319,7 @@ void CBPlatform::HandleEvent(SDL_Event* event)
 		break;
 
 	case SDL_QUIT:
-#ifdef __IPHONEOS__
+#if defined(__IPHONEOS__) || defined(__ANDROID)
 		if (Game)
 		{
 			Game->AutoSaveOnExit();
@@ -383,7 +385,11 @@ BOOL CBPlatform::GetCursorPos(LPPOINT lpPoint)
 	lpPoint->x = x;
 	lpPoint->y = y;
 
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Before %d %d\n", x, y);
+
 	renderer->PointFromScreen(lpPoint);
+
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "After %d %d\n", lpPoint->x, lpPoint->y);
 
 	return TRUE;
 }
@@ -640,6 +646,12 @@ AnsiString CBPlatform::GetSystemFontPath()
 	winDir[MAX_PATH] = '\0';
 	::GetWindowsDirectory(winDir, MAX_PATH);
 	return PathUtil::Combine(AnsiString(winDir), "fonts");
+#elif __ANDROID__
+	// there is no system font path but an app can bring
+	// custom fonts which could be referenced
+	char androidPath[1024];
+	android_getFontPath(androidPath, 1024);
+	return AnsiString(androidPath);
 #else
 	// !PORTME
 	return "/Library/Fonts/";

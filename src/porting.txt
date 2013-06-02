@@ -1,0 +1,104 @@
+AnsiString PathUtil::GetSafeLogFileName()
+- implement it with the "external storage path" of Android
+
+AnsiString PathUtil::GetUserDirectory()
+- implement it with the "app internal internal storage" of Android
+
+CBGame::CBGame():CBObject(this)
+- m_TouchInterface --> true (easier to select in dialogues)
+- m_ConstrainedMemory --> no (should not be necessary anymore)
+
+void CBGame::DEBUG_DebugEnable(const char* Filename)
+- should be fine for Android already
+
+void CBGame::LOG(HRESULT res, LPCSTR fmt, ...)
+- implement logging to Android ringbuffer and file
+
+	else if(strcmp(Name, "ShowStatusLine")==0)
+- ignore for the moment
+
+	else if(strcmp(Name, "HideStatusLine")==0)
+- ignore for the moment
+
+bool CBGame::HandleKeypress(SDL_Event* event)
+- leave as is
+
+AnsiString CBGame::GetDataDir()
+- maybe PathUtil already gives me the full path, so do the same as IOS
+
+bool CBGame::IsDoubleClick(int buttonIndex)
+- probably do the same as IOS
+
+AnsiString CBGame::GetDeviceType() const
+- could return "phone" or "tablet" based on whether Android knows such categories, or, if not, screen resolution and density
+
+HRESULT CBRenderSDL::InitRenderer(int width, int height, bool windowed)
+- probably do the same as IOS?
+
+HRESULT CBRenderSDL::Flip()
+- what's the bug in IOS? --> ignore for android
+
+HRESULT CBRenderSDL::SetViewport(int left, int top, int right, int bottom)
+- what's the bug in IOS? --> ignore for android
+
+HRESULT CBFileManager::InitPaths()
+- somehow the Java part shall set the search paths before running the engine
+
+AnsiString CBRegistry::ReadString(const AnsiString& subKey, const AnsiString& key, const AnsiString& init)
+- ignore
+
+int CBRegistry::ReadInt(const AnsiString& subKey, const AnsiString& key, int init)
+- ignore
+
+CScEngine::CScEngine(CBGame* inGame):CBBase(inGame)
+- ignore
+
+CScEngine::~CScEngine()
+- ignore
+
+HRESULT CBSoundMgr::Initialize()
+- what is the IOS specific tweak? --> probably ignore for Android
+
+int CBPlatform::Initialize(CBGame* inGame, int argc, char* argv[])
+- what's the event watch for? --> don't know whether I'll need it.
+
+void CBPlatform::HandleEvent(SDL_Event* event)
+- don't know what the IOS specialities mean --> do the same for Android
+
+HINSTANCE CBPlatform::ShellExecute(HWND hwnd, LPCSTR lpOperation, LPCSTR lpFile, LPCSTR lpParameters, LPCSTR lpDirectory, INT nShowCmd)
+- ignore
+
+void CBPlatform::OutputDebugString(LPCSTR lpOutputString)
+- ignore
+
+BOOL CBPlatform::ShowWindow(HWND hWnd, int nCmdShow)
+- ignore
+
+HWND CBPlatform::SetCapture(HWND hWnd)
+- ignore
+
+BOOL CBPlatform::ReleaseCapture()
+- ignore
+
+BOOL CBPlatform::SetForegroundWindow(HWND hWnd)
+- ignore
+
+AnsiString CBPlatform::GetSystemFontPath()
+- don't know if something like this exists for Android
+
+int main(int argc, char* argv[])
+- ok as it is
+
+HRESULT CScScript::ExternalCall(CScStack *Stack, CScStack *ThisStack, CScScript::TExternalFunction *Function)
+- ok as it is
+
+CSXStore::CSXStore(CBGame* inGame) : CBObject(inGame)
+void CSXStore::AfterLoad()
+void CSXStore::SetEventsEnabled(CScScript* script, bool val)
+void CSXStore::ValidateProducts(const char* prodIdList)
+bool CSXStore::IsAvailable()
+bool CSXStore::Purchase(CScScript* script, const char* productId)
+bool CSXStore::FinishTransaction(CScScript* script, const char* transId)
+void CSXStore::RestoreTransactions(CScScript* script)
+- what is this? --> ignore for the moment
+
