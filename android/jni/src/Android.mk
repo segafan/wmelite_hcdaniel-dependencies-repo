@@ -43,7 +43,7 @@ SDL_PATH := ../../../dependencies/SDL/jni/
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include $(LOCAL_PATH)/$(SDL_PATH)/src/core/android/ ../dependencies/bass/ ../dependencies/libfreetype-android/jni/include/ ../dependencies/FreeImage3154/jni/Source/ ../dependencies/boost-1_53/build/include/boost-1_53/ ../src/
 
-LOCAL_CPPFLAGS += -fexceptions -frtti
+LOCAL_CPPFLAGS += -fexceptions -frtti -Wno-write-strings -Wno-conversion-null 
 
 LOCAL_ARM_MODE := arm
 
@@ -164,6 +164,9 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \
 ../../../src/UITiledImage.cpp \
 ../../../src/UIWindow.cpp \
 ../../../src/Vector2.cpp \
+#../../../src/VidDataSource.cpp \
+#../../../src/VidManager.cpp \
+#../../../src/VidTheoraPlayer.cpp \
 
 
 LOCAL_SHARED_LIBRARIES := SDL2 freeimage bass
