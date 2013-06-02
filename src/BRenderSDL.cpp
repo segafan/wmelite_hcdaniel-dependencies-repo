@@ -29,7 +29,6 @@ THE SOFTWARE.
 #include "FreeImage.h"
 #include "MathUtil.h"
 
-
 //////////////////////////////////////////////////////////////////////////
 CBRenderSDL::CBRenderSDL(CBGame* inGame) : CBRenderer(inGame)
 {
@@ -67,7 +66,7 @@ HRESULT CBRenderSDL::InitRenderer(int width, int height, bool windowed)
 
 
 	// find suitable resolution
-#ifdef __IPHONEOS__
+#if defined(__IPHONEOS__) || defined(__ANDROID__)
 	m_RealWidth = 480;
 	m_RealHeight = 320;
 
@@ -126,6 +125,10 @@ HRESULT CBRenderSDL::InitRenderer(int width, int height, bool windowed)
 #ifdef __IPHONEOS__
 	flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS;
 #else
+#ifdef __ANDROID__
+	// just do the same IOS does
+	flags |= SDL_WINDOW_OPENGL | SDL_WINDOW_BORDERLESS;
+#endif
 	//m_Windowed = Game->m_Registry->ReadBool("Video", "Windowed", true);
     // as of Novmber 2012 using SDL_WINDOW_FULLSCREEN causes iOS glitch when returning back to the app (the image is shifted several pixels up)
 	if (!windowed) flags |= SDL_WINDOW_FULLSCREEN;
@@ -388,8 +391,17 @@ void CBRenderSDL::PointFromScreen(POINT* point)
 	SDL_Rect viewportRect;
 	SDL_RenderGetViewport(GetSdlRenderer(), &viewportRect);
 
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Before %d %d\n", point->x, point->y);
+
 	point->x = point->x / m_RatioX - m_BorderLeft / m_RatioX + viewportRect.x;
 	point->y = point->y / m_RatioY - m_BorderTop / m_RatioY + viewportRect.y;
+
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Ratio %.02f %.02f\n", m_RatioX, m_RatioY);
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Border %d %d\n", m_BorderLeft, m_BorderTop);
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Viewport %d %d\n", viewportRect.x, viewportRect.y);
+
+
+	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "After %d %d\n", point->x, point->y);
 }
 
 
