@@ -21,11 +21,11 @@
 # We expect the build script to be located here
 #APP_BUILD_SCRIPT := $(APP_PROJECT_PATH)/jni/Android.mk
 
-#APP_OPTIM := debug
+APP_OPTIM := release
 
 #APP_API := armeabi
 
-#APP_PLATFORM := android-14
+APP_PLATFORM := android-9
 
-APP_STL := gnustl_static
+APP_STL := gnustl_shared
 

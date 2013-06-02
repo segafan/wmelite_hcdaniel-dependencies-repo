@@ -45,6 +45,8 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/$(SDL_PATH)/include ../dependencies/bass/ ../d
 
 LOCAL_CPPFLAGS += -fexceptions -frtti
 
+LOCAL_ARM_MODE := arm
+
 # Add your application source files here...
 LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \
 ../../../src/utils.cpp \

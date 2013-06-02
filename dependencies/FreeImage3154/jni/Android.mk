@@ -7,6 +7,8 @@ LOCAL_CFLAGS        +=  -I. -ISource -ISource/Metadata -ISource/FreeImageToolkit
 
 LOCAL_CPPFLAGS        += -fexceptions -frtti -I. -ISource -ISource/Metadata -ISource/FreeImageToolkit -ISource/LibJPEG -ISource/LibPNG -ISource/LibTIFF4 -ISource/ZLib -ISource/LibOpenJPEG -ISource/OpenEXR -ISource/OpenEXR/Half -ISource/OpenEXR/Iex -ISource/OpenEXR/IlmImf -ISource/OpenEXR/IlmThread -ISource/OpenEXR/Imath -ISource/LibRawLite -ISource/LibRawLite/dcraw -ISource/LibRawLite/internal -ISource/LibRawLite/libraw -ISource/LibRawLite/src
 
+LOCAL_ARM_MODE := arm
+
 LOCAL_SRC_FILES         :=  \
 ./Source/FreeImage/BitmapAccess.cpp   \
 ./Source/FreeImage/ColorLookup.cpp   \
@@ -312,7 +314,9 @@ Source/LibRawLite/./src/libraw_datastream.cpp   \
 
 
 #
-LOCAL_CFLAGS            += 
+LOCAL_CFLAGS            += -O2
+
+LOCAL_CPPFLAGS            += -O2
 #
 LOCAL_MODULE            := freeimage
 

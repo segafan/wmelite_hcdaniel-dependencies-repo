@@ -3,3 +3,9 @@
 # See CPLUSPLUS-SUPPORT.html in the NDK documentation for more information
 APP_STL := gnustl_shared 
 
+APP_PLATFORM := android-9
+
+APP_OPTIM := release
+
+
+
