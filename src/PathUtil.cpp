@@ -141,10 +141,11 @@ AnsiString PathUtil::GetSafeLogFileName()
 #endif
 
 #else
-
+	char androidPath[1024];
+	android_getLogFileDirectory(androidPath, 1024);
 	// use a storage path in Android that is easily available
 	// typically that would be the external storage path
-	AnsiString logFileName = Combine(android_getLogFileDirectory(), "/wme.log");
+	AnsiString logFileName = Combine(androidPath, "/wme.log");
 
 #endif
 
@@ -213,8 +214,9 @@ AnsiString PathUtil::GetUserDirectory()
 	IOS_GetDataDir(path);
 	userDir = AnsiString(path);
 #elif __ANDROID__
-
-	userDir = AnsiString(android_getPrivateFilesPath());
+	char androidPath[1024];
+	android_getPrivateFilesPath(androidPath, 1024);
+	userDir = AnsiString(androidPath);
 
 #endif
 	

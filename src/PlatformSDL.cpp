@@ -596,7 +596,9 @@ AnsiString CBPlatform::GetSystemFontPath()
 #elif __ANDROID__
 	// there is no system font path but an app can bring
 	// custom fonts which could be referenced
-	return android_getFontPath();
+	char androidPath[1024];
+	android_getFontPath(androidPath, 1024);
+	return AnsiString(androidPath);
 #else
 	// !PORTME
 	return "/Library/Fonts/";

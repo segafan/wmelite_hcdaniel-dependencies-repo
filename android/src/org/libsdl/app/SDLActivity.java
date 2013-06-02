@@ -6,6 +6,8 @@ import javax.microedition.khronos.egl.EGLContext;
 import javax.microedition.khronos.egl.EGLDisplay;
 import javax.microedition.khronos.egl.EGLSurface;
 
+import org.deadcode.wmelite.WMELiteFunctions;
+
 import android.app.*;
 import android.content.*;
 import android.view.*;
@@ -49,6 +51,8 @@ public class SDLActivity extends Activity {
     protected static EGLDisplay  mEGLDisplay;
     protected static EGLConfig   mEGLConfig;
     protected static int mGLMajor, mGLMinor;
+    
+    protected static final WMELiteFunctions wmeLiteFuncs = new WMELiteFunctions();
 
     // Load the .so
     static {
@@ -486,6 +490,10 @@ public class SDLActivity extends Activity {
 class SDLMain implements Runnable {
     @Override
     public void run() {
+    	
+    	// init wmelite Java callbacks
+    	SDLActivity.wmeLiteFuncs.nativeInit();
+    	
     	// Runs SDL_main()
         SDLActivity.nativeInit();
 

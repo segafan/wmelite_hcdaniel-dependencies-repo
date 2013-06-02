@@ -6,17 +6,23 @@
 extern "C" {
 #endif
 
-char* android_getLogFileDirectory(void);
+#include <jni.h>
 
-char* android_getPrivateFilesPath(void);
+void Java_org_deadcode_wmelite_WMELiteFunctions_nativeInit(JNIEnv* env, jobject o);
 
-char* android_getDeviceTypeHint(void);
+void android_setLocalEnv(JNIEnv *env);
 
-char* android_getGamePackagePath(void);
+void android_getLogFileDirectory(char *buffer, int length);
 
-char* android_getGameFilePath(void);
+void android_getPrivateFilesPath(char *buffer, int length);
 
-char* android_getFontPath(void);
+void android_getDeviceTypeHint(char *buffer, int length);
+
+void android_getGamePackagePath(char *buffer, int length);
+
+void android_getGameFilePath(char *buffer, int length);
+
+void android_getFontPath(char *buffer, int length);
 
 #ifdef __cplusplus
 }

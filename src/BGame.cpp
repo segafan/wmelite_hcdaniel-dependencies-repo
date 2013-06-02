@@ -4824,7 +4824,9 @@ AnsiString CBGame::GetDeviceType() const
 	IOS_GetDeviceType(devType);
 	return AnsiString(devType);
 #elif __ANDROID__
-	return android_getDeviceTypeHint();
+	char androidPath[1024];
+	android_getDeviceTypeHint(androidPath, 1024);
+	return AnsiString(androidPath);
 #else
 	return "computer";
 #endif
