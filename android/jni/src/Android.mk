@@ -2,16 +2,6 @@
 LOCAL_PATH := $(call my-dir)
 
 include $(CLEAR_VARS)
-LOCAL_MODULE := boost_filesystem
-LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libboost_filesystem-gcc-mt-1_53.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-include $(CLEAR_VARS)
-LOCAL_MODULE := boost_system
-LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libboost_system-gcc-mt-1_53.a
-include $(PREBUILT_STATIC_LIBRARY)
-
-include $(CLEAR_VARS)
 LOCAL_MODULE := freetype
 LOCAL_SRC_FILES := ../../../prebuilt/android/armeabi/libfreetype.a
 include $(PREBUILT_STATIC_LIBRARY)
@@ -170,7 +160,7 @@ LOCAL_SRC_FILES := $(SDL_PATH)/src/main/android/SDL_android_main.cpp \
 
 
 LOCAL_SHARED_LIBRARIES := SDL2 freeimage bass
-LOCAL_STATIC_LIBRARIES := boost_filesystem boost_system freetype
+LOCAL_STATIC_LIBRARIES := freetype
 LOCAL_LDLIBS := -lGLESv1_CM -llog
 
 include $(BUILD_SHARED_LIBRARY)

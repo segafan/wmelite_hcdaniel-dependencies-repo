@@ -1,17 +1,17 @@
 IDIR =../src
 CC=gcc
 
-CFLAGS=-I$(IDIR) -O2
+CFLAGS=-I$(IDIR) -O2 -m32
 
 CPP=g++
-CPPFLAGS=-I$(IDIR) -O2 -Wno-write-strings -Wno-conversion-null -I/usr/local/include/SDL2/ -I/usr/local/bass/ -I/usr/include/freetype2/
+CPPFLAGS=-I$(IDIR) -O2 -m32 -Wno-write-strings -Wno-conversion-null -I/usr/local/include/SDL2/ -I/usr/local/bass/ -I/usr/include/freetype2/
 
 SRCDIR=../src
 
 ODIR=obj
 LDIR =/usr/local/bass/
 
-LIBS=-lSDL2 -lbass -lboost_filesystem -lboost_system -lfreeimage -lfreetype
+LIBS=-lSDL2 -lbass -lfreeimage -lfreetype
 
 _OBJC = ConvertUTF.o 
 OBJC = $(patsubst %,$(ODIR)/%,$(_OBJC))

@@ -70,7 +70,9 @@ CBGame::CBGame():CBObject(this)
 	m_FontStorage = NULL;
 	m_Renderer = NULL;
 	m_SoundMgr = NULL;
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	m_VideoMgr = NULL;
+#endif
 	m_FileManager = NULL;
 	m_TransMgr = NULL;
 	m_DebugMgr = NULL;
@@ -87,7 +89,9 @@ CBGame::CBGame():CBObject(this)
 	m_SystemFont = NULL;
 	m_VideoFont = NULL;
 
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	m_TheoraPlayer = NULL;
+#endif
 
 	m_MainObject = NULL;
 	m_ActiveObject = NULL;
@@ -284,8 +288,10 @@ CBGame::~CBGame()
 	SAFE_DELETE(m_ScEngine);
 	SAFE_DELETE(m_FontStorage);
 	SAFE_DELETE(m_SurfaceStorage);
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	SAFE_DELETE(m_TheoraPlayer);
 	SAFE_DELETE(m_VideoMgr);
+#endif
 	SAFE_DELETE(m_SoundMgr);
 	SAFE_DELETE(m_DebugMgr);
 	//SAFE_DELETE(m_KeyboardState);
@@ -392,9 +398,11 @@ HRESULT CBGame::Initialize1()
 	m_SoundMgr = new CBSoundMgr(this);
 	if(m_SoundMgr==NULL) goto init_fail;
 
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	m_VideoMgr = new CVidManager(this);
 	if(m_VideoMgr==NULL) goto init_fail;
 	m_VideoMgr->Initialize();
+#endif
 
 	m_DebugMgr = new CBDebugger(this);
 	if(m_DebugMgr==NULL) goto init_fail;
@@ -429,7 +437,9 @@ init_fail:
 	if(m_DebugMgr) delete m_DebugMgr;
 	if(m_SurfaceStorage) delete m_SurfaceStorage;
 	if(m_FontStorage) delete m_FontStorage;
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	if(m_VideoMgr) delete m_VideoMgr;
+#endif
 	if(m_SoundMgr) delete m_SoundMgr;
 	if(m_FileManager) delete m_FileManager;
 	if(m_ScEngine) delete m_ScEngine;
@@ -576,7 +586,9 @@ HRESULT CBGame::InitLoop()
 	
 	GetDebugMgr()->OnGameTick();
 	m_Renderer->InitLoop();
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	m_VideoMgr->InitLoop();
+#endif
 	m_SoundMgr->InitLoop();
 	UpdateMusicCrossfade();
 	
@@ -1398,6 +1410,7 @@ HRESULT CBGame::ScCallMethod(CScScript* Script, CScStack *Stack, CScStack *ThisS
 		return S_OK;
 	}
 
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	//////////////////////////////////////////////////////////////////////////
 	// PlayVideo
 	//////////////////////////////////////////////////////////////////////////
@@ -1454,6 +1467,7 @@ HRESULT CBGame::ScCallMethod(CScScript* Script, CScStack *Stack, CScStack *ThisS
 
 		return S_OK;
 	}
+#endif
 
 	//////////////////////////////////////////////////////////////////////////
 	// QuitGame
@@ -3570,7 +3584,9 @@ void CBGame::AfterLoadScript(void* script, void* data)
 //////////////////////////////////////////////////////////////////////////
 void CBGame::AfterLoadTheora(void* Theora, void* Data)
 {
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	((CVidTheoraPlayer*)Theora)->InitializeSimple();
+#endif
 }
 
 //////////////////////////////////////////////////////////////////////////
@@ -3963,7 +3979,9 @@ HRESULT CBGame::Freeze(bool IncludingMusic)
 	{
 		m_ScEngine->PauseAll();
 		m_SoundMgr->PauseAll(IncludingMusic);
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 		m_VideoMgr->PauseAll();
+#endif
 		m_OrigState = m_State;
 		m_OrigInteractive = m_Interactive;
 		m_Interactive = true;
@@ -3987,7 +4005,9 @@ HRESULT CBGame::Unfreeze()
 		m_Interactive = m_OrigInteractive;
 		m_ScEngine->ResumeAll();
 		m_SoundMgr->ResumeAll();
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 		m_VideoMgr->ResumeAll();
+#endif
 	}
 
 	return S_OK;
@@ -4496,18 +4516,22 @@ HRESULT CBGame::SetWaitCursor(char* Filename)
 //////////////////////////////////////////////////////////////////////////
 bool CBGame::IsVideoPlaying()
 {
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	if(m_TheoraPlayer && m_TheoraPlayer->IsPlaying()) return true;
+#endif
 	return false;
 }
 
 //////////////////////////////////////////////////////////////////////////
 HRESULT CBGame::StopVideo()
 {
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 	if(m_TheoraPlayer && m_TheoraPlayer->IsPlaying())
 	{
 		m_TheoraPlayer->Stop();
 		SAFE_DELETE(m_TheoraPlayer);
 	}
+#endif
 	return S_OK;
 }
 
@@ -4542,12 +4566,16 @@ HRESULT CBGame::OnActivate(bool Activate, bool RefreshMouse)
 	if(Activate)
 	{
 		m_SoundMgr->ResumeAll();
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 		m_VideoMgr->ResumeAll();
+#endif
 	}
 	else
 	{
 		m_SoundMgr->PauseAll();
+#if !defined(__LINUX__) && !defined(__ANDROID__)
 		m_VideoMgr->PauseAll();
+#endif
 	}
 
 	return S_OK;
