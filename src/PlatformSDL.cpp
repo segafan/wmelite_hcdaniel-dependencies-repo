@@ -91,8 +91,6 @@ int CBPlatform::Initialize(CBGame* inGame, int argc, char* argv[])
 
 	if(Game->m_Registry->ReadBool("Debug", "DebugMode")) Game->DEBUG_DebugEnable("./wme.log");
 
-	//Game->DEBUG_DebugEnable("/mnt/sdcard/wme.log");
-
 	Game->m_DEBUG_ShowFPS = Game->m_Registry->ReadBool("Debug", "ShowFPS");
 
 	if(Game->m_Registry->ReadBool("Debug", "DisableSmartCache"))
@@ -388,11 +386,7 @@ BOOL CBPlatform::GetCursorPos(LPPOINT lpPoint)
 	lpPoint->x = x;
 	lpPoint->y = y;
 
-	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "Before %d %d\n", x, y);
-
 	renderer->PointFromScreen(lpPoint);
-
-	// __android_log_print(ANDROID_LOG_VERBOSE, "org.libsdl.app", "After %d %d\n", lpPoint->x, lpPoint->y);
 
 	return TRUE;
 }
