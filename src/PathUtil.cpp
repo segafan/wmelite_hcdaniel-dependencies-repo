@@ -229,10 +229,11 @@ AnsiString PathUtil::GetUserDirectory()
 //////////////////////////////////////////////////////////////////////////
 AnsiString PathUtil::GetAbsolutePath(const AnsiString& path)
 {
-	char fullPath[MAX_PATH];
 #ifdef _WIN32
+	char fullPath[MAX_PATH];
 	_fullpath(fullPath, path.c_str(), MAX_PATH);
 #else
+	char fullPath[32768]; // UNIX paths can be longer
 	realpath(path.c_str(), fullPath);
 #endif
 	return AnsiString(fullPath);
