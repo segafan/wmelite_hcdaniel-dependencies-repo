@@ -240,12 +240,13 @@ static __inline__ void ConvertNSRect(NSRect *r)
 - (void)windowDidBecomeKey:(NSNotification *)aNotification
 {
     SDL_Window *window = _data->window;
+    SDL_Mouse *mouse = SDL_GetMouse();
 
     /* We're going to get keyboard events, since we're key. */
     SDL_SetKeyboardFocus(window);
 
     /* If we just gained focus we need the updated mouse position */
-    {
+    if (!mouse->relative_mode) {
         NSPoint point;
         int x, y;
 
@@ -538,7 +539,7 @@ static __inline__ void ConvertNSRect(NSRect *r)
     [super resetCursorRects];
     SDL_Mouse *mouse = SDL_GetMouse();
 
-    if (mouse->cursor_shown && mouse->cur_cursor) {
+    if (mouse->cursor_shown && mouse->cur_cursor && !mouse->relative_mode) {
         [self addCursorRect:[self bounds]
                      cursor:mouse->cur_cursor->driverdata];
     } else {
@@ -1132,7 +1133,6 @@ Cocoa_GetWindowWMInfo(_THIS, SDL_Window * window, SDL_SysWMinfo * info)
     if (info->version.major <= SDL_MAJOR_VERSION) {
         info->subsystem = SDL_SYSWM_COCOA;
         info->info.cocoa.window = nswindow;
-        info->info.cocoa.view = [nswindow contentView];
         return SDL_TRUE;
     } else {
         SDL_SetError("Application not compiled with SDL %d.%d\n",

@@ -27,17 +27,16 @@
 #include "SDL_hints.h"
 #include "../../SDL_hints_c.h"
 #include "SDL_system.h"
+#include "SDL_main.h"
 
 #include "SDL_uikitappdelegate.h"
 #include "SDL_uikitmodes.h"
 #include "../../events/SDL_events_c.h"
-#include "jumphack.h"
 
 #ifdef main
 #undef main
 #endif
 
-extern int SDL_main(int argc, char *argv[]);
 static int forward_argc;
 static char **forward_argv;
 static int exit_status;
@@ -187,6 +186,8 @@ static void SDL_IdleTimerDisabledChanged(const char *name, const char *oldValue,
 
 - (void)postFinishLaunch
 {
+    SDL_SetMainReady();
+
     /* run the user's application, passing argc and argv */
     SDL_iPhoneSetEventPump(SDL_TRUE);
     exit_status = SDL_main(forward_argc, forward_argv);

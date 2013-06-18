@@ -33,6 +33,8 @@
 /* Dropfile support */
 #include <shellapi.h>
 
+/* For GET_X_LPARAM, GET_Y_LPARAM. */
+#include <windowsx.h>
 
 /*#define WMMSG_DEBUG*/
 #ifdef WMMSG_DEBUG
@@ -381,7 +383,7 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
     case WM_MOUSEMOVE:
         if( !SDL_GetMouse()->relative_mode )
-            SDL_SendMouseMotion(data->window, 0, 0, LOWORD(lParam), HIWORD(lParam));
+            SDL_SendMouseMotion(data->window, 0, 0, GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
         /* don't break here, fall through to check the wParam like the button presses */
     case WM_LBUTTONUP:
     case WM_RBUTTONUP:
@@ -446,14 +448,11 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 #ifdef WM_MOUSELEAVE
     case WM_MOUSELEAVE:
-        if (SDL_GetMouseFocus() == data->window) {
-            if (!SDL_GetMouse()->relative_mode) {
-                POINT cursorPos;
-                GetCursorPos(&cursorPos);
-                ScreenToClient(hwnd, &cursorPos);
-                SDL_SendMouseMotion(data->window, 0, 0, cursorPos.x, cursorPos.y);
-            }
-
+        if (SDL_GetMouseFocus() == data->window && !SDL_GetMouse()->relative_mode) {
+            POINT cursorPos;
+            GetCursorPos(&cursorPos);
+            ScreenToClient(hwnd, &cursorPos);
+            SDL_SendMouseMotion(data->window, 0, 0, cursorPos.x, cursorPos.y);
             SDL_SetMouseFocus(NULL);
         }
         returnCode = 0;
@@ -645,7 +644,7 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
         {
             RECT rect;
             if (GetUpdateRect(hwnd, &rect, FALSE)) {
-                ValidateRect(hwnd, &rect);
+                ValidateRect(hwnd, NULL);
                 SDL_SendWindowEvent(data->window, SDL_WINDOWEVENT_EXPOSED,
                                     0, 0);
             }
