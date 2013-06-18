@@ -14,6 +14,8 @@ LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
 LOCAL_ARM_MODE := arm
 
+LOCAL_EXPORT_C_INCLUDES := $(LOCAL_C_INCLUDES)
+
 LOCAL_SRC_FILES := \
 	$(subst $(LOCAL_PATH)/,, \
 	$(wildcard $(LOCAL_PATH)/src/*.c) \
@@ -47,3 +49,4 @@ LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES
 LOCAL_LDLIBS := -ldl -lGLESv1_CM -lGLESv2 -llog
 
 include $(BUILD_SHARED_LIBRARY)
+
