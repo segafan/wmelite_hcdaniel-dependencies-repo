@@ -994,15 +994,15 @@ GLES2_SetBlendMode(GLES2_DriverContext *rdata, int blendMode)
             break;
         case SDL_BLENDMODE_BLEND:
             rdata->glEnable(GL_BLEND);
-            rdata->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            rdata->glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
             break;
         case SDL_BLENDMODE_ADD:
             rdata->glEnable(GL_BLEND);
-            rdata->glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            rdata->glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE, GL_ZERO, GL_ONE);
             break;
         case SDL_BLENDMODE_MOD:
             rdata->glEnable(GL_BLEND);
-            rdata->glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+            rdata->glBlendFuncSeparate(GL_ZERO, GL_SRC_COLOR, GL_ZERO, GL_ONE);
             break;
         }
         rdata->current.blendMode = blendMode;
@@ -1508,7 +1508,6 @@ GLES2_RenderReadPixels(SDL_Renderer * renderer, const SDL_Rect * rect,
                     Uint32 pixel_format, void * pixels, int pitch)
 {
     GLES2_DriverContext *rdata = (GLES2_DriverContext *)renderer->driverdata;
-    SDL_Window *window = renderer->window;
     Uint32 temp_format = SDL_PIXELFORMAT_ABGR8888;
     void *temp_pixels;
     int temp_pitch;
@@ -1524,7 +1523,7 @@ GLES2_RenderReadPixels(SDL_Renderer * renderer, const SDL_Rect * rect,
         return SDL_OutOfMemory();
     }
 
-    SDL_GetWindowSize(window, &w, &h);
+    SDL_GetRendererOutputSize(renderer, &w, &h);
 
     rdata->glPixelStorei(GL_PACK_ALIGNMENT, 1);
 

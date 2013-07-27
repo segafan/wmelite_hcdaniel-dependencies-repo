@@ -119,12 +119,6 @@ Cocoa_GL_CreateContext(_THIS, SDL_Window * window)
         attr[i++] = profile;
     }
 
-#ifndef FULLSCREEN_TOGGLEABLE
-    if (window->flags & SDL_WINDOW_FULLSCREEN) {
-        attr[i++] = NSOpenGLPFAFullScreen;
-    }
-#endif
-
     attr[i++] = NSOpenGLPFAColorSize;
     attr[i++] = SDL_BYTESPERPIXEL(display->current_mode.format)*8;
 
@@ -184,7 +178,7 @@ Cocoa_GL_CreateContext(_THIS, SDL_Window * window)
     }
 
     if (_this->gl_config.share_with_current_context) {
-        share_context = (NSOpenGLContext*)(_this->current_glctx);
+        share_context = (NSOpenGLContext*)SDL_GL_GetCurrentContext();
     }
 
     context = [[NSOpenGLContext alloc] initWithFormat:fmt shareContext:share_context];
@@ -218,12 +212,8 @@ Cocoa_GL_MakeCurrent(_THIS, SDL_Window * window, SDL_GLContext context)
         SDL_WindowData *windowdata = (SDL_WindowData *)window->driverdata;
         NSOpenGLContext *nscontext = (NSOpenGLContext *)context;
 
-#ifndef FULLSCREEN_TOGGLEABLE
-        if (window->flags & SDL_WINDOW_FULLSCREEN) {
-            [nscontext setFullScreen];
-        } else
-#endif
-        {
+        windowdata->nscontext = nscontext;
+        if ([nscontext view] != [windowdata->nswindow contentView]) {
             [nscontext setView:[windowdata->nswindow contentView]];
             [nscontext update];
         }
@@ -283,12 +273,12 @@ void
 Cocoa_GL_SwapWindow(_THIS, SDL_Window * window)
 {
     NSAutoreleasePool *pool;
-    NSOpenGLContext *nscontext;
+    SDL_WindowData *windowdata = (SDL_WindowData *)window->driverdata;
+    NSOpenGLContext *nscontext = windowdata->nscontext;
 
     pool = [[NSAutoreleasePool alloc] init];
 
-    /* FIXME: Do we need to get the context for the window? */
-    [[NSOpenGLContext currentContext] flushBuffer];
+    [nscontext flushBuffer];
 
     [pool release];
 }

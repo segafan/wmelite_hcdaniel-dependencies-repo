@@ -149,17 +149,22 @@ SDL_HapticOpen(int device_index)
         return NULL;
     }
 
+    /* Add haptic to list */
+    for (i = 0; SDL_haptics[i]; i++)
+        /* Skip to next haptic */ ;
+    if (i >= SDL_numhaptics) {
+        SDL_free(haptic);
+        SDL_SetError("Haptic: Trying to add device past the number originally detected");
+        return NULL;
+    }
+    SDL_haptics[i] = haptic;
+    ++haptic->ref_count;
+
     /* Disable autocenter and set gain to max. */
     if (haptic->supported & SDL_HAPTIC_GAIN)
         SDL_HapticSetGain(haptic, 100);
     if (haptic->supported & SDL_HAPTIC_AUTOCENTER)
         SDL_HapticSetAutocenter(haptic, 0);
-
-    /* Add haptic to list */
-    ++haptic->ref_count;
-    for (i = 0; SDL_haptics[i]; i++)
-        /* Skip to next haptic */ ;
-    SDL_haptics[i] = haptic;
 
     return haptic;
 }
@@ -172,6 +177,13 @@ int
 SDL_HapticOpened(int device_index)
 {
     int i, opened;
+
+    /* Make sure it's valid. */
+    if ((device_index < 0) || (device_index >= SDL_numhaptics)) {
+        SDL_SetError("Haptic: There are %d haptic devices available",
+                     SDL_numhaptics);
+        return 0;
+    }
 
     opened = 0;
     for (i = 0; SDL_haptics[i]; i++) {
@@ -262,6 +274,13 @@ SDL_HapticOpenFromJoystick(SDL_Joystick * joystick)
     int i;
     SDL_Haptic *haptic;
 
+    /* Make sure there is room. */
+    if (SDL_numhaptics <= 0) {
+        SDL_SetError("Haptic: There are %d haptic devices available",
+                     SDL_numhaptics);
+        return NULL;
+    }
+
     /* Must be a valid joystick */
     if (!SDL_PrivateJoystickValid(joystick)) {
         SDL_SetError("Haptic: Joystick isn't valid.");
@@ -299,10 +318,15 @@ SDL_HapticOpenFromJoystick(SDL_Joystick * joystick)
     }
 
     /* Add haptic to list */
-    ++haptic->ref_count;
     for (i = 0; SDL_haptics[i]; i++)
         /* Skip to next haptic */ ;
+    if (i >= SDL_numhaptics) {
+        SDL_free(haptic);
+        SDL_SetError("Haptic: Trying to add device past the number originally detected");
+        return NULL;
+    }
     SDL_haptics[i] = haptic;
+    ++haptic->ref_count;
 
     return haptic;
 }
@@ -506,7 +530,7 @@ SDL_HapticUpdateEffect(SDL_Haptic * haptic, int effect,
 
     SDL_memcpy(&haptic->effects[effect].effect, data,
                sizeof(SDL_HapticEffect));
-    return 0;
+    return effect;
 }
 
 
@@ -779,7 +803,9 @@ SDL_HapticRumblePlay(SDL_Haptic * haptic, float strength, Uint32 length)
     efx = &haptic->rumble_effect.periodic;
     efx->magnitude = (Sint16)(32767.0f*strength);
     efx->length = length;
-    SDL_HapticUpdateEffect(haptic, haptic->rumble_id, &haptic->rumble_effect);
+    if (SDL_HapticUpdateEffect(haptic, haptic->rumble_id, &haptic->rumble_effect) < 0) {
+        return -1;
+    }
 
     return SDL_HapticRunEffect(haptic, haptic->rumble_id, 1);
 }
