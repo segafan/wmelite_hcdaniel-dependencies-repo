@@ -22,6 +22,7 @@
 
 #if SDL_VIDEO_DRIVER_X11
 
+#include "SDL_assert.h"
 #include "SDL_hints.h"
 #include "../SDL_sysvideo.h"
 #include "../SDL_pixels_c.h"
@@ -339,6 +340,8 @@ X11_CreateWindow(_THIS, SDL_Window * window)
     XSizeHints *sizehints;
     XWMHints *wmhints;
     XClassHint *classhints;
+    const long _NET_WM_BYPASS_COMPOSITOR_HINT_ON = 1;
+    Atom _NET_WM_BYPASS_COMPOSITOR;
     Atom _NET_WM_WINDOW_TYPE;
     Atom _NET_WM_WINDOW_TYPE_NORMAL;
     Atom _NET_WM_PID;
@@ -532,6 +535,10 @@ X11_CreateWindow(_THIS, SDL_Window * window)
                     PropModeReplace,
                     (unsigned char *)&_NET_WM_WINDOW_TYPE_NORMAL, 1);
 
+    _NET_WM_BYPASS_COMPOSITOR = XInternAtom(display, "_NET_WM_BYPASS_COMPOSITOR", False);
+    XChangeProperty(display, w, _NET_WM_BYPASS_COMPOSITOR, XA_CARDINAL, 32,
+                    PropModeReplace,
+                    (unsigned char *)&_NET_WM_BYPASS_COMPOSITOR_HINT_ON, 1);
 
     {
         Atom protocols[] = {
@@ -692,19 +699,11 @@ X11_SetWindowIcon(_THIS, SDL_Window * window, SDL_Surface * icon)
     Atom _NET_WM_ICON = data->videodata->_NET_WM_ICON;
 
     if (icon) {
-        SDL_PixelFormat format;
-        SDL_Surface *surface;
         int propsize;
         long *propdata;
 
-        /* Convert the icon to ARGB for modern window managers */
-        SDL_InitFormat(&format, SDL_PIXELFORMAT_ARGB8888);
-        surface = SDL_ConvertSurface(icon, &format, 0);
-        if (!surface) {
-            return;
-        }
-
         /* Set the _NET_WM_ICON property */
+        SDL_assert(icon->format->format == SDL_PIXELFORMAT_ARGB8888);
         propsize = 2 + (icon->w * icon->h);
         propdata = SDL_malloc(propsize * sizeof(long));
         if (propdata) {
@@ -716,7 +715,7 @@ X11_SetWindowIcon(_THIS, SDL_Window * window, SDL_Surface * icon)
             propdata[1] = icon->h;
             dst = &propdata[2];
             for (y = 0; y < icon->h; ++y) {
-                src = (Uint32*)((Uint8*)surface->pixels + y * surface->pitch);
+                src = (Uint32*)((Uint8*)icon->pixels + y * icon->pitch);
                 for (x = 0; x < icon->w; ++x) {
                     *dst++ = *src++;
                 }
@@ -726,7 +725,6 @@ X11_SetWindowIcon(_THIS, SDL_Window * window, SDL_Surface * icon)
                             propsize);
         }
         SDL_free(propdata);
-        SDL_FreeSurface(surface);
     } else {
         XDeleteProperty(display, data->xwindow, _NET_WM_ICON);
     }
@@ -847,11 +845,12 @@ void
 X11_HideWindow(_THIS, SDL_Window * window)
 {
     SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
+    SDL_DisplayData *displaydata = (SDL_DisplayData *) SDL_GetDisplayForWindow(window)->driverdata;
     Display *display = data->videodata->display;
     XEvent event;
 
     if (X11_IsWindowMapped(_this, window)) {
-        XUnmapWindow(display, data->xwindow);
+        XWithdrawWindow(display, data->xwindow, displaydata->screen);
         /* Blocking wait for "UnmapNotify" event */
         XIfEvent(display, &event, &isUnmapNotify, (XPointer)&data->xwindow);
         XFlush(display);
@@ -1031,13 +1030,6 @@ X11_SetWindowFullscreenViaWM(_THIS, SDL_Window * window, SDL_VideoDisplay * _dis
     XFlush(display);
 }
 
-static __inline__ int
-maxint(const int a, const int b)
-{
-    return (a > b ? a : b);
-}
-
-
 /* This handles fullscreen itself, outside the Window Manager. */
 static void
 X11_BeginWindowFullscreenLegacy(_THIS, SDL_Window * window, SDL_VideoDisplay * _display)
@@ -1147,7 +1139,7 @@ X11_EndWindowFullscreenLegacy(_THIS, SDL_Window * window, SDL_VideoDisplay * _di
     SetWindowBordered(display, screen, data->xwindow,
                       (window->flags & SDL_WINDOW_BORDERLESS) == 0);
 
-    XUnmapWindow(display, fswindow);
+    XWithdrawWindow(display, fswindow, screen);
 
     /* Wait to be unmapped. */
     XIfEvent(display, &ev, &isUnmapNotify, (XPointer)&fswindow);

@@ -277,7 +277,6 @@ GL_ActivateRenderer(SDL_Renderer * renderer)
 {
     GL_RenderData *data = (GL_RenderData *) renderer->driverdata;
 
-    GL_ClearErrors(renderer);
     if (SDL_CurrentContext != data->context) {
         if (SDL_GL_MakeCurrent(renderer->window, data->context) < 0) {
             return -1;
@@ -286,6 +285,9 @@ GL_ActivateRenderer(SDL_Renderer * renderer)
 
         GL_UpdateViewport(renderer);
     }
+
+    GL_ClearErrors(renderer);
+
     return 0;
 }
 
@@ -922,17 +924,17 @@ GL_SetBlendMode(GL_RenderData * data, int blendMode)
         case SDL_BLENDMODE_BLEND:
             data->glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
             data->glEnable(GL_BLEND);
-            data->glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+            data->glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
             break;
         case SDL_BLENDMODE_ADD:
             data->glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
             data->glEnable(GL_BLEND);
-            data->glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+            data->glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE, GL_ZERO, GL_ONE);
             break;
         case SDL_BLENDMODE_MOD:
             data->glTexEnvf(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
             data->glEnable(GL_BLEND);
-            data->glBlendFunc(GL_ZERO, GL_SRC_COLOR);
+            data->glBlendFuncSeparate(GL_ZERO, GL_SRC_COLOR, GL_ZERO, GL_ONE);
             break;
         }
         data->current.blendMode = blendMode;
@@ -1233,7 +1235,6 @@ GL_RenderReadPixels(SDL_Renderer * renderer, const SDL_Rect * rect,
                     Uint32 pixel_format, void * pixels, int pitch)
 {
     GL_RenderData *data = (GL_RenderData *) renderer->driverdata;
-    SDL_Window *window = renderer->window;
     Uint32 temp_format = SDL_PIXELFORMAT_ARGB8888;
     void *temp_pixels;
     int temp_pitch;
@@ -1253,7 +1254,7 @@ GL_RenderReadPixels(SDL_Renderer * renderer, const SDL_Rect * rect,
 
     convert_format(data, temp_format, &internalFormat, &format, &type);
 
-    SDL_GetWindowSize(window, &w, &h);
+    SDL_GetRendererOutputSize(renderer, &w, &h);
 
     data->glPixelStorei(GL_PACK_ALIGNMENT, 1);
     data->glPixelStorei(GL_PACK_ROW_LENGTH,

@@ -81,11 +81,9 @@ static __inline__ void ConvertNSRect(NSRect *r)
 
     [view setNextResponder:self];
 
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
     if ([view respondsToSelector:@selector(setAcceptsTouchEvents:)]) {
         [view setAcceptsTouchEvents:YES];
     }
-#endif
 }
 
 - (void)observeValueForKeyPath:(NSString *)keyPath
@@ -450,7 +448,6 @@ static __inline__ void ConvertNSRect(NSRect *r)
 
 - (void)handleTouches:(cocoaTouchType)type withEvent:(NSEvent *)event
 {
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
     NSSet *touches = 0;
     NSEnumerator *enumerator;
     NSTouch *touch;
@@ -499,7 +496,6 @@ static __inline__ void ConvertNSRect(NSRect *r)
 
         touch = (NSTouch*)[enumerator nextObject];
     }
-#endif /* MAC_OS_X_VERSION_MAX_ALLOWED >= 1060 */
 }
 
 @end
@@ -866,8 +862,12 @@ Cocoa_RaiseWindow(_THIS, SDL_Window * window)
     SDL_WindowData *windowData = ((SDL_WindowData *) window->driverdata);
     NSWindow *nswindow = windowData->nswindow;
 
+    // makeKeyAndOrderFront: has the side-effect of deminiaturizing and showing
+    // a minimized or hidden window, so check for that before showing it.
     [windowData->listener pauseVisibleObservation];
-    [nswindow makeKeyAndOrderFront:nil];
+    if (![nswindow isMiniaturized] && [nswindow isVisible]) {
+        [nswindow makeKeyAndOrderFront:nil];
+    }
     [windowData->listener resumeVisibleObservation];
 
     [pool release];
@@ -935,8 +935,6 @@ Cocoa_RebuildWindow(SDL_WindowData * data, NSWindow * nswindow, unsigned style)
 void
 Cocoa_SetWindowBordered(_THIS, SDL_Window * window, SDL_bool bordered)
 {
-    /* this message arrived in 10.6. You're out of luck on older OSes. */
-#if MAC_OS_X_VERSION_MAX_ALLOWED >= 1060
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     NSWindow *nswindow = ((SDL_WindowData *) window->driverdata)->nswindow;
     if ([nswindow respondsToSelector:@selector(setStyleMask:)]) {
@@ -946,7 +944,6 @@ Cocoa_SetWindowBordered(_THIS, SDL_Window * window, SDL_bool bordered)
         }
     }
     [pool release];
-#endif
 }
 
 void
@@ -1012,14 +1009,12 @@ Cocoa_SetWindowFullscreen(_THIS, SDL_Window * window, SDL_VideoDisplay * display
         Cocoa_SetWindowTitle(_this, window);
     }
 
-#ifdef FULLSCREEN_TOGGLEABLE
     if (SDL_ShouldAllowTopmost() && fullscreen) {
         /* OpenGL is rendering to the window, so make it visible! */
         [nswindow setLevel:CGShieldingWindowLevel()];
     } else {
         [nswindow setLevel:kCGNormalWindowLevel];
     }
-#endif
 
     [data->listener pauseVisibleObservation];
     [nswindow makeKeyAndOrderFront:nil];

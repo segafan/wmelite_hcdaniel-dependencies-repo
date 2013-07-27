@@ -175,7 +175,11 @@ SDL_SetColorKey(SDL_Surface * surface, int flag, Uint32 key)
     int flags;
 
     if (!surface) {
-        return -1;
+        return SDL_InvalidParamError("surface");
+    }
+
+    if (surface->format->palette && key >= ((Uint32) surface->format->palette->ncolors)) {
+        return SDL_InvalidParamError("key");
     }
 
     if (flag & SDL_RLEACCEL) {
@@ -525,6 +529,8 @@ SDL_UpperBlit(SDL_Surface * src, const SDL_Rect * srcrect,
     /* If the destination rectangle is NULL, use the entire dest surface */
     if (dstrect == NULL) {
         fulldst.x = fulldst.y = 0;
+        fulldst.w = dst->w;
+        fulldst.h = dst->h;
         dstrect = &fulldst;
     }
 
@@ -615,6 +621,8 @@ SDL_UpperBlitScaled(SDL_Surface * src, const SDL_Rect * srcrect,
     /* If the destination rectangle is NULL, use the entire dest surface */
     if (dstrect == NULL) {
         fulldst.x = fulldst.y = 0;
+        fulldst.w = dst->w;
+        fulldst.h = dst->h;
         dstrect = &fulldst;
     }
 
