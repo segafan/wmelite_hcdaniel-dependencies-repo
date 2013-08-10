@@ -156,6 +156,7 @@ src/psnames/pspic.c \
 src/raster/ftraster.c \
 src/raster/raster.c \
 src/raster/rastpic.c \
+src/sfnt/pngshim.c \
 src/sfnt/sfdriver.c \
 src/sfnt/sfnt.c \
 src/sfnt/sfntpic.c \
@@ -166,7 +167,6 @@ src/sfnt/ttkern.c \
 src/sfnt/ttload.c \
 src/sfnt/ttmtx.c \
 src/sfnt/ttpost.c \
-src/sfnt/ttsbit0.c \
 src/sfnt/ttsbit.c \
 src/smooth/ftgrays.c \
 src/smooth/ftspic.c \
@@ -216,6 +216,7 @@ src/gzip/ftgzip.c \
 #src/autofit/afhints.c \
 #src/smooth/ftsmooth.c \
 #src/raster/ftrend1.c \
+#src/sfnt/ttsbit0.c \
 
 
 LOCAL_C_INCLUDES += \
