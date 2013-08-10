@@ -742,6 +742,64 @@ X11_SetWindowPosition(_THIS, SDL_Window * window)
 }
 
 void
+X11_SetWindowMinimumSize(_THIS, SDL_Window * window)
+{
+    SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
+    Display *display = data->videodata->display;
+
+    if (window->flags & SDL_WINDOW_RESIZABLE) {
+         XSizeHints *sizehints = XAllocSizeHints();
+         long userhints;
+
+         XGetWMNormalHints(display, data->xwindow, sizehints, &userhints);
+
+         sizehints->min_width = window->min_w;
+         sizehints->min_height = window->min_h;
+         sizehints->flags |= PMinSize;
+
+         XSetWMNormalHints(display, data->xwindow, sizehints);
+
+         XFree(sizehints);
+
+        /* See comment in X11_SetWindowSize. */
+        XResizeWindow(display, data->xwindow, window->w, window->h);
+        XMoveWindow(display, data->xwindow, window->x, window->y);
+        XRaiseWindow(display, data->xwindow);
+    }
+
+    XFlush(display);
+}
+
+void
+X11_SetWindowMaximumSize(_THIS, SDL_Window * window)
+{
+    SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
+    Display *display = data->videodata->display;
+
+    if (window->flags & SDL_WINDOW_RESIZABLE) {
+         XSizeHints *sizehints = XAllocSizeHints();
+         long userhints;
+
+         XGetWMNormalHints(display, data->xwindow, sizehints, &userhints);
+
+         sizehints->max_width = window->max_w;
+         sizehints->max_height = window->max_h;
+         sizehints->flags |= PMaxSize;
+
+         XSetWMNormalHints(display, data->xwindow, sizehints);
+
+         XFree(sizehints);
+
+        /* See comment in X11_SetWindowSize. */
+        XResizeWindow(display, data->xwindow, window->w, window->h);
+        XMoveWindow(display, data->xwindow, window->x, window->y);
+        XRaiseWindow(display, data->xwindow);
+    }
+
+    XFlush(display);
+}
+
+void
 X11_SetWindowSize(_THIS, SDL_Window * window)
 {
     SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
@@ -760,6 +818,7 @@ X11_SetWindowSize(_THIS, SDL_Window * window)
 
          sizehints->min_width = sizehints->max_width = window->w;
          sizehints->min_height = sizehints->max_height = window->h;
+         sizehints->flags |= PMinSize | PMaxSize;
 
          XSetWMNormalHints(display, data->xwindow, sizehints);
 
@@ -878,6 +937,12 @@ SetWindowMaximized(_THIS, SDL_Window * window, SDL_bool maximized)
     Atom _NET_WM_STATE_MAXIMIZED_VERT = data->videodata->_NET_WM_STATE_MAXIMIZED_VERT;
     Atom _NET_WM_STATE_MAXIMIZED_HORZ = data->videodata->_NET_WM_STATE_MAXIMIZED_HORZ;
 
+    if (maximized) {
+        window->flags |= SDL_WINDOW_MAXIMIZED;
+    } else {
+        window->flags &= ~SDL_WINDOW_MAXIMIZED;
+    }
+
     if (X11_IsWindowMapped(_this, window)) {
         XEvent e;
 
@@ -895,15 +960,7 @@ SetWindowMaximized(_THIS, SDL_Window * window, SDL_bool maximized)
         XSendEvent(display, RootWindow(display, displaydata->screen), 0,
                    SubstructureNotifyMask | SubstructureRedirectMask, &e);
     } else {
-        Uint32 flags;
-
-        flags = window->flags;
-        if (maximized) {
-            flags |= SDL_WINDOW_MAXIMIZED;
-        } else {
-            flags &= ~SDL_WINDOW_MAXIMIZED;
-        }
-        X11_SetNetWMState(_this, data->xwindow, flags);
+        X11_SetNetWMState(_this, data->xwindow, window->flags);
     }
     XFlush(display);
 }

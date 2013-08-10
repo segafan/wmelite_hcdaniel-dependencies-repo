@@ -20,10 +20,18 @@
 */
 #include "SDL_config.h"
 
+/* Set up for C function definitions, even when using C++ */
+#ifdef __cplusplus
+/* *INDENT-OFF* */
+extern "C" {
+/* *INDENT-ON* */
+#endif
+
 #include "SDL_rect.h"
 
 /* Interface from the SDL library into the Android Java activity */
 extern SDL_bool Android_JNI_CreateContext(int majorVersion, int minorVersion, int red, int green, int blue, int alpha, int buffer, int depth, int stencil, int buffers, int samples);
+extern SDL_bool Android_JNI_DeleteContext(void);
 extern void Android_JNI_SwapWindow();
 extern void Android_JNI_SetActivityTitle(const char *title);
 extern SDL_bool Android_JNI_GetAccelerometerValues(float values[3]);
@@ -60,5 +68,12 @@ int Android_JNI_SetupThread(void);
 
 /* Generic messages */
 int Android_JNI_SendMessage(int command, int param);
+
+/* Ends C function definitions when using C++ */
+#ifdef __cplusplus
+/* *INDENT-OFF* */
+}
+/* *INDENT-ON* */
+#endif
 
 /* vi: set ts=4 sw=4 expandtab: */
