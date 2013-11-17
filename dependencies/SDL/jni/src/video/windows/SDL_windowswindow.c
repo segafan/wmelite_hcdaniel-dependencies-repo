@@ -22,6 +22,8 @@
 
 #if SDL_VIDEO_DRIVER_WINDOWS
 
+#include "../../core/windows/SDL_windows.h"
+
 #include "SDL_assert.h"
 #include "../SDL_sysvideo.h"
 #include "../SDL_pixels_c.h"
@@ -77,7 +79,8 @@ GetWindowStyle(SDL_Window * window)
 static void
 WIN_SetWindowPositionInternal(_THIS, SDL_Window * window, UINT flags)
 {
-    HWND hwnd = ((SDL_WindowData *) window->driverdata)->hwnd;
+    SDL_WindowData *data = (SDL_WindowData *)window->driverdata;
+    HWND hwnd = data->hwnd;
     RECT rect;
     DWORD style;
     HWND top;
@@ -103,7 +106,9 @@ WIN_SetWindowPositionInternal(_THIS, SDL_Window * window, UINT flags)
     x = window->x + rect.left;
     y = window->y + rect.top;
 
+    data->expected_resize = TRUE;
     SetWindowPos(hwnd, top, x, y, w, h, flags);
+    data->expected_resize = FALSE;
 }
 
 static int
@@ -113,7 +118,7 @@ SetupWindowData(_THIS, SDL_Window * window, HWND hwnd, SDL_bool created)
     SDL_WindowData *data;
 
     /* Allocate the window data */
-    data = (SDL_WindowData *) SDL_malloc(sizeof(*data));
+    data = (SDL_WindowData *) SDL_calloc(1, sizeof(*data));
     if (!data) {
         return SDL_OutOfMemory();
     }
@@ -157,7 +162,7 @@ SetupWindowData(_THIS, SDL_Window * window, HWND hwnd, SDL_bool created)
             int w = rect.right;
             int h = rect.bottom;
             if ((window->w && window->w != w) || (window->h && window->h != h)) {
-                // We tried to create a window larger than the desktop and Windows didn't allow it.  Override!
+                /* We tried to create a window larger than the desktop and Windows didn't allow it.  Override! */
                 WIN_SetWindowPositionInternal(_this, window, SWP_NOCOPYBITS | SWP_NOZORDER | SWP_NOACTIVATE);
             } else {
                 window->w = w;
@@ -319,9 +324,7 @@ WIN_SetWindowTitle(_THIS, SDL_Window * window)
         title = NULL;
     }
     SetWindowText(hwnd, title ? title : TEXT(""));
-    if (title) {
-        SDL_free(title);
-    }
+    SDL_free(title);
 }
 
 void
@@ -410,8 +413,11 @@ WIN_RaiseWindow(_THIS, SDL_Window * window)
 void
 WIN_MaximizeWindow(_THIS, SDL_Window * window)
 {
-    HWND hwnd = ((SDL_WindowData *) window->driverdata)->hwnd;
+    SDL_WindowData *data = (SDL_WindowData *)window->driverdata;
+    HWND hwnd = data->hwnd;
+    data->expected_resize = TRUE;
     ShowWindow(hwnd, SW_MAXIMIZE);
+    data->expected_resize = FALSE;
 }
 
 void
@@ -442,9 +448,11 @@ WIN_SetWindowBordered(_THIS, SDL_Window * window, SDL_bool bordered)
 void
 WIN_RestoreWindow(_THIS, SDL_Window * window)
 {
-    HWND hwnd = ((SDL_WindowData *) window->driverdata)->hwnd;
-
+    SDL_WindowData *data = (SDL_WindowData *)window->driverdata;
+    HWND hwnd = data->hwnd;
+    data->expected_resize = TRUE;
     ShowWindow(hwnd, SW_RESTORE);
+    data->expected_resize = FALSE;
 }
 
 void
@@ -490,7 +498,9 @@ WIN_SetWindowFullscreen(_THIS, SDL_Window * window, SDL_VideoDisplay * display, 
         y = window->windowed.y + rect.top;
     }
     SetWindowLong(hwnd, GWL_STYLE, style);
+    data->expected_resize = TRUE;
     SetWindowPos(hwnd, top, x, y, w, h, SWP_NOCOPYBITS);
+    data->expected_resize = FALSE;
 }
 
 int
