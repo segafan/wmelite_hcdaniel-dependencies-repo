@@ -1416,6 +1416,14 @@ SDLTest_CommonQuit(SDLTest_CommonState * state)
     int i;
 
     SDL_free(state->windows);
+    if (state->targets) {
+        for (i = 0; i < state->num_windows; ++i) {
+            if (state->targets[i]) {
+                SDL_DestroyTexture(state->targets[i]);
+            }
+        }
+        SDL_free(state->targets);
+    }
     if (state->renderers) {
         for (i = 0; i < state->num_windows; ++i) {
             if (state->renderers[i]) {
