@@ -20,38 +20,32 @@
 */
 #include "SDL_config.h"
 
-#if SDL_VIDEO_DRIVER_ANDROID
+#ifndef _SDL_winopengles_h
+#define _SDL_winopengles_h
 
-/* Android SDL video driver implementation */
+#if SDL_VIDEO_OPENGL_EGL
 
-#include "SDL_video.h"
+#include "../SDL_sysvideo.h"
 #include "../SDL_egl_c.h"
-#include "SDL_androidwindow.h"
 
-#include "SDL_androidvideo.h"
-#include "../../core/android/SDL_android.h"
+/* OpenGLES functions */
+#define WIN_GLES_GetAttribute SDL_EGL_GetAttribute
+#define WIN_GLES_GetProcAddress SDL_EGL_GetProcAddress
+#define WIN_GLES_UnloadLibrary SDL_EGL_UnloadLibrary
+#define WIN_GLES_GetSwapInterval SDL_EGL_GetSwapInterval
+/* See the WIN_GLES_GetSwapInterval implementation to see why this is commented out */
+/*#define WIN_GLES_SetSwapInterval SDL_EGL_SetSwapInterval*/
+extern int WIN_GLES_SetSwapInterval(_THIS, int interval);
 
-#include <android/log.h>
+extern int WIN_GLES_LoadLibrary(_THIS, const char *path);
+extern SDL_GLContext WIN_GLES_CreateContext(_THIS, SDL_Window * window);
+extern void WIN_GLES_SwapWindow(_THIS, SDL_Window * window);
+extern int WIN_GLES_MakeCurrent(_THIS, SDL_Window * window, SDL_GLContext context);
+extern void WIN_GLES_DeleteContext(_THIS, SDL_GLContext context);
+extern int WIN_GLES_SetupWindow(_THIS, SDL_Window * window);
 
-#include <dlfcn.h>
+#endif /* SDL_VIDEO_OPENGL_EGL */
 
-SDL_EGL_CreateContext_impl(Android)
-SDL_EGL_MakeCurrent_impl(Android)
-
-void
-Android_GLES_SwapWindow(_THIS, SDL_Window * window)
-{
-    /* FIXME: These two functions were in the Java code, do we really need them? */
-    _this->egl_data->eglWaitNative(EGL_CORE_NATIVE_ENGINE);
-    _this->egl_data->eglWaitGL();
-    SDL_EGL_SwapBuffers(_this, ((SDL_WindowData *) window->driverdata)->egl_surface);
-}
-
-int
-Android_GLES_LoadLibrary(_THIS, const char *path) {
-    return SDL_EGL_LoadLibrary(_this, path, (NativeDisplayType) 0);
-}
-
-#endif /* SDL_VIDEO_DRIVER_ANDROID */
+#endif /* _SDL_winopengles_h */
 
 /* vi: set ts=4 sw=4 expandtab: */
