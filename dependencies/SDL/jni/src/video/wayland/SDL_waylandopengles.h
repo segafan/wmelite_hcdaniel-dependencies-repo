@@ -18,36 +18,29 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
+#include "SDL_config.h"
 
-#ifndef _SDL_config_h
-#define _SDL_config_h
+#ifndef _SDL_waylandopengles_h
+#define _SDL_waylandopengles_h
 
-#include "SDL_platform.h"
+#include "../SDL_sysvideo.h"
+#include "../SDL_egl_c.h"
 
-/**
- *  \file SDL_config.h
- */
+typedef struct SDL_PrivateGLESData
+{
+} SDL_PrivateGLESData;
 
-/* Add any platform that doesn't build using the configure system. */
-#ifdef USING_PREMAKE_CONFIG_H
-#include "SDL_config_premake.h"
-#elif defined(__WIN32__)
-#include "SDL_config_windows.h"
-#elif defined(__MACOSX__)
-#include "SDL_config_macosx.h"
-#elif defined(__IPHONEOS__)
-#include "SDL_config_iphoneos.h"
-#elif defined(__ANDROID__)
-#include "SDL_config_android.h"
-#elif defined(__PSP__)
-#include "SDL_config_psp.h"
-#else
-/* This is a minimal configuration just to get SDL running on new platforms */
-#include "SDL_config_minimal.h"
-#endif /* platform config */
+/* OpenGLES functions */
+#define Wayland_GLES_GetAttribute SDL_EGL_GetAttribute
+#define Wayland_GLES_GetProcAddress SDL_EGL_GetProcAddress
+#define Wayland_GLES_UnloadLibrary SDL_EGL_UnloadLibrary
+#define Wayland_GLES_SetSwapInterval SDL_EGL_SetSwapInterval
+#define Wayland_GLES_GetSwapInterval SDL_EGL_GetSwapInterval
 
-#ifdef USING_GENERATED_CONFIG_H
-#error Wrong SDL_config.h, check your include path?
-#endif
+extern int Wayland_GLES_LoadLibrary(_THIS, const char *path);
+extern SDL_GLContext Wayland_GLES_CreateContext(_THIS, SDL_Window * window);
+extern void Wayland_GLES_SwapWindow(_THIS, SDL_Window * window);
+extern int Wayland_GLES_MakeCurrent(_THIS, SDL_Window * window, SDL_GLContext context);
+extern void Wayland_GLES_DeleteContext(_THIS, SDL_GLContext context);
 
-#endif /* _SDL_config_h */
+#endif /* _SDL_waylandopengles_h */
