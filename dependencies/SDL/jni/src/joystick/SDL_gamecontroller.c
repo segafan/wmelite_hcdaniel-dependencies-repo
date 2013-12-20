@@ -33,6 +33,7 @@
 #endif
 #define ABS(_x) ((_x) < 0 ? -(_x) : (_x))
 
+#define SDL_CONTROLLER_PLATFORM_FIELD "platform:"
 
 /* a list of currently opened game controllers */
 static SDL_GameController *SDL_gamecontrollers = NULL;
@@ -657,6 +658,78 @@ void SDL_PrivateGameControllerRefreshMapping( ControllerMapping_t *pControllerMa
  * Add or update an entry into the Mappings Database
  */
 int
+SDL_GameControllerAddMappingsFromRW( SDL_RWops * rw, int freerw )
+{
+    const char *platform = SDL_GetPlatform();
+    int controllers = 0;
+    char *buf, *line, *line_end, *tmp, *comma, line_platform[64];
+    size_t db_size, platform_len;
+    
+    if (rw == NULL) {
+        return SDL_SetError("Invalid RWops");
+    }
+    db_size = (size_t)SDL_RWsize(rw);
+    
+    buf = (char *)SDL_malloc(db_size + 1);
+    if (buf == NULL) {
+        if (freerw) {
+            SDL_RWclose(rw);
+        }
+        return SDL_SetError("Could allocate space to not read DB into memory");
+    }
+    
+    if (SDL_RWread(rw, buf, db_size, 1) != 1) {
+        if (freerw) {
+            SDL_RWclose(rw);
+        }
+        SDL_free(buf);
+        return SDL_SetError("Could not read DB");
+    }
+    
+    if (freerw) {
+        SDL_RWclose(rw);
+    }
+    
+    buf[db_size] = '\0';
+    line = buf;
+    
+    while (line < buf + db_size) {
+        line_end = SDL_strchr( line, '\n' );
+        if (line_end != NULL) {
+            *line_end = '\0';
+        }
+        else {
+            line_end = buf + db_size;
+        }
+        
+        /* Extract and verify the platform */
+        tmp = SDL_strstr(line, SDL_CONTROLLER_PLATFORM_FIELD);
+        if ( tmp != NULL ) {
+            tmp += SDL_strlen(SDL_CONTROLLER_PLATFORM_FIELD);
+            comma = SDL_strchr(tmp, ',');
+            if (comma != NULL) {
+                platform_len = comma - tmp + 1;
+                if (platform_len + 1 < SDL_arraysize(line_platform)) {
+                    SDL_strlcpy(line_platform, tmp, platform_len);
+                    if(SDL_strncasecmp(line_platform, platform, platform_len) == 0
+                        && SDL_GameControllerAddMapping(line) > 0) {
+                        controllers++;
+                    }
+                }
+            }
+        }
+        
+        line = line_end + 1;
+    }
+
+    SDL_free(buf);
+    return controllers;
+}
+
+/*
+ * Add or update an entry into the Mappings Database
+ */
+int
 SDL_GameControllerAddMapping( const char *mappingString )
 {
     char *pchGUID;
@@ -670,6 +743,7 @@ SDL_GameControllerAddMapping( const char *mappingString )
 
     pchGUID = SDL_PrivateGetControllerGUIDFromMappingString( mappingString );
     if (!pchGUID) {
+        SDL_SetError("Couldn't parse GUID from %s", mappingString);
         return -1;
     }
 #ifdef SDL_JOYSTICK_DINPUT
@@ -680,16 +754,20 @@ SDL_GameControllerAddMapping( const char *mappingString )
     jGUID = SDL_JoystickGetGUIDFromString(pchGUID);
     SDL_free(pchGUID);
 
-    pControllerMapping = SDL_PrivateGetControllerMappingForGUID(&jGUID);
-
     pchName = SDL_PrivateGetControllerNameFromMappingString( mappingString );
-    if (!pchName) return -1;
+    if (!pchName) {
+        SDL_SetError("Couldn't parse name from %s", mappingString);
+        return -1;
+    }
 
     pchMapping = SDL_PrivateGetControllerMappingFromMappingString( mappingString );
     if (!pchMapping) {
+        SDL_SetError("Couldn't parse %s", mappingString);
         SDL_free( pchName );
         return -1;
     }
+
+    pControllerMapping = SDL_PrivateGetControllerMappingForGUID(&jGUID);
 
     if (pControllerMapping) {
         /* Update existing mapping */
