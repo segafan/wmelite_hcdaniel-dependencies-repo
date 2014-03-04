@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -18,7 +18,7 @@
      misrepresented as being the original software.
   3. This notice may not be removed or altered from any source distribution.
 */
-#include "SDL_config.h"
+#include "../SDL_internal.h"
 
 /* This file contains portable stdlib functions for SDL */
 
@@ -277,12 +277,6 @@ void * memcpy ( void * destination, const void * source, size_t num )
 #endif /* _MSC_VER == 1600 && defined(_WIN64) && !defined(_DEBUG) */
 
 #ifdef _M_IX86
-
-void
-__declspec(naked)
-_chkstk()
-{
-}
 
 /* Float to long */
 void

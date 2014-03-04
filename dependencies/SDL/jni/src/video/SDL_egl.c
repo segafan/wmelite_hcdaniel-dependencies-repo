@@ -1,6 +1,6 @@
 /*
  *  Simple DirectMedia Layer
- *  Copyright (C) 1997-2013 Sam Lantinga <slouken@libsdl.org>
+ *  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
  * 
  *  This software is provided 'as-is', without any express or implied
  *  warranty.  In no event will the authors be held liable for any damages
@@ -18,7 +18,7 @@
  *     misrepresented as being the original software.
  *  3. This notice may not be removed or altered from any source distribution.
  */
-#include "SDL_config.h"
+#include "../SDL_internal.h"
 
 #if SDL_VIDEO_OPENGL_EGL
 
@@ -181,8 +181,8 @@ SDL_EGL_LoadLibrary(_THIS, const char *egl_path, NativeDisplayType native_displa
     if (egl_path != NULL) {
         dll_handle = SDL_LoadObject(egl_path);
     }   
-    /* Catch the case where the application isn't linked with EGL */
-    if ((SDL_LoadFunction(dll_handle, "eglChooseConfig") == NULL) && (egl_path == NULL)) {
+    /* Try loading a EGL symbol, if it does not work try the default library paths */
+    if (SDL_LoadFunction(dll_handle, "eglChooseConfig") == NULL) {
         if (dll_handle != NULL) {
             SDL_UnloadObject(dll_handle);
         }
