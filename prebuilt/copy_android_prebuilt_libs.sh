@@ -10,3 +10,7 @@ cp ../dependencies/libfreetype-android/obj/local/armeabi-v7a/libfreetype.a andro
 cp ../dependencies/SDL/libs/armeabi-v7a/libSDL2.so android/armeabi-v7a/
 cp ../dependencies/SDL_mixer/libs/armeabi-v7a/libSDL2_mixer.so android/armeabi-v7a/
 
+cp ../dependencies/FreeImage3154/libs/x86/libfreeimage.so android/x86/
+cp ../dependencies/libfreetype-android/obj/local/x86/libfreetype.a android/x86/
+cp ../dependencies/SDL/libs/x86/libSDL2.so android/x86/
+
