@@ -71,6 +71,7 @@ static struct _Mix_Channel {
     Uint8 *samples;
     int volume;
     int looping;
+    int loop_start;
     int tag;
     Uint32 expire;
     Uint32 start_time;
@@ -113,6 +114,44 @@ static int num_decoders = 0;
 #ifdef MID_MUSIC
 extern char* soundfont_paths;
 #endif
+
+static int bytes_to_milliseconds(int bytes)
+{
+    float bitsize;
+    float channels;
+    float freq;
+    float samples_per_millisecond;
+
+    bitsize = (float) (mixer.format & SDL_AUDIO_MASK_BITSIZE);
+    channels = (float) mixer.channels;
+    freq = (float) mixer.freq;
+
+    samples_per_millisecond = (freq * channels * (bitsize / 8.0f)) / 1000.0f;
+
+    return (int) (((float) bytes) / samples_per_millisecond);
+}
+
+static int milliseconds_to_bytes(int milliseconds)
+{
+    float bitsize;
+    float channels;
+    float freq;
+    float samples_per_millisecond;
+    int resulting_samples;
+
+    bitsize = (float) (mixer.format & SDL_AUDIO_MASK_BITSIZE);
+    channels = (float) mixer.channels;
+    freq = (float) mixer.freq;
+
+    samples_per_millisecond = (freq * channels * (bitsize / 8.0f)) / 1000.0f;
+
+    resulting_samples = (int) (((float) milliseconds) * samples_per_millisecond);
+
+    // properly align return value
+    resulting_samples = resulting_samples & (~((((mixer.format & SDL_AUDIO_MASK_BITSIZE) / 8) * mixer.channels) - 1));
+
+    return resulting_samples;
+}
 
 int Mix_GetNumChunkDecoders(void)
 {
@@ -377,30 +416,30 @@ static void mix_channels(void *udata, Uint8 *stream, int len)
                 /* If looping the sample and we are at its end, make sure
                    we will still return a full buffer */
                 while ( mix_channel[i].looping && index < len ) {
-                    int alen = mix_channel[i].chunk->alen;
+                    int alen = mix_channel[i].chunk->alen - mix_channel[i].loop_start;
                     remaining = len - index;
                     if (remaining > alen) {
                         remaining = alen;
                     }
 
-                    mix_input = Mix_DoEffects(i, mix_channel[i].chunk->abuf, remaining);
+                    mix_input = Mix_DoEffects(i, mix_channel[i].chunk->abuf + mix_channel[i].loop_start, remaining);
                     SDL_MixAudio(stream+index, mix_input, remaining, volume);
-                    if (mix_input != mix_channel[i].chunk->abuf)
+                    if (mix_input != (mix_channel[i].chunk->abuf + mix_channel[i].loop_start))
                         SDL_free(mix_input);
 
                     if (mix_channel[i].looping > 0) {
                         --mix_channel[i].looping;
                     }
-                    mix_channel[i].samples = mix_channel[i].chunk->abuf + remaining;
-                    mix_channel[i].playing = mix_channel[i].chunk->alen - remaining;
+                    mix_channel[i].samples = mix_channel[i].chunk->abuf + mix_channel[i].loop_start + remaining;
+                    mix_channel[i].playing = mix_channel[i].chunk->alen - mix_channel[i].loop_start - remaining;
                     index += remaining;
                 }
                 if ( ! mix_channel[i].playing && mix_channel[i].looping ) {
                     if (mix_channel[i].looping > 0) {
                         --mix_channel[i].looping;
                     }
-                    mix_channel[i].samples = mix_channel[i].chunk->abuf;
-                    mix_channel[i].playing = mix_channel[i].chunk->alen;
+                    mix_channel[i].samples = mix_channel[i].chunk->abuf + mix_channel[i].loop_start;
+                    mix_channel[i].playing = mix_channel[i].chunk->alen - mix_channel[i].loop_start;
                 }
             }
         }
@@ -472,6 +511,7 @@ int Mix_OpenAudio(int frequency, Uint16 format, int nchannels, int chunksize)
         mix_channel[i].chunk = NULL;
         mix_channel[i].playing = 0;
         mix_channel[i].looping = 0;
+        mix_channel[i].loop_start = 0;
         mix_channel[i].volume = SDL_MIX_MAXVOLUME;
         mix_channel[i].fade_volume = SDL_MIX_MAXVOLUME;
         mix_channel[i].fade_volume_reset = SDL_MIX_MAXVOLUME;
@@ -530,6 +570,7 @@ int Mix_AllocateChannels(int numchans)
             mix_channel[i].chunk = NULL;
             mix_channel[i].playing = 0;
             mix_channel[i].looping = 0;
+            mix_channel[i].loop_start = 0;
             mix_channel[i].volume = SDL_MIX_MAXVOLUME;
             mix_channel[i].fade_volume = SDL_MIX_MAXVOLUME;
             mix_channel[i].fade_volume_reset = SDL_MIX_MAXVOLUME;
@@ -878,9 +919,10 @@ static int checkchunkintegral(Mix_Chunk *chunk)
    if there is no limit.
    Returns which channel was used to play the sound.
 */
-int Mix_PlayChannelTimed(int which, Mix_Chunk *chunk, int loops, int ticks)
+int Mix_PlayChannelTimed(int which, Mix_Chunk *chunk, int loops, int ticks, int loop_start)
 {
     int i;
+    int loop_start_bytes;
 
     /* Don't play null pointers :-) */
     if ( chunk == NULL ) {
@@ -909,14 +951,20 @@ int Mix_PlayChannelTimed(int which, Mix_Chunk *chunk, int loops, int ticks)
             }
         }
 
+        loop_start_bytes = milliseconds_to_bytes(loop_start);
+        if (loop_start_bytes >= chunk->alen) {
+            loop_start_bytes = 0;
+        }
+
         /* Queue up the audio data for this channel */
         if ( which >= 0 && which < num_channels ) {
             Uint32 sdl_ticks = SDL_GetTicks();
             if (Mix_Playing(which))
                 _Mix_channel_done_playing(which);
-            mix_channel[which].samples = chunk->abuf;
-            mix_channel[which].playing = chunk->alen;
+            mix_channel[which].samples = chunk->abuf + loop_start_bytes;
+            mix_channel[which].playing = chunk->alen - loop_start_bytes;
             mix_channel[which].looping = loops;
+            mix_channel[which].loop_start = loop_start_bytes;
             mix_channel[which].chunk = chunk;
             mix_channel[which].paused = 0;
             mix_channel[which].fading = MIX_NO_FADING;
@@ -950,9 +998,10 @@ int Mix_ExpireChannel(int which, int ticks)
 }
 
 /* Fade in a sound on a channel, over ms milliseconds */
-int Mix_FadeInChannelTimed(int which, Mix_Chunk *chunk, int loops, int ms, int ticks)
+int Mix_FadeInChannelTimed(int which, Mix_Chunk *chunk, int loops, int ms, int ticks, int loop_start)
 {
     int i;
+    int loop_start_bytes;
 
     /* Don't play null pointers :-) */
     if ( chunk == NULL ) {
@@ -979,14 +1028,20 @@ int Mix_FadeInChannelTimed(int which, Mix_Chunk *chunk, int loops, int ms, int t
             }
         }
 
+        loop_start_bytes = milliseconds_to_bytes(loop_start);
+        if (loop_start_bytes >= chunk->alen) {
+            loop_start_bytes = 0;
+        }
+
         /* Queue up the audio data for this channel */
         if ( which >= 0 && which < num_channels ) {
             Uint32 sdl_ticks = SDL_GetTicks();
             if (Mix_Playing(which))
                 _Mix_channel_done_playing(which);
-            mix_channel[which].samples = chunk->abuf;
-            mix_channel[which].playing = chunk->alen;
+            mix_channel[which].samples = chunk->abuf + loop_start_bytes;
+            mix_channel[which].playing = chunk->alen - loop_start_bytes;
             mix_channel[which].looping = loops;
+            mix_channel[which].loop_start = loop_start_bytes;
             mix_channel[which].chunk = chunk;
             mix_channel[which].paused = 0;
             mix_channel[which].fading = MIX_FADING_IN;
@@ -1002,6 +1057,93 @@ int Mix_FadeInChannelTimed(int which, Mix_Chunk *chunk, int loops, int ms, int t
 
     /* Return the channel on which the sound is being played */
     return(which);
+}
+
+int Mix_SetLoops(int which, int loops)
+{
+    int old_loops;
+
+    if ((which >= 0) && (which < num_channels)) {
+        Mix_SetError("Invalid channel specified");
+        return(-1);
+    }
+
+    if ((mix_channel[which].playing == 0) && (mix_channel[which].looping == 0)) {
+        Mix_SetError("Channel not playing");
+        return(-1);
+    }
+
+    SDL_LockAudio();
+    old_loops = mix_channel[which].looping;
+    mix_channel[which].looping = loops;
+    SDL_UnlockAudio();
+
+    return old_loops;
+}
+
+int Mix_SetLoopStart(int which, int loop_start)
+{
+    int old_loop_start;
+    int position;
+
+    if ((which >= 0) && (which < num_channels)) {
+        Mix_SetError("Invalid channel specified");
+        return(-1);
+    }
+
+    if ((mix_channel[which].playing == 0) && (mix_channel[which].looping == 0)) {
+        Mix_SetError("Channel not playing");
+        return(-1);
+    }
+
+    SDL_LockAudio();
+    old_loop_start = mix_channel[which].loop_start;
+    if (loop_start >= 0) {
+        position = milliseconds_to_bytes(loop_start);
+        if (position < mix_channel[which].chunk->alen) {
+            mix_channel[which].loop_start = position;
+        } else {
+            Mix_SetError("Position out of range!");
+        }
+    }
+    SDL_UnlockAudio();
+
+    return bytes_to_milliseconds(old_loop_start);
+}
+
+int Mix_SetPlayPosition(int which, int position)
+{
+    int old_position;
+    int new_position;
+
+    if ((which >= 0) && (which < num_channels)) {
+        Mix_SetError("Invalid channel specified");
+        return(-1);
+    }
+
+    if ((mix_channel[which].playing == 0) && (mix_channel[which].looping == 0)) {
+        Mix_SetError("Channel not playing");
+        return(-1);
+    }
+
+    SDL_LockAudio();
+    old_position = mix_channel[which].chunk->alen - mix_channel[which].playing;
+    if (position >= 0) {
+        new_position = milliseconds_to_bytes(position);
+        if (new_position < mix_channel[which].chunk->alen) {
+            mix_channel[which].playing = (mix_channel[which].chunk->alen - new_position);
+        } else {
+            Mix_SetError("Position out of range!");
+        }
+    }
+    SDL_UnlockAudio();
+
+    return bytes_to_milliseconds(old_position);
+}
+
+int Mix_GetPlayLength(Mix_Chunk *chunk)
+{
+    return chunk->alen;
 }
 
 /* Set volume of a particular channel */

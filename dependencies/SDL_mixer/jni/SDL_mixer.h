@@ -530,16 +530,22 @@ extern DECLSPEC int SDLCALL Mix_GroupNewer(int tag);
    If 'loops' is -1, loop inifinitely (~65000 times).
    Returns which channel was used to play the sound.
 */
-#define Mix_PlayChannel(channel,chunk,loops) Mix_PlayChannelTimed(channel,chunk,loops,-1)
+#define Mix_PlayChannel(channel,chunk,loops) Mix_PlayChannelTimed(channel,chunk,loops,-1,0)
 /* The same as above, but the sound is played at most 'ticks' milliseconds */
-extern DECLSPEC int SDLCALL Mix_PlayChannelTimed(int channel, Mix_Chunk *chunk, int loops, int ticks);
+extern DECLSPEC int SDLCALL Mix_PlayChannelTimed(int channel, Mix_Chunk *chunk, int loops, int ticks, int loop_start);
 extern DECLSPEC int SDLCALL Mix_PlayMusic(Mix_Music *music, int loops);
 
 /* Fade in music or a channel over "ms" milliseconds, same semantics as the "Play" functions */
 extern DECLSPEC int SDLCALL Mix_FadeInMusic(Mix_Music *music, int loops, int ms);
 extern DECLSPEC int SDLCALL Mix_FadeInMusicPos(Mix_Music *music, int loops, int ms, double position);
-#define Mix_FadeInChannel(channel,chunk,loops,ms) Mix_FadeInChannelTimed(channel,chunk,loops,ms,-1)
-extern DECLSPEC int SDLCALL Mix_FadeInChannelTimed(int channel, Mix_Chunk *chunk, int loops, int ms, int ticks);
+#define Mix_FadeInChannel(channel,chunk,loops,ms) Mix_FadeInChannelTimed(channel,chunk,loops,ms,-1,0)
+extern DECLSPEC int SDLCALL Mix_FadeInChannelTimed(int channel, Mix_Chunk *chunk, int loops, int ms, int ticks, int loop_start);
+
+extern DECLSPEC int SDLCALL Mix_SetLoops(int channel, int loops);
+extern DECLSPEC int SDLCALL Mix_SetLoopStart(int channel, int loop_start);
+
+extern DECLSPEC int SDLCALL Mix_SetPlayPosition(int channel, int position);
+extern DECLSPEC int SDLCALL Mix_GetPlayLength(Mix_Chunk *chunk);
 
 /* Set the volume in the range of 0-128 of a specific channel or chunk.
    If the specified channel is -1, set volume for all channels.
