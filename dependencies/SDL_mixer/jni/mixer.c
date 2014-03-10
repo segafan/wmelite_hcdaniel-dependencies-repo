@@ -115,6 +115,8 @@ static int num_decoders = 0;
 extern char* soundfont_paths;
 #endif
 
+#include <android/log.h>
+
 static int bytes_to_milliseconds(int bytes)
 {
     float bitsize;
@@ -127,6 +129,12 @@ static int bytes_to_milliseconds(int bytes)
     freq = (float) mixer.freq;
 
     samples_per_millisecond = (freq * channels * (bitsize / 8.0f)) / 1000.0f;
+
+    __android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "bitsize %d channels %d freq %d", 
+                        (mixer.format & SDL_AUDIO_MASK_BITSIZE),
+			mixer.channels, mixer.freq);
+
+    __android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "Bytes %d --> samples %d.\n", bytes, (int) (((float) bytes) / samples_per_millisecond));
 
     return (int) (((float) bytes) / samples_per_millisecond);
 }
@@ -149,6 +157,12 @@ static int milliseconds_to_bytes(int milliseconds)
 
     // properly align return value
     resulting_samples = resulting_samples & (~((((mixer.format & SDL_AUDIO_MASK_BITSIZE) / 8) * mixer.channels) - 1));
+
+    __android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "bitsize %d channels %d freq %d", 
+                        (mixer.format & SDL_AUDIO_MASK_BITSIZE),
+			mixer.channels, mixer.freq);
+
+    __android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "Samples %d --> bytes %d.\n", milliseconds, resulting_samples);
 
     return resulting_samples;
 }
@@ -1143,7 +1157,7 @@ int Mix_SetPlayPosition(int which, int position)
 
 int Mix_GetPlayLength(Mix_Chunk *chunk)
 {
-    return chunk->alen;
+    return bytes_to_milliseconds(chunk->alen);
 }
 
 /* Set volume of a particular channel */

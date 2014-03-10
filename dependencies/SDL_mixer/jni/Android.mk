@@ -38,7 +38,7 @@ LOCAL_CFLAGS := -DWAV_MUSIC
 
 LOCAL_SRC_FILES := $(notdir $(filter-out %/playmus.c %/playwave.c, $(wildcard $(LOCAL_PATH)/*.c)))
 
-LOCAL_LDLIBS :=
+LOCAL_LDLIBS := 
 LOCAL_STATIC_LIBRARIES :=
 LOCAL_SHARED_LIBRARIES := SDL2
 
@@ -126,5 +126,7 @@ ifeq ($(SUPPORT_OGG),true)
 endif
 
 LOCAL_EXPORT_C_INCLUDES += $(LOCAL_C_INCLUDES)
+
+LOCAL_LDLIBS := -llog
 
 include $(BUILD_SHARED_LIBRARY)
