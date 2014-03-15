@@ -38,6 +38,8 @@
 #include "dynamic_ogg.h"
 #include "load_ogg.h"
 
+#include <android/log.h>
+
 static size_t sdl_read_func(void *ptr, size_t size, size_t nmemb, void *datasource)
 {
     return SDL_RWread((SDL_RWops*)datasource, ptr, size, nmemb);
@@ -115,7 +117,10 @@ SDL_AudioSpec *Mix_LoadOGG_RW (SDL_RWops *src, int freesrc,
     *audio_len = spec->size = samples * spec->channels * 2;
     *audio_buf = (Uint8 *)SDL_malloc(*audio_len);
     if (*audio_buf == NULL)
+    {
+        __android_log_print(ANDROID_LOG_VERBOSE, "Load_ogg", "Cannot alloc size %d.", *audio_len);
         goto done;
+    }
 
     buf = *audio_buf;
     to_read = *audio_len;

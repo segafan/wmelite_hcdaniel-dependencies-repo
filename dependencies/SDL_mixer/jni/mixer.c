@@ -66,7 +66,7 @@ typedef struct _Mix_effectinfo
 
 static struct _Mix_Channel {
     Mix_Chunk *chunk;
-    int playing;
+    long playing;
     int paused;
     Uint8 *samples;
     int volume;
@@ -417,12 +417,15 @@ static void mix_channels(void *udata, Uint8 *stream, int len)
                     if (mix_input != mix_channel[i].samples)
                         SDL_free(mix_input);
 
+                    __android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "channel %d playing %d mixable %d.", i, mix_channel[i].playing, mixable);
+
                     mix_channel[i].samples += mixable;
                     mix_channel[i].playing -= mixable;
                     index += mixable;
 
                     /* rcg06072001 Alert app if channel is done playing. */
                     if (!mix_channel[i].playing && !mix_channel[i].looping) {
+                        __android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "channel %d finished.", i);
                         _Mix_channel_done_playing(i);
                     }
                 }
