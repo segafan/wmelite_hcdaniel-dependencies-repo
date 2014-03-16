@@ -66,7 +66,7 @@ typedef struct _Mix_effectinfo
 
 static struct _Mix_Channel {
     Mix_Chunk *chunk;
-    long playing;
+    int playing;
     int paused;
     Uint8 *samples;
     int volume;
@@ -94,7 +94,8 @@ static void (*mix_postmix)(void *udata, Uint8 *stream, int len) = NULL;
 static void *mix_postmix_data = NULL;
 
 /* rcg07062001 callback to alert when channels are done playing. */
-static void (*channel_done_callback)(int channel) = NULL;
+static void (*channel_done_callback)(void *userdata, int channel) = NULL;
+static void *channel_done_callback_userdata;
 
 /* Music function declarations */
 extern int open_music(SDL_AudioSpec *mixer);
@@ -314,7 +315,7 @@ static int _Mix_remove_all_effects(int channel, effect_info **e);
 static void _Mix_channel_done_playing(int channel)
 {
     if (channel_done_callback) {
-        channel_done_callback(channel);
+        channel_done_callback(channel_done_callback_userdata, channel);
     }
 
     /*
@@ -417,7 +418,7 @@ static void mix_channels(void *udata, Uint8 *stream, int len)
                     if (mix_input != mix_channel[i].samples)
                         SDL_free(mix_input);
 
-                    __android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "channel %d playing %d mixable %d.", i, mix_channel[i].playing, mixable);
+                    // __android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "channel %d playing %d mixable %d.", i, mix_channel[i].playing, mixable);
 
                     mix_channel[i].samples += mixable;
                     mix_channel[i].playing -= mixable;
@@ -900,10 +901,11 @@ void *Mix_GetMusicHookData(void)
     return(music_data);
 }
 
-void Mix_ChannelFinished(void (*channel_finished)(int channel))
+void Mix_ChannelFinished(void *userdata, void (*channel_finished)(void *userdata, int channel))
 {
     SDL_LockAudio();
     channel_done_callback = channel_finished;
+    channel_done_callback_userdata = userdata;
     SDL_UnlockAudio();
 }
 
@@ -958,7 +960,10 @@ int Mix_PlayChannelTimed(int which, Mix_Chunk *chunk, int loops, int ticks, int 
         if ( which == -1 ) {
             for ( i=reserved_channels; i<num_channels; ++i ) {
                 if ( mix_channel[i].playing <= 0 )
-                    break;
+		{
+			__android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "Channel %d is free!", i);                    
+			break;
+		}
             }
             if ( i == num_channels ) {
                 Mix_SetError("No free channels available");
@@ -1036,7 +1041,10 @@ int Mix_FadeInChannelTimed(int which, Mix_Chunk *chunk, int loops, int ms, int t
         if ( which == -1 ) {
             for ( i=reserved_channels; i<num_channels; ++i ) {
                 if ( mix_channel[i].playing <= 0 )
-                    break;
+		{
+			__android_log_print(ANDROID_LOG_VERBOSE, "SDL_mixer", "Channel %d is free!", i);                    
+			break;
+		}
             }
             if ( i == num_channels ) {
                 which = -1;
