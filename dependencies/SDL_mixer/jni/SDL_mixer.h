@@ -223,7 +223,7 @@ extern DECLSPEC void * SDLCALL Mix_GetMusicHookData(void);
  *  inside the audio callback, or SDL_mixer will explicitly lock the audio
  *  before calling your callback.
  */
-extern DECLSPEC void SDLCALL Mix_ChannelFinished(void (*channel_finished)(int channel));
+extern DECLSPEC void SDLCALL Mix_ChannelFinished(void *userdata, void (*channel_finished)(void *userdata, int channel));
 
 
 /* Special Effects API by ryan c. gordon. (icculus@icculus.org) */
