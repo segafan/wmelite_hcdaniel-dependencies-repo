@@ -116,7 +116,9 @@ static int num_decoders = 0;
 extern char* soundfont_paths;
 #endif
 
-#include <android/log.h>
+// #include <android/log.h>
+#define __android_log_print(TAG,...)
+
 
 static int bytes_to_milliseconds(int bytes)
 {
