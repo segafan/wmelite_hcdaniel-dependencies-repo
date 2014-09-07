@@ -41,13 +41,16 @@ OBJS=\
     $(OUTDIR)/Common/src/LVM_Mixer_TimeConstant.o \
     $(OUTDIR)/Common/src/Core_MixHard_2St_D32C31_SAT.o \
     $(OUTDIR)/Common/src/Core_MixSoft_1St_D32C31_WRA.o \
-    $(OUTDIR)/Common/src/Core_MixInSoft_D32C31_SAT.o
+    $(OUTDIR)/Common/src/Core_MixInSoft_D32C31_SAT.o \
+    $(OUTDIR)/Wrapper/EffectReverb.o
 
 INCS=\
     -Ijni/Reverb/lib \
     -Ijni/Reverb/src \
     -Ijni/Common/lib \
-    -Ijni/Common/src
+    -Ijni/Common/src \
+    -Ijni/Wrapper    \
+    -Ijni
 
 CFLAGS=-fvisibility=hidden -fPIC
 
@@ -58,13 +61,16 @@ $(OUTDIR)/Common/src/%.o: jni/Common/src/%.c
 $(OUTDIR)/Reverb/src/%.o: jni/Reverb/src/%.c
 	$(CC) $(INCS) -c -o $@ $< $(CFLAGS)
 
-all: $(OBJS) libreverb
+$(OUTDIR)/Wrapper/%.o: jni/Wrapper/%.cpp
+	$(CC) $(INCS) -c -o $@ $< $(CFLAGS)
 
-libreverb:
-	$(CC) -o $(OUTDIR)/libreverb.so -shared $(OBJS)
+all: $(OBJS) libreverbwrapper
+
+libreverbwrapper:
+	$(CC) -o $(OUTDIR)/libreverbwrapper.so -shared $(OBJS)
 
 clean:
-	$(RM) -f $(OBJS) $(OUTDIR)/libreverb.so
+	$(RM) -f $(OBJS) $(OUTDIR)/libreverbwrapper.so
 
 .PHONY: clean all
 

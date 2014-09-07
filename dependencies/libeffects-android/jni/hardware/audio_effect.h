@@ -24,8 +24,6 @@
 #include <sys/cdefs.h>
 #include <sys/types.h>
 
-#include <linux/bitops.h>
-
 #include <system/audio.h>
 
 
