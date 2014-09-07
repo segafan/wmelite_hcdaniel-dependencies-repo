@@ -54,3 +54,26 @@ LOCAL_C_INCLUDES += \
 LOCAL_CFLAGS += -fvisibility=hidden
 include $(BUILD_STATIC_LIBRARY)
 
+include $(CLEAR_VARS)
+
+LOCAL_ARM_MODE := arm
+
+LOCAL_SRC_FILES:= \
+    Wrapper/EffectReverb.cpp
+
+LOCAL_MODULE:= libreverbwrapper
+
+LOCAL_C_INCLUDES += \
+    $(LOCAL_PATH)/Wrapper    \
+    $(LOCAL_PATH)/Reverb/lib \
+    $(LOCAL_PATH)/Reverb/src \
+    $(LOCAL_PATH)/Common/lib \
+    $(LOCAL_PATH)/Common/src \
+    $(LOCAL_PATH)/
+
+LOCAL_STATIC_LIBRARIES += libreverb
+
+LOCAL_CFLAGS += -fvisibility=hidden
+
+include $(BUILD_SHARED_LIBRARY)
+
