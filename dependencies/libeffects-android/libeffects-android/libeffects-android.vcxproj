@@ -49,7 +49,7 @@
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;_USRDLL;LIBEFFECTSANDROID_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\jni\Common\src;..\jni\Common\lib;..\jni\Reverb\src;..\jni\Reverb\lib;..\jni\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\jni\Common\src;..\jni\Common\lib;..\jni\Reverb\src;..\jni\Reverb\lib;..\jni\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -64,7 +64,7 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <PreprocessorDefinitions>WIN32;NDEBUG;_WINDOWS;_USRDLL;LIBEFFECTSANDROID_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>jni\Common\src;jni\Common\lib;jni\Reverb\src;jni\Reverb\lib;jni\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>.\;..\jni\Common\src;..\jni\Common\lib;..\jni\Reverb\src;..\jni\Reverb\lib;..\jni\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -77,6 +77,8 @@
     <None Include="ReadMe.txt" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\jni\audio_effects\effect_environmentalreverb.h" />
+    <ClInclude Include="..\jni\audio_effects\effect_presetreverb.h" />
     <ClInclude Include="..\jni\Common\lib\AGC.h" />
     <ClInclude Include="..\jni\Common\lib\BIQUAD.h" />
     <ClInclude Include="..\jni\Common\lib\CompLim.h" />
@@ -110,11 +112,15 @@
     <ClInclude Include="..\jni\Common\src\Mixer_private.h" />
     <ClInclude Include="..\jni\Common\src\PK_2I_D32F32CllGss_TRC_WRA_01_Private.h" />
     <ClInclude Include="..\jni\Common\src\PK_2I_D32F32CssGss_TRC_WRA_01_Private.h" />
+    <ClInclude Include="..\jni\hardware\audio_effect.h" />
     <ClInclude Include="..\jni\Reverb\lib\LVREV.h" />
     <ClInclude Include="..\jni\Reverb\src\LVREV_Private.h" />
     <ClInclude Include="..\jni\Reverb\src\LVREV_Tables.h" />
+    <ClInclude Include="..\jni\system\audio.h" />
+    <ClInclude Include="..\jni\Wrapper\EffectReverb.h" />
     <ClInclude Include="libeffects-android.h" />
     <ClInclude Include="stdafx.h" />
+    <ClInclude Include="stdbool.h" />
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
@@ -214,6 +220,7 @@
     <ClCompile Include="..\jni\Reverb\src\LVREV_Process.c" />
     <ClCompile Include="..\jni\Reverb\src\LVREV_SetControlParameters.c" />
     <ClCompile Include="..\jni\Reverb\src\LVREV_Tables.c" />
+    <ClCompile Include="..\jni\Wrapper\EffectReverb.cpp" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

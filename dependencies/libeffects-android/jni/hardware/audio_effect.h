@@ -20,8 +20,18 @@
 
 #include <errno.h>
 #include <stdint.h>
+#ifndef _WIN32
 #include <strings.h>
 #include <sys/cdefs.h>
+#else
+#ifdef __cplusplus
+#define __BEGIN_DECLS extern"C"{
+#define __END_DECLS   }
+#else
+#define __BEGIN_DECLS
+#define __END_DECLS  
+#endif
+#endif
 #include <sys/types.h>
 
 #include <system/audio.h>
