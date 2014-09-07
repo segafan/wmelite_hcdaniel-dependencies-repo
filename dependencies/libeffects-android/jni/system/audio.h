@@ -21,7 +21,17 @@
 
 #include <stdbool.h>
 #include <stdint.h>
+#ifndef _WIN32
 #include <sys/cdefs.h>
+#else
+#ifdef __cplusplus
+#define __BEGIN_DECLS extern"C"{
+#define __END_DECLS   }
+#else
+#define __BEGIN_DECLS
+#define __END_DECLS  
+#endif
+#endif
 #include <sys/types.h>
 
 /*
@@ -605,8 +615,17 @@ typedef struct {
 #define AUDIO_OFFLOAD_INFO_VERSION_CURRENT AUDIO_OFFLOAD_INFO_VERSION_0_1
 
 static const audio_offload_info_t AUDIO_INFO_INITIALIZER = {
-    version: AUDIO_OFFLOAD_INFO_VERSION_CURRENT,
-    size: sizeof(audio_offload_info_t),
+    AUDIO_OFFLOAD_INFO_VERSION_CURRENT,
+    sizeof(audio_offload_info_t),
+	0,
+	0,
+	AUDIO_FORMAT_INVALID,
+	AUDIO_STREAM_DEFAULT,
+	0,
+	-1,
+	false,
+	false,
+	0
 };
 
 static inline bool audio_is_remote_submix_device(audio_devices_t device)
