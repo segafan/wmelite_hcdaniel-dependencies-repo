@@ -211,12 +211,14 @@ int process( LVM_INT16     *pIn,
 
     // Convert to Input 32 bits
     if (pContext->auxiliary) {
-        for(int i=0; i<frameCount*samplesPerFrame; i++){
+		int i;
+        for(i=0; i<frameCount*samplesPerFrame; i++){
             pContext->InFrames32[i] = (LVM_INT32)pIn[i]<<8;
         }
     } else {
         // insert reverb input is always stereo
-        for (int i = 0; i < frameCount; i++) {
+		int i;
+        for (i = 0; i < frameCount; i++) {
             pContext->InFrames32[2*i] = (pIn[2*i] * REVERB_SEND_LEVEL) >> 4; // <<8 + >>12
             pContext->InFrames32[2*i+1] = (pIn[2*i+1] * REVERB_SEND_LEVEL) >> 4; // <<8 + >>12
         }
@@ -252,11 +254,13 @@ int process( LVM_INT16     *pIn,
 
     // Convert to 16 bits
     if (pContext->auxiliary) {
-        for (int i=0; i < frameCount*2; i++) { //always stereo here
+		int i;
+        for (i=0; i < frameCount*2; i++) { //always stereo here
             OutFrames16[i] = clamp16(pContext->OutFrames32[i]>>8);
         }
     } else {
-        for (int i=0; i < frameCount*2; i++) { //always stereo here
+		int i;
+        for (i=0; i < frameCount*2; i++) { //always stereo here
             OutFrames16[i] = clamp16((pContext->OutFrames32[i]>>8) + (LVM_INT32)pIn[i]);
         }
 
@@ -268,12 +272,13 @@ int process( LVM_INT16     *pIn,
             LVM_INT32 incl = (((LVM_INT32)pContext->leftVolume << 16) - vl) / frameCount;
             LVM_INT32 vr = (LVM_INT32)pContext->prevRightVolume << 16;
             LVM_INT32 incr = (((LVM_INT32)pContext->rightVolume << 16) - vr) / frameCount;
+			int k;
 
-            for (int i = 0; i < frameCount; i++) {
-                OutFrames16[2*i] =
-                        clamp16((LVM_INT32)((vl >> 16) * OutFrames16[2*i]) >> 12);
-                OutFrames16[2*i+1] =
-                        clamp16((LVM_INT32)((vr >> 16) * OutFrames16[2*i+1]) >> 12);
+            for (k = 0; k < frameCount; k++) {
+                OutFrames16[2*k] =
+                        clamp16((LVM_INT32)((vl >> 16) * OutFrames16[2*k]) >> 12);
+                OutFrames16[2*k+1] =
+                        clamp16((LVM_INT32)((vr >> 16) * OutFrames16[2*k+1]) >> 12);
 
                 vl += incl;
                 vr += incr;
@@ -284,11 +289,12 @@ int process( LVM_INT16     *pIn,
         } else if (pContext->volumeMode != REVERB_VOLUME_OFF) {
             if (pContext->leftVolume != REVERB_UNIT_VOLUME ||
                 pContext->rightVolume != REVERB_UNIT_VOLUME) {
-                for (int i = 0; i < frameCount; i++) {
-                    OutFrames16[2*i] =
-                            clamp16((LVM_INT32)(pContext->leftVolume * OutFrames16[2*i]) >> 12);
-                    OutFrames16[2*i+1] =
-                            clamp16((LVM_INT32)(pContext->rightVolume * OutFrames16[2*i+1]) >> 12);
+				int k;
+                for (k = 0; k < frameCount; k++) {
+                    OutFrames16[2*k] =
+                            clamp16((LVM_INT32)(pContext->leftVolume * OutFrames16[2*k]) >> 12);
+                    OutFrames16[2*k+1] =
+                            clamp16((LVM_INT32)(pContext->rightVolume * OutFrames16[2*k+1]) >> 12);
                 }
             }
             pContext->prevLeftVolume = pContext->leftVolume;
@@ -304,8 +310,9 @@ int process( LVM_INT16     *pIn,
 
     // Accumulate if required
     if (pContext->config.outputCfg.accessMode == EFFECT_BUFFER_ACCESS_ACCUMULATE){
+		int i;
         ALOGV("\tBuffer access is ACCUMULATE");
-        for (int i=0; i<frameCount*2; i++){ //always stereo here
+        for (i=0; i<frameCount*2; i++){ //always stereo here
             pOut[i] = clamp16((int32_t)pOut[i] + (int32_t)OutFrames16[i]);
         }
     }else{
@@ -333,6 +340,7 @@ void Reverb_free(ReverbContext *pContext){
     LVREV_ReturnStatus_en     LvmStatus=LVREV_SUCCESS;         /* Function call status */
     LVREV_ControlParams_st    params;                        /* Control Parameters */
     LVREV_MemoryTable_st      MemTab;
+	int i;
 
     /* Free the algorithm memory */
     LvmStatus = LVREV_GetMemoryTable(pContext->hInstance,
@@ -341,7 +349,7 @@ void Reverb_free(ReverbContext *pContext){
 
     LVM_ERROR_CHECK(LvmStatus, "LVM_GetMemoryTable", "Reverb_free")
 
-    for (int i=0; i<LVM_NR_MEMORY_REGIONS; i++){
+    for (i=0; i<LVM_NR_MEMORY_REGIONS; i++){
         if (MemTab.Region[i].Size != 0){
             if (MemTab.Region[i].pBaseAddress != NULL){
                 ALOGV("\tfree() - START freeing %ld bytes for region %u at %p\n",
@@ -481,6 +489,12 @@ void Reverb_getConfig(ReverbContext *pContext, effect_config_t *pConfig)
 
 int Reverb_init(ReverbContext *pContext) {
     int status;
+	LVREV_ReturnStatus_en     LvmStatus;
+    LVREV_ControlParams_st    params;                         /* Control Parameters */
+    LVREV_InstanceParams_st   InstParams;                     /* Instance parameters */
+    LVREV_MemoryTable_st      MemTab;                         /* Memory allocation table */
+	bool                      bMallocFailure;
+	int                       i;
 
     ALOGV("\tReverb_init start");
 
@@ -518,11 +532,8 @@ int Reverb_init(ReverbContext *pContext) {
     pContext->prevRightVolume = REVERB_UNIT_VOLUME;
     pContext->volumeMode = REVERB_VOLUME_FLAT;
 
-    LVREV_ReturnStatus_en     LvmStatus=LVREV_SUCCESS;        /* Function call status */
-    LVREV_ControlParams_st    params;                         /* Control Parameters */
-    LVREV_InstanceParams_st   InstParams;                     /* Instance parameters */
-    LVREV_MemoryTable_st      MemTab;                         /* Memory allocation table */
-    bool                      bMallocFailure = LVM_FALSE;
+    LvmStatus=LVREV_SUCCESS;        /* Function call status */
+    bMallocFailure = LVM_FALSE;
 
     /* Set the capabilities */
     InstParams.MaxBlockSize  = MAX_CALL_SIZE;
@@ -540,7 +551,7 @@ int Reverb_init(ReverbContext *pContext) {
     ALOGV("\tCreateInstance Succesfully called LVM_GetMemoryTable\n");
 
     /* Allocate memory */
-    for (int i=0; i<LVM_NR_MEMORY_REGIONS; i++){
+    for (i=0; i<LVM_NR_MEMORY_REGIONS; i++){
         if (MemTab.Region[i].Size != 0){
             MemTab.Region[i].pBaseAddress = malloc(MemTab.Region[i].Size);
 
@@ -559,7 +570,7 @@ int Reverb_init(ReverbContext *pContext) {
      * succesfully allocated and return with an error
      */
     if(bMallocFailure == LVM_TRUE){
-        for (int i=0; i<LVM_NR_MEMORY_REGIONS; i++){
+        for (i=0; i<LVM_NR_MEMORY_REGIONS; i++){
             if (MemTab.Region[i].pBaseAddress == LVM_NULL){
                 ALOGV("\tLVM_ERROR :Reverb_init CreateInstance Failed to allocate %ld bytes "
                         "for region %u - Not freeing\n", MemTab.Region[i].Size, i );
@@ -1536,11 +1547,13 @@ int Reverb_setParameter (ReverbContext *pContext, void *pParam, void *pValue){
 
     //ALOGV("\tReverb_setParameter start");
     if (pContext->preset) {
+		uint16_t preset;
+
         if (param != REVERB_PARAM_PRESET) {
             return -EINVAL;
         }
 
-        uint16_t preset = *(uint16_t *)pValue;
+        preset = *(uint16_t *)pValue;
         ALOGV("set REVERB_PARAM_PRESET, preset %d", preset);
         if (preset > REVERB_PRESET_LAST) {
             return -EINVAL;
@@ -1764,6 +1777,7 @@ int Reverb_command(ReverbContext *pContext,
 
         } break;
         case EFFECT_CMD_SET_PARAM:{
+			effect_param_t *p;
 
             //ALOGV("\tReverb_command cmdCode Case: "
             //        "EFFECT_CMD_SET_PARAM start");
@@ -1779,7 +1793,7 @@ int Reverb_command(ReverbContext *pContext,
                 return -EINVAL;
             }
 
-            effect_param_t *p = (effect_param_t *) pCmdData;
+            p = (effect_param_t *) pCmdData;
 
             if (p->psize != sizeof(int32_t)){
                 ALOGV("\t4LVM_ERROR : Reverb_command cmdCode Case: "

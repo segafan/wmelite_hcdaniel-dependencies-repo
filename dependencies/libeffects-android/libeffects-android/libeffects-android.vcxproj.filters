@@ -135,9 +135,6 @@
     <ClInclude Include="..\jni\Reverb\src\LVREV_Tables.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
-    <ClInclude Include="..\jni\Wrapper\EffectReverb.h">
-      <Filter>Headerdateien</Filter>
-    </ClInclude>
     <ClInclude Include="..\jni\audio_effects\effect_environmentalreverb.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
@@ -151,6 +148,9 @@
       <Filter>Headerdateien</Filter>
     </ClInclude>
     <ClInclude Include="stdbool.h">
+      <Filter>Headerdateien</Filter>
+    </ClInclude>
+    <ClInclude Include="..\jni\Wrapper\ReverbLibrary.h">
       <Filter>Headerdateien</Filter>
     </ClInclude>
   </ItemGroup>
@@ -452,7 +452,7 @@
     <ClCompile Include="..\jni\Reverb\src\LVREV_Tables.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
-    <ClCompile Include="..\jni\Wrapper\EffectReverb.cpp">
+    <ClCompile Include="..\jni\Wrapper\ReverbLibrary.c">
       <Filter>Quelldateien</Filter>
     </ClCompile>
   </ItemGroup>

@@ -23,10 +23,12 @@
 #include <audio_effects/effect_environmentalreverb.h>
 #include <audio_effects/effect_presetreverb.h>
 
-#ifdef COMPILE_LIBRARY
-#define EXPORT_FUNCTION __attribute__ ((visibility ("default"))) extern
+#ifdef _WIN32
+#ifdef LIBEFFECTSANDROID_EXPORTS
+#define EXPORT_FUNCTION __declspec(dllexport)
 #else
-#define EXPORT_FUNCTION
+#define EXPORT_FUNCTION __declspec(dllimport)
+#endif
 #endif
 
 #if __cplusplus
@@ -87,24 +89,24 @@ enum {
 
 //--- local function prototypes
 EXPORT_FUNCTION int  Reverb_init            (ReverbContext *pContext);
-void Reverb_free            (ReverbContext *pContext);
-int  Reverb_setConfig       (ReverbContext *pContext, effect_config_t *pConfig);
-void Reverb_getConfig       (ReverbContext *pContext, effect_config_t *pConfig);
-int  Reverb_setParameter    (ReverbContext *pContext, void *pParam, void *pValue);
-int  Reverb_getParameter    (ReverbContext *pContext,
-                             void          *pParam,
-                             size_t        *pValueSize,
-                             void          *pValue);
-int Reverb_LoadPreset       (ReverbContext   *pContext);
-int Reverb_process(ReverbContext *pContext,
-                                 audio_buffer_t         *inBuffer,
-                                 audio_buffer_t         *outBuffer);
-int Reverb_command(ReverbContext *pContext,
-                              uint32_t            cmdCode,
-                              uint32_t            cmdSize,
-                              void                *pCmdData,
-                              uint32_t            *replySize,
-                              void                *pReplyData);
+EXPORT_FUNCTION void Reverb_free            (ReverbContext *pContext);
+EXPORT_FUNCTION int  Reverb_setConfig       (ReverbContext *pContext, effect_config_t *pConfig);
+EXPORT_FUNCTION void Reverb_getConfig       (ReverbContext *pContext, effect_config_t *pConfig);
+EXPORT_FUNCTION int  Reverb_setParameter    (ReverbContext *pContext, void *pParam, void *pValue);
+EXPORT_FUNCTION int  Reverb_getParameter    (ReverbContext *pContext,
+								             void          *pParam,
+											 size_t        *pValueSize,
+											 void          *pValue);
+EXPORT_FUNCTION int Reverb_LoadPreset       (ReverbContext   *pContext);
+EXPORT_FUNCTION int Reverb_process(ReverbContext *pContext,
+				                   audio_buffer_t         *inBuffer,
+				                   audio_buffer_t         *outBuffer);
+EXPORT_FUNCTION int Reverb_command(ReverbContext *pContext,
+                                   uint32_t            cmdCode,
+                                   uint32_t            cmdSize,
+                                   void                *pCmdData,
+                                   uint32_t            *replySize,
+                                   void                *pReplyData);
 
 #if __cplusplus
 }  // extern "C"
