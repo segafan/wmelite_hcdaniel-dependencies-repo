@@ -39,9 +39,11 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
+    <TargetName>libeffects</TargetName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
+    <TargetName>libeffects</TargetName>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -117,7 +119,7 @@
     <ClInclude Include="..\jni\Reverb\src\LVREV_Private.h" />
     <ClInclude Include="..\jni\Reverb\src\LVREV_Tables.h" />
     <ClInclude Include="..\jni\system\audio.h" />
-    <ClInclude Include="..\jni\Wrapper\EffectReverb.h" />
+    <ClInclude Include="..\jni\Wrapper\ReverbLibrary.h" />
     <ClInclude Include="libeffects-android.h" />
     <ClInclude Include="stdafx.h" />
     <ClInclude Include="stdbool.h" />
@@ -220,7 +222,7 @@
     <ClCompile Include="..\jni\Reverb\src\LVREV_Process.c" />
     <ClCompile Include="..\jni\Reverb\src\LVREV_SetControlParameters.c" />
     <ClCompile Include="..\jni\Reverb\src\LVREV_Tables.c" />
-    <ClCompile Include="..\jni\Wrapper\EffectReverb.cpp" />
+    <ClCompile Include="..\jni\Wrapper\ReverbLibrary.c" />
     <ClCompile Include="dllmain.cpp">
       <CompileAsManaged Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</CompileAsManaged>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

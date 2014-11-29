@@ -30,6 +30,7 @@
 #else
 #define __BEGIN_DECLS
 #define __END_DECLS  
+#define inline __inline
 #endif
 #endif
 #include <sys/types.h>
