@@ -236,6 +236,7 @@ int process( LVM_INT16     *pIn,
                                   pContext->OutFrames32,    /* Output buffer */
                                   frameCount);              /* Number of samples to read */
 
+        /*
         for (int y = 0; y < frameCount*2; y++)
         {
         	if (pContext->InFrames32[y] != pContext->OutFrames32[y])
@@ -243,6 +244,7 @@ int process( LVM_INT16     *pIn,
         		printf("%d: Difference in processing: %02X vs. %02X.\n", y, pContext->InFrames32[y], pContext->OutFrames32[y]);
         	}
         }
+        */
     }
 
     LVM_ERROR_CHECK(LvmStatus, "LVREV_Process", "process")

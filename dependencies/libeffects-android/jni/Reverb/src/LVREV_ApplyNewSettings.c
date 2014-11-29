@@ -41,6 +41,24 @@
 /*                                                                                      */
 /****************************************************************************************/
 
+static void print_all_settings(LVREV_Instance_st     *pPrivate)
+{
+	printf("Settings:\n");
+
+	printf("pPrivate->CurrentParams.OperatingMode = %d\n", pPrivate->CurrentParams.OperatingMode);
+	printf("pPrivate->InstanceParams.NumDelays = %d\n", pPrivate->InstanceParams.NumDelays);
+	printf("pPrivate->bFirstControl = %d\n", pPrivate->bFirstControl);
+	printf("pPrivate->CurrentParams.RoomSize = %d\n", pPrivate->CurrentParams.RoomSize);
+	printf("pPrivate->CurrentParams.SampleRate = %d\n", pPrivate->CurrentParams.SampleRate);
+	printf("pPrivate->MaxBlkLen = %d\n", pPrivate->MaxBlkLen);
+	printf("pPrivate->Gain = %d\n", pPrivate->Gain);
+	printf("pPrivate->GainMixer.Target = %d\n", pPrivate->GainMixer.Target);
+
+
+
+	printf(">>>> END SETTINGS <<<<\n");
+}
+
 LVREV_ReturnStatus_en LVREV_ApplyNewSettings (LVREV_Instance_st     *pPrivate)
 {
 
@@ -590,6 +608,7 @@ LVREV_ReturnStatus_en LVREV_ApplyNewSettings (LVREV_Instance_st     *pPrivate)
         pPrivate->bFirstControl = LVM_FALSE;
     }
 
+    // print_all_settings(pPrivate);
 
     return LVREV_SUCCESS;
 }

@@ -176,6 +176,19 @@ LVREV_ReturnStatus_en LVREV_Process(LVREV_Handle_t      hInstance,
 /*                                                                                      */
 /****************************************************************************************/
 
+static void count_buffer_nonempty_32(char *descr, LVM_INT32 *data, LVM_INT32 size)
+{
+	LVM_INT32 u;
+	int ctr = 0;
+
+	for (u = 0; u < size; u++)
+	{
+		if (data[u] != 0) ctr++;
+	}
+
+	printf("%s: %d\n", descr, ctr);
+}
+
 void ReverbBlock(LVM_INT32 *pInput, LVM_INT32 *pOutput, LVREV_Instance_st *pPrivate, LVM_UINT16 NumSamples)
 {
     LVM_INT16   j, size;
@@ -251,6 +264,8 @@ void ReverbBlock(LVM_INT32 *pInput, LVM_INT32 *pOutput, LVREV_Instance_st *pPriv
                                 pTemp,
                                 (LVM_INT16)NumSamples);
 
+    // count_buffer_nonempty_32("after filter", pTemp, NumSamples);
+
     /*
      *  Process all delay lines
      */
@@ -277,6 +292,9 @@ void ReverbBlock(LVM_INT32 *pInput, LVM_INT32 *pOutput, LVREV_Instance_st *pPriv
                                pDelayLine,
                                &pPrivate->pDelay_T[j][pPrivate->T[j]-NumSamples],
                                (LVM_INT16)NumSamples);
+
+        // count_buffer_nonempty_32("1st mix", &pPrivate->pDelay_T[j][pPrivate->T[j]-NumSamples], NumSamples);
+
         /* Sum into the AP delay line */
         Mac3s_Sat_32x16(&pPrivate->pDelay_T[j][pPrivate->T[j]-NumSamples],
                         -0x7fff,                                        /* Invert since the feedback coefficient is negative */
@@ -305,6 +323,8 @@ void ReverbBlock(LVM_INT32 *pInput, LVM_INT32 *pOutput, LVREV_Instance_st *pPriv
                                     pDelayLine,
                                     pDelayLine,
                                     (LVM_INT16)NumSamples);
+
+        // count_buffer_nonempty_32("after proc delaylines", pDelayLine, NumSamples);
     }
 
     /*
