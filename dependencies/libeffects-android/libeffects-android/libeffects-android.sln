@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual C++ Express 2010
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libeffects-android", "libeffects-android.vcxproj", "{89481F17-9870-4E66-AD24-A56BA4646E48}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libeffects-android-test", "..\libeffects-android-test\libeffects-android-test.vcxproj", "{344710EC-3401-4CC4-B041-1730DADB5914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -13,6 +15,10 @@ Global
 		{89481F17-9870-4E66-AD24-A56BA4646E48}.Debug|Win32.Build.0 = Debug|Win32
 		{89481F17-9870-4E66-AD24-A56BA4646E48}.Release|Win32.ActiveCfg = Release|Win32
 		{89481F17-9870-4E66-AD24-A56BA4646E48}.Release|Win32.Build.0 = Release|Win32
+		{344710EC-3401-4CC4-B041-1730DADB5914}.Debug|Win32.ActiveCfg = Debug|Win32
+		{344710EC-3401-4CC4-B041-1730DADB5914}.Debug|Win32.Build.0 = Debug|Win32
+		{344710EC-3401-4CC4-B041-1730DADB5914}.Release|Win32.ActiveCfg = Release|Win32
+		{344710EC-3401-4CC4-B041-1730DADB5914}.Release|Win32.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
