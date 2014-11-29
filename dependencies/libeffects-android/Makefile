@@ -79,13 +79,13 @@ $(OUTDIR)/test/%.o: test/%.c
 all: $(OBJS) libreverbwrapper reverbwrappertest
 
 libreverbwrapper:
-	$(CC) $(LIBFLAGS) $(ARCHFLAGS) -o $(OUTDIR)/libreverbwrapper.so $(OBJS)
-	ar rcs $(OUTDIR)/libreverbwrapper.a $(OBJS)
+	$(CC) $(LIBFLAGS) $(ARCHFLAGS) -o $(OUTDIR)/libeffects.so $(OBJS)
+	ar rcs $(OUTDIR)/libeffects.a $(OBJS)
 
 reverbwrappertest: $(TESTOBJS) $(TESTOBJS2)
 	# $(CC) -fPIC -o $(OUTDIR)/reverbwrappertest $(ARCHFLAGS) $(OBJS) $(TESTOBJS) -lm
-	$(CC) -fPIC -o $(OUTDIR)/reverbwrappertest $(ARCHFLAGS) -L$(OUTDIR) $(TESTOBJS) -lreverbwrapper -lm
-	$(CC) -fPIC -o $(OUTDIR)/reverbwrappertest2 $(ARCHFLAGS) -L$(OUTDIR) $(TESTOBJS2) -lreverbwrapper -lm
+	$(CC) -fPIC -o $(OUTDIR)/reverbwrappertest $(ARCHFLAGS) -L$(OUTDIR) $(TESTOBJS) -leffects -lm
+	$(CC) -fPIC -o $(OUTDIR)/reverbwrappertest2 $(ARCHFLAGS) -L$(OUTDIR) $(TESTOBJS2) -leffects -lm
 
 clean:
 	$(RM) -f $(OBJS) $(TESTOBJS) $(OUTDIR)/libreverbwrapper* $(OUTDIR)/reverbwrapper*

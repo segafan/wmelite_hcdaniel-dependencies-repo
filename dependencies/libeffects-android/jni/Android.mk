@@ -43,7 +43,7 @@ LOCAL_SRC_FILES:= \
     Common/src/Core_MixSoft_1St_D32C31_WRA.c \
     Common/src/Core_MixInSoft_D32C31_SAT.c
 
-LOCAL_MODULE:= libreverb
+LOCAL_MODULE:= libeffectscore
 
 LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/Reverb/lib \
@@ -51,7 +51,7 @@ LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/Common/lib \
     $(LOCAL_PATH)/Common/src
 
-LOCAL_CFLAGS += -fvisibility=hidden
+LOCAL_CFLAGS += -fvisibility=hidden -std=c99
 include $(BUILD_STATIC_LIBRARY)
 
 include $(CLEAR_VARS)
@@ -59,9 +59,9 @@ include $(CLEAR_VARS)
 LOCAL_ARM_MODE := arm
 
 LOCAL_SRC_FILES:= \
-    Wrapper/EffectReverb.cpp
+    Wrapper/ReverbLibrary.c
 
-LOCAL_MODULE:= libreverbwrapper
+LOCAL_MODULE:= libeffects
 
 LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/Wrapper    \
@@ -71,9 +71,9 @@ LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/Common/src \
     $(LOCAL_PATH)/
 
-LOCAL_STATIC_LIBRARIES += libreverb
+LOCAL_STATIC_LIBRARIES += libeffectscore
 
-LOCAL_CFLAGS += -fvisibility=hidden
+LOCAL_CFLAGS += -fvisibility=hidden  -std=c99
 
 include $(BUILD_SHARED_LIBRARY)
 
