@@ -25,6 +25,9 @@ int main(void)
 	audio_buffer_t audio_out;
 	float tmp;
 
+	FILE *in = fopen("in.pcm", "rb");
+	FILE *out = fopen("out.pcm", "wb");
+
 	for (i = 0; i < MAX_BUFSIZE; i++)
 	{
 		inbuf[i] = 0;
@@ -37,7 +40,7 @@ int main(void)
 
     context.preset     = true;
     context.curPreset  = REVERB_PRESET_LAST + 1;
-	context.nextPreset = REVERB_PRESET_SMALLROOM;
+	context.nextPreset = REVERB_PRESET_LARGEHALL;
 
 	status = Reverb_init(&context);
 
@@ -56,15 +59,6 @@ int main(void)
 	audio_in.frameCount = FRAMECOUNT;
 	audio_out.frameCount = FRAMECOUNT;
 
-	for (i = 0; i < FRAMECOUNT; i += 2)
-	{
-		tmp = ((((float) i) / 40.0f) * 2 * 3.1415926f);
-		audio_in.s16[i] = (int16_t) (sinf(tmp) * 32760.0f);
-		tmp = ((((float) i) / 41.0f) * 2 * 3.1415926f);
-		audio_in.s16[i + 1] = (int16_t) (sinf(tmp) * 32760.0f);
-		// audio_in.s16[i] = (int16_t) i;
-	}
-
     // Allocate memory for reverb process (*2 is for STEREO)
     context.InFrames32  = (LVM_INT32 *)malloc(LVREV_MAX_FRAME_SIZE * sizeof(LVM_INT32) * 2);
     context.OutFrames32 = (LVM_INT32 *)malloc(LVREV_MAX_FRAME_SIZE * sizeof(LVM_INT32) * 2);
@@ -75,49 +69,24 @@ int main(void)
 
 	printf("--Reverb command: %d.--\n", status);
 
-	for (k = 0; k < 20; k++)
+	while ((i = fread(inbuf, 2, FRAMECOUNT, in)) == FRAMECOUNT)
 	{
 		status = Reverb_process(&context, &audio_in, &audio_out);
 
 		printf("--Reverb process: %d.--\n", status);
 
-		for (i = 0; i < FRAMECOUNT; i += 2)
-		{
-			if (outbuf[i] != inbuf[i])
-			{
-				printf("%04X: %04X %04X\n", i, (uint16_t) inbuf[i], (uint16_t) outbuf[i]);
-			}
-		}
+		fwrite(outbuf, 2, FRAMECOUNT, out);
 	}
 
-	/*
-	for (i = 0; i < FRAMECOUNT; i++)
-	{
-		audio_in.s16[i] = 0;
-	}
-	*/
-
-	for (k = 0; k < 10000; k++)
-	{
-
-		status = Reverb_process(&context, &audio_in, &audio_out);
-
-		printf("--Reverb process iter %d: %d.--\n", k, status);
-
-		for (i = 0; i < FRAMECOUNT; i += 2)
-		{
-			if (outbuf[i] != inbuf[i])
-			{
-				printf("%04X: %04X %04X\n", i, (uint16_t) inbuf[i], (uint16_t) outbuf[i]);
-			}
-		}
-		// printf("\n");
-	}
+	printf("Last i=%d.\n", i);
 
 	free(context.InFrames32);
 	free(context.OutFrames32);
 
 	Reverb_free(&context);
+
+	fclose(in);
+	fclose(out);
 
 	return 0;
 }

@@ -48,6 +48,9 @@ OBJS=\
 TESTOBJS=\
 	$(OUTDIR)/test/test1.o
 
+TESTOBJS2=\
+	$(OUTDIR)/test/test2.o
+
 INCS=\
     -Ijni/Reverb/lib \
     -Ijni/Reverb/src \
@@ -56,8 +59,8 @@ INCS=\
     -Ijni/Wrapper    \
     -Ijni
 
-ARCHFLAGS=
-CFLAGS=-fPIC -g -std=c99 $(ARCHFLAGS) -Wall
+ARCHFLAGS=-m32
+CFLAGS=-fPIC -g -std=c99 $(ARCHFLAGS) -m32 -Wall
 # LIBFLAGS=-shared -Wl,-soname,libreverbwrapper.so
 LIBFLAGS=-fPIC -shared -Wl,-export-dynamic -lc
 
@@ -79,9 +82,10 @@ libreverbwrapper:
 	$(CC) $(LIBFLAGS) $(ARCHFLAGS) -o $(OUTDIR)/libreverbwrapper.so $(OBJS)
 	ar rcs $(OUTDIR)/libreverbwrapper.a $(OBJS)
 
-reverbwrappertest: $(TESTOBJS)
+reverbwrappertest: $(TESTOBJS) $(TESTOBJS2)
 	# $(CC) -fPIC -o $(OUTDIR)/reverbwrappertest $(ARCHFLAGS) $(OBJS) $(TESTOBJS) -lm
 	$(CC) -fPIC -o $(OUTDIR)/reverbwrappertest $(ARCHFLAGS) -L$(OUTDIR) $(TESTOBJS) -lreverbwrapper -lm
+	$(CC) -fPIC -o $(OUTDIR)/reverbwrappertest2 $(ARCHFLAGS) -L$(OUTDIR) $(TESTOBJS2) -lreverbwrapper -lm
 
 clean:
 	$(RM) -f $(OBJS) $(TESTOBJS) $(OUTDIR)/libreverbwrapper* $(OUTDIR)/reverbwrapper*
