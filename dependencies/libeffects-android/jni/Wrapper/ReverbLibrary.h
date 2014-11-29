@@ -29,6 +29,8 @@
 #else
 #define EXPORT_FUNCTION __declspec(dllimport)
 #endif
+#else 
+#define EXPORT_FUNCTION
 #endif
 
 #if __cplusplus
