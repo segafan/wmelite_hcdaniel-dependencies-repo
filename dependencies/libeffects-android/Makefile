@@ -1,5 +1,6 @@
 
 CC=gcc
+CPP=g++
 RM=rm
 
 OUTDIR=out/
@@ -42,7 +43,10 @@ OBJS=\
     $(OUTDIR)/Common/src/Core_MixHard_2St_D32C31_SAT.o \
     $(OUTDIR)/Common/src/Core_MixSoft_1St_D32C31_WRA.o \
     $(OUTDIR)/Common/src/Core_MixInSoft_D32C31_SAT.o \
-    $(OUTDIR)/Wrapper/EffectReverb.o
+    $(OUTDIR)/Wrapper/ReverbLibrary.o
+
+TESTOBJS=\
+	$(OUTDIR)/test/test1.o
 
 INCS=\
     -Ijni/Reverb/lib \
@@ -52,8 +56,10 @@ INCS=\
     -Ijni/Wrapper    \
     -Ijni
 
-CFLAGS=-fvisibility=hidden -fPIC
-
+ARCHFLAGS=
+CFLAGS=-fPIC -g -std=c99 $(ARCHFLAGS) -Wall
+# LIBFLAGS=-shared -Wl,-soname,libreverbwrapper.so
+LIBFLAGS=-fPIC -shared -Wl,-export-dynamic -lc
 
 $(OUTDIR)/Common/src/%.o: jni/Common/src/%.c
 	$(CC) $(INCS) -c -o $@ $< $(CFLAGS)
@@ -61,16 +67,23 @@ $(OUTDIR)/Common/src/%.o: jni/Common/src/%.c
 $(OUTDIR)/Reverb/src/%.o: jni/Reverb/src/%.c
 	$(CC) $(INCS) -c -o $@ $< $(CFLAGS)
 
-$(OUTDIR)/Wrapper/%.o: jni/Wrapper/%.cpp
+$(OUTDIR)/Wrapper/%.o: jni/Wrapper/%.c
 	$(CC) $(INCS) -c -o $@ $< $(CFLAGS)
 
-all: $(OBJS) libreverbwrapper
+$(OUTDIR)/test/%.o: test/%.c
+	$(CC) $(INCS) -c -o $@ $< $(CFLAGS)
+
+all: $(OBJS) libreverbwrapper reverbwrappertest
 
 libreverbwrapper:
-	$(CC) -o $(OUTDIR)/libreverbwrapper.so -shared $(OBJS)
+	$(CC) $(LIBFLAGS) $(ARCHFLAGS) -o $(OUTDIR)/libreverbwrapper.so $(OBJS)
+	ar rcs $(OUTDIR)/libreverbwrapper.a $(OBJS)
+
+reverbwrappertest: $(TESTOBJS)
+	# $(CC) -fPIC -o $(OUTDIR)/reverbwrappertest $(ARCHFLAGS) $(OBJS) $(TESTOBJS) -lm
+	$(CC) -fPIC -o $(OUTDIR)/reverbwrappertest $(ARCHFLAGS) -L$(OUTDIR) $(TESTOBJS) -lreverbwrapper -lm
 
 clean:
-	$(RM) -f $(OBJS) $(OUTDIR)/libreverbwrapper.so
+	$(RM) -f $(OBJS) $(TESTOBJS) $(OUTDIR)/libreverbwrapper* $(OUTDIR)/reverbwrapper*
 
 .PHONY: clean all
-
