@@ -186,7 +186,7 @@ static void count_buffer_nonempty_32(char *descr, LVM_INT32 *data, LVM_INT32 siz
 		if (data[u] != 0) ctr++;
 	}
 
-	printf("%s: %d\n", descr, ctr);
+//	printf("%s: %d\n", descr, ctr);
 }
 
 void ReverbBlock(LVM_INT32 *pInput, LVM_INT32 *pOutput, LVREV_Instance_st *pPrivate, LVM_UINT16 NumSamples)
