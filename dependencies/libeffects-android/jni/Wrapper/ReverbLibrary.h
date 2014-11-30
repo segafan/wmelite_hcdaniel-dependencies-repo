@@ -24,10 +24,14 @@
 #include <audio_effects/effect_presetreverb.h>
 
 #ifdef _WIN32
-#ifdef LIBEFFECTSANDROID_EXPORTS
+#ifdef LIBEFFECTS_EXPORTS
 #define EXPORT_FUNCTION __declspec(dllexport)
 #else
 #define EXPORT_FUNCTION __declspec(dllimport)
+#endif
+// not available in VS2008
+#ifndef ENODATA
+#define ENODATA 61
 #endif
 #else 
 #define EXPORT_FUNCTION
@@ -63,7 +67,7 @@ typedef struct ReverbContext_t {
     int16_t                         SavedReverbLevel;
     int16_t                         SavedDiffusion;
     int16_t                         SavedDensity;
-    bool                            bEnabled;
+    uint32_t                        boolEnabled;
     #ifdef LVM_PCM
     FILE                            *PcmInPtr;
     FILE                            *PcmOutPtr;
@@ -71,8 +75,8 @@ typedef struct ReverbContext_t {
     LVM_Fs_en                       SampleRate;
     LVM_INT32                       *InFrames32;
     LVM_INT32                       *OutFrames32;
-    bool                            auxiliary;
-    bool                            preset;
+    uint32_t                        boolAuxiliary;
+    uint32_t                        boolPreset;
     uint16_t                        curPreset;
     uint16_t                        nextPreset;
     int                             SamplesToExitCount;

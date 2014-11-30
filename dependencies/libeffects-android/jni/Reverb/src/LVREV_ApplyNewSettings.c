@@ -43,6 +43,7 @@
 
 static void print_all_settings(LVREV_Instance_st     *pPrivate)
 {
+	/*
 	printf("Settings:\n");
 
 	printf("pPrivate->CurrentParams.OperatingMode = %d\n", pPrivate->CurrentParams.OperatingMode);
@@ -57,6 +58,7 @@ static void print_all_settings(LVREV_Instance_st     *pPrivate)
 
 
 	printf(">>>> END SETTINGS <<<<\n");
+	*/
 }
 
 LVREV_ReturnStatus_en LVREV_ApplyNewSettings (LVREV_Instance_st     *pPrivate)
