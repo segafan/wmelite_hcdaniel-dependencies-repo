@@ -20,6 +20,8 @@
 // from Reverb/lib
 #include "LVREV.h"
 
+#include <stdint.h>
+
 #include <audio_effects/effect_environmentalreverb.h>
 #include <audio_effects/effect_presetreverb.h>
 
@@ -33,6 +35,7 @@
 #ifndef ENODATA
 #define ENODATA 61
 #endif
+#define inline __inline
 #else 
 #define EXPORT_FUNCTION
 #endif
