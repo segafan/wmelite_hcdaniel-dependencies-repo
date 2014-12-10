@@ -23,7 +23,8 @@
 
 #include <stdio.h>
 
-#define ALOGV printf
+//#define ALOGV printf
+#define ALOGV(...)
 
 #include <assert.h>
 #include <stdlib.h>
@@ -338,7 +339,7 @@ int process( LVM_INT16     *pIn,
 void Reverb_free(ReverbContext *pContext){
 
     LVREV_ReturnStatus_en     LvmStatus=LVREV_SUCCESS;         /* Function call status */
-    LVREV_ControlParams_st    params;                        /* Control Parameters */
+//    LVREV_ControlParams_st    params;                        /* Control Parameters */
     LVREV_MemoryTable_st      MemTab;
 	int i;
 
@@ -488,12 +489,12 @@ void Reverb_getConfig(ReverbContext *pContext, effect_config_t *pConfig)
 //----------------------------------------------------------------------------
 
 int Reverb_init(ReverbContext *pContext) {
-    int status;
+//    int status;
 	LVREV_ReturnStatus_en     LvmStatus;
     LVREV_ControlParams_st    params;                         /* Control Parameters */
     LVREV_InstanceParams_st   InstParams;                     /* Instance parameters */
     LVREV_MemoryTable_st      MemTab;                         /* Memory allocation table */
-	bool                      bMallocFailure;
+	int                       boolMallocFailure;
 	int                       i;
 
     ALOGV("\tReverb_init start");
@@ -533,7 +534,7 @@ int Reverb_init(ReverbContext *pContext) {
     pContext->volumeMode = REVERB_VOLUME_FLAT;
 
     LvmStatus=LVREV_SUCCESS;        /* Function call status */
-    bMallocFailure = LVM_FALSE;
+    boolMallocFailure = 0;
 
     /* Set the capabilities */
     InstParams.MaxBlockSize  = MAX_CALL_SIZE;
@@ -558,7 +559,7 @@ int Reverb_init(ReverbContext *pContext) {
             if (MemTab.Region[i].pBaseAddress == LVM_NULL){
                 ALOGV("\tLVREV_ERROR :Reverb_init CreateInstance Failed to allocate %ld "
                         "bytes for region %u\n", MemTab.Region[i].Size, i );
-                bMallocFailure = LVM_TRUE;
+                boolMallocFailure = 1;
             }else{
                 ALOGV("\tReverb_init CreateInstance allocate %ld bytes for region %u at %p\n",
                         MemTab.Region[i].Size, i, MemTab.Region[i].pBaseAddress);
@@ -569,7 +570,7 @@ int Reverb_init(ReverbContext *pContext) {
     /* If one or more of the memory regions failed to allocate, free the regions that were
      * succesfully allocated and return with an error
      */
-    if(bMallocFailure == LVM_TRUE){
+    if(boolMallocFailure == 1){
         for (i=0; i<LVM_NR_MEMORY_REGIONS; i++){
             if (MemTab.Region[i].pBaseAddress == LVM_NULL){
                 ALOGV("\tLVM_ERROR :Reverb_init CreateInstance Failed to allocate %ld bytes "
@@ -831,7 +832,7 @@ void ReverbSetReverbLevel(ReverbContext *pContext, int16_t level){
     //ALOGV("\tReverbSetReverbLevel() CombinedLevel is %d = %d + %d\n",
     //      CombinedLevel, level, pContext->SavedRoomLevel);
 
-    ActiveParams.Level = ReverbConvertLevel(CombinedLevel);
+    ActiveParams.Level = ReverbConvertLevel((int16_t) CombinedLevel);
 
     //ALOGV("\tReverbSetReverbLevel() Trying to set -> %d\n", ActiveParams.Level);
 
@@ -876,7 +877,7 @@ int16_t ReverbGetReverbLevel(ReverbContext *pContext){
 
     //ALOGV("\tReverbGetReverbLevel() CombinedLevel is %d = %d + %d\n",
     //CombinedLevel, pContext->SavedReverbLevel, pContext->SavedRoomLevel);
-    level = ReverbConvertLevel(CombinedLevel);
+    level = ReverbConvertLevel((int16_t) CombinedLevel);
 
     //ALOGV("\tReverbGetReverbLevel(): ActiveParams.Level: %d, pContext->SavedReverbLevel: %d, "
     //"pContext->SavedRoomLevel: %d, CombinedLevel: %d, converted level: %d\n",
@@ -919,7 +920,7 @@ void ReverbSetRoomLevel(ReverbContext *pContext, int16_t level){
 
     // needs to subtract max levels for both RoomLevel and ReverbLevel
     CombinedLevel = (level + pContext->SavedReverbLevel)-LVREV_MAX_REVERB_LEVEL;
-    ActiveParams.Level = ReverbConvertLevel(CombinedLevel);
+    ActiveParams.Level = ReverbConvertLevel((int16_t) CombinedLevel);
 
     /* Activate the initial settings */
     LvmStatus = LVREV_SetControlParameters(pContext->hInstance, &ActiveParams);
@@ -958,7 +959,7 @@ int16_t ReverbGetRoomLevel(ReverbContext *pContext){
 
     // needs to subtract max levels for both RoomLevel and ReverbLevel
     CombinedLevel = (pContext->SavedRoomLevel + pContext->SavedReverbLevel-LVREV_MAX_REVERB_LEVEL);
-    level = ReverbConvertLevel(CombinedLevel);
+    level = ReverbConvertLevel((int16_t) CombinedLevel);
 
     //ALOGV("\tReverbGetRoomLevel, Level = %d, pContext->SavedRoomLevel = %d, "
     //     "pContext->SavedReverbLevel = %d, CombinedLevel = %d, level = %d",
@@ -1326,7 +1327,7 @@ int Reverb_getParameter(ReverbContext *pContext,
     int status = 0;
     int32_t *pParamTemp = (int32_t *)pParam;
     int32_t param = *pParamTemp++;
-    char *name;
+//    char *name;
     t_reverb_settings *pProperties;
 
     //ALOGV("\tReverb_getParameter start");
@@ -1680,7 +1681,7 @@ int Reverb_command(ReverbContext *pContext,
                               uint32_t            *replySize,
                               void                *pReplyData){
     // android::ReverbContext * pContext = (android::ReverbContext *) self;
-    int retsize;
+//    int retsize;
     LVREV_ControlParams_st    ActiveParams;              /* Current control Parameters */
     LVREV_ReturnStatus_en     LvmStatus=LVREV_SUCCESS;     /* Function call status */
 

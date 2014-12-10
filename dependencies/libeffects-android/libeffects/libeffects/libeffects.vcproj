@@ -597,10 +597,6 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\jni\system\audio.h"
-				>
-			</File>
-			<File
 				RelativePath="..\..\jni\hardware\audio_effect.h"
 				>
 			</File>
