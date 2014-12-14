@@ -110,7 +110,7 @@
 				EnableIntrinsicFunctions="true"
 				AdditionalIncludeDirectories="..\..\jni\Reverb\lib\;..\..\jni\Common\lib\;..\..\jni\;."
 				PreprocessorDefinitions="WIN32;NDEBUG;_LIB;LIBEFFECTS_NO_EXPORT_DLL_SYMBOLS;"
-				RuntimeLibrary="2"
+				RuntimeLibrary="0"
 				EnableFunctionLevelLinking="true"
 				UsePrecompiledHeader="0"
 				WarningLevel="3"
