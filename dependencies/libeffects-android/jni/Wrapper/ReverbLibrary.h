@@ -34,10 +34,14 @@ typedef unsigned int uint32_t;
 #include <audio_effects/effect_presetreverb.h>
 
 #ifdef _WIN32
+#ifndef LIBEFFECTS_NO_EXPORT_DLL_SYMBOLS
 #ifdef LIBEFFECTS_EXPORTS
 #define EXPORT_FUNCTION __declspec(dllexport)
 #else
 #define EXPORT_FUNCTION __declspec(dllimport)
+#endif
+#else
+#define EXPORT_FUNCTION
 #endif
 // not available in VS2008
 #ifndef ENODATA
