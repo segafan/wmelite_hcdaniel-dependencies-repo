@@ -6,6 +6,16 @@
     it under the terms of the Perl Artistic License, available in COPYING.
  */
 
+#include "config.h"
+#include "instrum.h"
+#include "playmidi.h"
+
+struct _MidiSong {
+	int32 samples;
+	Sint32 duration_ms;
+	MidiEvent *events;
+};
+
 typedef struct _MidiSong MidiSong;
 
 extern int Timidity_Init(int rate, int format, int channels, int samples);

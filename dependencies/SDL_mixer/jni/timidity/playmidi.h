@@ -6,6 +6,9 @@
     it under the terms of the Perl Artistic License, available in COPYING.
  */
 
+#ifndef TIMIDITY_PLAYMIDI_H
+#define TIMIDITY_PLAYMIDI_H
+
 typedef struct {
   int32 time;
   uint8 channel, type, a, b;
@@ -158,3 +161,5 @@ extern int XG_System_variation_type;
 extern int play_midi(MidiEvent *el, int32 events, int32 samples);
 extern int play_midi_file(const char *fn);
 extern void dumb_pass_playing_list(int number_of_files, char *list_of_files[]);
+
+#endif // TIMIDITY_PLAYMIDI_H

@@ -88,9 +88,6 @@ typedef struct Chunk {
 #define COMM        0x4d4d4f43      /* "COMM" */
 
 
-/* Currently we only support a single stream at a time */
-static WAVStream *music = NULL;
-
 /* This is the format of the audio mixer data */
 static SDL_AudioSpec mixer;
 static int wavestream_volume = MIX_MAX_VOLUME;
@@ -147,6 +144,18 @@ WAVStream *WAVStream_LoadSong_RW(SDL_RWops *src, int freesrc)
         SDL_BuildAudioCVT(&wave->cvt,
             wavespec.format, wavespec.channels, wavespec.freq,
             mixer.format, mixer.channels, mixer.freq);
+        int bitsPerSample;
+        switch (wavespec.format) {
+            case AUDIO_U8:
+            case AUDIO_S8:
+                bitsPerSample = 8;
+                break;
+            default:
+                bitsPerSample = 16;
+        }
+        wave->duration_ms = ((wave->stop - wave->start) * 8.0)
+                          / (wavespec.freq * wavespec.channels * bitsPerSample)
+                          * 1000.0;
     } else {
         SDL_OutOfMemory();
         return(NULL);
@@ -158,16 +167,16 @@ WAVStream *WAVStream_LoadSong_RW(SDL_RWops *src, int freesrc)
 void WAVStream_Start(WAVStream *wave)
 {
     SDL_RWseek (wave->src, wave->start, RW_SEEK_SET);
-    music = wave;
+	wave->playing = 1;
 }
 
 /* Play some of a stream previously started with WAVStream_Start() */
-int WAVStream_PlaySome(Uint8 *stream, int len)
+int WAVStream_PlaySome(WAVStream *music, Uint8 *stream, int len)
 {
     Sint64 pos;
     Sint64 left = 0;
 
-    if ( music && ((pos=SDL_RWtell(music->src)) < music->stop) ) {
+    if ( music && (music->playing == 1) && ((pos=SDL_RWtell(music->src)) < music->stop) ) {
         if ( music->cvt.needed ) {
             int original_len;
 
@@ -221,9 +230,9 @@ int WAVStream_PlaySome(Uint8 *stream, int len)
 }
 
 /* Stop playback of a stream previously started with WAVStream_Start() */
-void WAVStream_Stop(void)
+void WAVStream_Stop(WAVStream *music)
 {
-    music = NULL;
+	music->playing = 0;
 }
 
 /* Close the given WAV stream */
@@ -242,12 +251,12 @@ void WAVStream_FreeSong(WAVStream *wave)
 }
 
 /* Return non-zero if a stream is currently playing */
-int WAVStream_Active(void)
+int WAVStream_Active(WAVStream *music)
 {
     int active;
 
     active = 0;
-    if ( music && (SDL_RWtell(music->src) < music->stop) ) {
+    if ( music && music->playing && (SDL_RWtell(music->src) < music->stop) ) {
         active = 1;
     }
     return(active);

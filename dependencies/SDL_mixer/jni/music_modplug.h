@@ -33,6 +33,7 @@
 typedef struct {
     ModPlugFile *file;
     int playing;
+    Sint32 duration_ms;
 } modplug_data;
 
 int modplug_init(SDL_AudioSpec *mixer);

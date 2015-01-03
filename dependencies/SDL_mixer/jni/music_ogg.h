@@ -43,6 +43,7 @@ typedef struct {
     SDL_AudioCVT cvt;
     int len_available;
     Uint8 *snd_available;
+    Sint32 duration_ms;
 } OGG_music;
 
 /* Initialize the Ogg Vorbis player, with the given mixer settings

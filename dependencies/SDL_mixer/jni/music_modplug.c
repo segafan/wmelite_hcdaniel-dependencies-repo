@@ -129,6 +129,10 @@ modplug_data *modplug_new_RW(SDL_RWops *src, int freesrc)
                     SDL_free(music);
                     music = NULL;
                 }
+                else
+                {
+                    music->duration_ms = ModPlug_GetLength(music->file);
+                }
             } else {
                 SDL_OutOfMemory();
             }
