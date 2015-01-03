@@ -65,6 +65,13 @@ int Mix_InitOgg()
             SDL_UnloadObject(vorbis.handle);
             return -1;
         }
+		vorbis.ov_time_total =
+			(double (*)(OggVorbis_File *,int))
+			SDL_LoadFunction(vorbis.handle, "ov_time_total");
+		if ( vorbis.ov_time_total == NULL ) {
+			SDL_UnloadObject(vorbis.handle);
+			return -1;
+		}
         vorbis.ov_read =
 #ifdef OGG_USE_TREMOR
             (long (*)(OggVorbis_File *,char *,int,int *))
@@ -120,6 +127,7 @@ int Mix_InitOgg()
         vorbis.ov_info = ov_info;
         vorbis.ov_open_callbacks = ov_open_callbacks;
         vorbis.ov_pcm_total = ov_pcm_total;
+		vorbis.ov_time_total = ov_time_total;
         vorbis.ov_read = ov_read;
         vorbis.ov_time_seek = ov_time_seek;
     }

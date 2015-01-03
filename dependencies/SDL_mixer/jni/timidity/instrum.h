@@ -6,6 +6,8 @@
     it under the terms of the Perl Artistic License, available in COPYING.
  */
 
+#ifndef TIMIDITY_INSTRUM_H
+#define TIMIDITY_INSTRUM_H
 
 typedef struct {
   int32
@@ -166,3 +168,4 @@ extern int current_patch_memory;
 extern int xmap[XMAPMAX][5];
 extern void pcmap(int *b, int *v, int *p, int *drums);
 
+#endif // TIMIDITY_INSTRUM_H

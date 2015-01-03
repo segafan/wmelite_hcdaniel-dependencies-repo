@@ -49,6 +49,7 @@ typedef struct {
     int playing;
     int volume;
     int section;
+	Sint32 duration_ms;
     FLAC__StreamDecoder *flac_decoder;
     FLAC_Data flac_data;
     SDL_RWops *src;

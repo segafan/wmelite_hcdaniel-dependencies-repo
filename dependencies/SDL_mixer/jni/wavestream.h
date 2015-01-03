@@ -30,6 +30,8 @@ typedef struct {
     SDL_bool freesrc;
     long  start;
     long  stop;
+    int playing;
+    Sint32 duration_ms;
     SDL_AudioCVT cvt;
 } WAVStream;
 
@@ -48,13 +50,13 @@ extern WAVStream *WAVStream_LoadSong_RW(SDL_RWops *src, int freesrc);
 extern void WAVStream_Start(WAVStream *wave);
 
 /* Play some of a stream previously started with WAVStream_Start() */
-extern int WAVStream_PlaySome(Uint8 *stream, int len);
+extern int WAVStream_PlaySome(WAVStream *music, Uint8 *stream, int len);
 
 /* Stop playback of a stream previously started with WAVStream_Start() */
-extern void WAVStream_Stop(void);
+extern void WAVStream_Stop(WAVStream *music);
 
 /* Close the given WAV stream */
 extern void WAVStream_FreeSong(WAVStream *wave);
 
 /* Return non-zero if a stream is currently playing */
-extern int WAVStream_Active(void);
+extern int WAVStream_Active(WAVStream *music);

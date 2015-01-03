@@ -84,6 +84,7 @@ OGG_music *OGG_new_RW(SDL_RWops *src, int freesrc)
     music = (OGG_music *)SDL_malloc(sizeof *music);
     if ( music ) {
         /* Initialize the music structure */
+    	double total_time;
         SDL_memset(music, 0, (sizeof *music));
         music->src = src;
         music->freesrc = freesrc;
@@ -95,6 +96,12 @@ OGG_music *OGG_new_RW(SDL_RWops *src, int freesrc)
             SDL_SetError("Not an Ogg Vorbis audio stream");
             SDL_free(music);
             return(NULL);
+        }
+        total_time = vorbis.ov_time_total(&music->vf, -1);
+        if ( total_time == OV_EINVAL ) {
+            music->duration_ms = -1;
+        } else {
+            music->duration_ms = (Sint32)(total_time * 1000.0 + 0.5);
         }
     } else {
         SDL_OutOfMemory();
