@@ -183,16 +183,19 @@ static void music_internal_halt(Mix_Music *music);
 
 
 /* Support for hooking when the music has finished */
-static void (*music_finished_hook)(Mix_Music *music, int channel) = NULL;
+static void (*music_finished_hook)(void *userdata, Mix_Music *music, int channel) = NULL;
+static void *music_finished_hook_userdata;
+
 static void (*music_compat_finished_hook)(void) = NULL;
 
 /* Support for hooking when the music is about to loop */
 static void (*music_looping_hook)(Mix_Music *music, int channel) = NULL;
 
-void Mix_HookMusicFinishedCh(void (*music_finished)(Mix_Music *music, int channel))
+void Mix_HookMusicFinishedCh(void *userdata, void (*music_finished)(void *userdata, Mix_Music *music, int channel))
 {
 	SDL_LockAudio();
 	music_finished_hook = music_finished;
+	music_finished_hook_userdata = userdata;
 	SDL_UnlockAudio();
 }
 
@@ -290,7 +293,7 @@ void music_mixer(void *udata, Mix_Music * music_playing, Uint8 *master_stream, i
 				music_compat_finished_hook();
 			}
 		} else if ( music_finished_hook ) {
-			music_finished_hook(music_playing, channel);
+			music_finished_hook(music_finished_hook_userdata, music_playing, channel);
 		}
 		return;
 	}

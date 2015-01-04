@@ -222,7 +222,7 @@ extern DECLSPEC void SDLCALL Mix_HookMusic(void (*mix_func)(void *udata, Uint8 *
 /* Add your own callback when the music has finished playing.
    This callback is only called if the music finishes naturally.
  */
-extern DECLSPEC void SDLCALL Mix_HookMusicFinishedCh(void (*music_finished)(Mix_Music *music, int channel));
+extern DECLSPEC void SDLCALL Mix_HookMusicFinishedCh(void *userdata, void (*music_finished)(void *userdata, Mix_Music *music, int channel));
 /* For backwards compatibility. The hook is called when the music stream that
  * was started with Mix_PlayMusic() finishes naturally.
  */
