@@ -125,6 +125,7 @@ WAVStream *WAVStream_LoadSong_RW(SDL_RWops *src, int freesrc)
     wave = (WAVStream *)SDL_malloc(sizeof *wave);
     if ( wave ) {
         Uint32 magic;
+        int bitsPerSample;
 
         SDL_zerop(wave);
         wave->freesrc = freesrc;
@@ -144,7 +145,6 @@ WAVStream *WAVStream_LoadSong_RW(SDL_RWops *src, int freesrc)
         SDL_BuildAudioCVT(&wave->cvt,
             wavespec.format, wavespec.channels, wavespec.freq,
             mixer.format, mixer.channels, mixer.freq);
-        int bitsPerSample;
         switch (wavespec.format) {
             case AUDIO_U8:
             case AUDIO_S8:
@@ -153,9 +153,9 @@ WAVStream *WAVStream_LoadSong_RW(SDL_RWops *src, int freesrc)
             default:
                 bitsPerSample = 16;
         }
-        wave->duration_ms = ((wave->stop - wave->start) * 8.0)
+        wave->duration_ms = (Sint32) (((wave->stop - wave->start) * 8.0)
                           / (wavespec.freq * wavespec.channels * bitsPerSample)
-                          * 1000.0;
+                          * 1000.0);
     } else {
         SDL_OutOfMemory();
         return(NULL);

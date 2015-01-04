@@ -1071,7 +1071,7 @@ int _Mix_SetupChunk(int which, Mix_Chunk* chunk, int loops, int ticks, int fade_
 		}
 
         loop_start_bytes = milliseconds_to_bytes(loop_start);
-        if (loop_start_bytes >= chunk->alen) {
+        if (((Uint32) loop_start_bytes) >= chunk->alen) {
             loop_start_bytes = 0;
         }
 
@@ -1210,7 +1210,7 @@ int Mix_SetLoopStart(int which, int loop_start)
     old_loop_start = mix_channel[which].loop_start;
     if (loop_start >= 0) {
         position = milliseconds_to_bytes(loop_start);
-        if (position < mix_channel[which].sound->chunk->alen) {
+        if (((Uint32) position) < mix_channel[which].sound->chunk->alen) {
             mix_channel[which].loop_start = position;
         } else {
             Mix_SetError("Position out of range!");
@@ -1240,7 +1240,7 @@ int Mix_SetPlayPosition(int which, int position)
     old_position = mix_channel[which].sound->chunk->alen - mix_channel[which].playing;
     if (position >= 0) {
         new_position = milliseconds_to_bytes(position);
-        if (new_position < mix_channel[which].sound->chunk->alen) {
+        if (((Uint32) new_position) < mix_channel[which].sound->chunk->alen) {
             mix_channel[which].playing = (mix_channel[which].sound->chunk->alen - new_position);
         } else {
             Mix_SetError("Position out of range!");
