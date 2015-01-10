@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 10.00
+# Visual C++ Express 2008
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libecho", "libecho\libecho.vcproj", "{881C6BDC-F669-4491-8EAE-8136694F7AE5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libecho_static", "libecho_static\libecho_static.vcproj", "{735C529D-D842-4C96-8D59-F51F6C310ECC}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Win32 = Debug|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{881C6BDC-F669-4491-8EAE-8136694F7AE5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{881C6BDC-F669-4491-8EAE-8136694F7AE5}.Debug|Win32.Build.0 = Debug|Win32
+		{881C6BDC-F669-4491-8EAE-8136694F7AE5}.Release|Win32.ActiveCfg = Release|Win32
+		{881C6BDC-F669-4491-8EAE-8136694F7AE5}.Release|Win32.Build.0 = Release|Win32
+		{735C529D-D842-4C96-8D59-F51F6C310ECC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{735C529D-D842-4C96-8D59-F51F6C310ECC}.Debug|Win32.Build.0 = Debug|Win32
+		{735C529D-D842-4C96-8D59-F51F6C310ECC}.Release|Win32.ActiveCfg = Release|Win32
+		{735C529D-D842-4C96-8D59-F51F6C310ECC}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
