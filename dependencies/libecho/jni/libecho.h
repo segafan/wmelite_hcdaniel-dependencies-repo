@@ -48,6 +48,7 @@ typedef unsigned int   uint32_t;
 typedef struct EchoContext_t
 {
 	float    attenuationFactor;
+	uint8_t  bytes_per_channel;
 	uint8_t  *inBuffer;
 	uint8_t  *echoBuffer;
 	uint32_t bufferSize;
