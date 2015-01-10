@@ -24,6 +24,7 @@ THE SOFTWARE.
 #include "libecho.h"
 
 #include <stdlib.h>
+#include <string.h>
 
 int  Echo_init(EchoContext *pContext,
 			   uint8_t channels, 
@@ -32,6 +33,12 @@ int  Echo_init(EchoContext *pContext,
 			   float    attenuationFactor,
 			   uint16_t echo_period_ms)
 {
+	if ((bytes_per_channel != 1) && (bytes_per_channel != 2))
+	{
+		return -1;
+	}
+
+	pContext->bytes_per_channel = bytes_per_channel;
 	pContext->attenuationFactor = attenuationFactor;
 
 	pContext->bufferSize = (sampling_rate_hz * 1000) / echo_period_ms;
@@ -49,6 +56,10 @@ int  Echo_init(EchoContext *pContext,
 		return -1;
 	}
 
+	memset((void *) pContext->echoBuffer, 0, pContext->bufferSize);
+
+	pContext->echoBufferPtr = 0;
+
 	return 0;
 }
 
@@ -58,10 +69,34 @@ void Echo_free(EchoContext *pContext)
 	free((void *) pContext->echoBuffer);
 }
 
+static void apply_s16le(uint16_t *buffer, uint32_t offset, uint32_t len)
+{
+	
+}
+
 int  Echo_process(EchoContext *pContext,
 				  uint8_t     *buffer,
 				  uint32_t     len)
 {
+	uint32_t processed = 0;
+	uint32_t currSize;
+
+	while (processed < len)
+	{
+		currSize = pContext->bufferSize;
+		if (currSize > len - processed)
+		{
+			currSize = len - processed;
+		}
+
+		memcpy(pContext->inBuffer, buffer + processed, currSize);
+
+		apply_s16le((uint16_t *) pContext->inBuffer, 0, currSize / 2);
+
+		memcpy(buffer + processed, pContext->inBuffer, currSize);
+
+		processed += currSize;
+	}
 
 	return 0;
 }
