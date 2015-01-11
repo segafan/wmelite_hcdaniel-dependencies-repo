@@ -25,6 +25,7 @@ THE SOFTWARE.
 
 #include <stdlib.h>
 #include <string.h>
+#include <stdio.h>
 
 int  Echo_init(EchoContext *pContext,
 			   uint8_t channels, 
@@ -88,6 +89,8 @@ int  Echo_process(EchoContext *pContext,
 	uint32_t currSize;
 	uint32_t offset = pContext->echoBufferPtr;
 
+	printf("Echo start, offset=%d.\n", offset);
+
 	while (processed < len)
 	{
 		currSize = pContext->bufferSize;
@@ -106,6 +109,8 @@ int  Echo_process(EchoContext *pContext,
 
 		offset = (offset + currSize) % pContext->bufferSize;
 	}
+
+	printf("Echo end, offset=%d.\n", offset);
 
 	pContext->echoBufferPtr = offset;
 
