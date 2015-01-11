@@ -69,9 +69,15 @@ void Echo_free(EchoContext *pContext)
 	free((void *) pContext->echoBuffer);
 }
 
-static void apply_s16le(uint16_t *buffer, uint32_t offset, uint32_t len)
+static void apply_s16le(int16_t *buffer, int16_t *echoBuffer, uint32_t offset, uint32_t len, float attenuationFactor)
 {
-	
+	uint32_t i;
+
+	for (i = 0; i < len; i++)
+	{
+		buffer[i]     = buffer[i] | ((int16_t) (((float) echoBuffer[i]) * attenuationFactor));
+		echoBuffer[i] = buffer[i];
+	}
 }
 
 int  Echo_process(EchoContext *pContext,
@@ -80,6 +86,7 @@ int  Echo_process(EchoContext *pContext,
 {
 	uint32_t processed = 0;
 	uint32_t currSize;
+	uint32_t offset = pContext->echoBufferPtr;
 
 	while (processed < len)
 	{
@@ -89,14 +96,18 @@ int  Echo_process(EchoContext *pContext,
 			currSize = len - processed;
 		}
 
-		memcpy(pContext->inBuffer, buffer + processed, currSize);
+		memcpy(pContext->inBuffer + offset, buffer + processed, currSize - offset);
 
-		apply_s16le((uint16_t *) pContext->inBuffer, 0, currSize / 2);
+		apply_s16le((int16_t *) pContext->inBuffer, (int16_t *) pContext->echoBuffer, offset, (currSize - offset) / 2, pContext->attenuationFactor);
 
-		memcpy(buffer + processed, pContext->inBuffer, currSize);
+		memcpy(buffer + processed, pContext->inBuffer + offset, currSize - offset);
 
-		processed += currSize;
+		processed += (currSize - offset);
+
+		offset = (offset + currSize) % pContext->bufferSize;
 	}
+
+	pContext->echoBufferPtr = offset;
 
 	return 0;
 }
