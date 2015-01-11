@@ -37,6 +37,10 @@ THE SOFTWARE.
 #endif
 #endif
 
+#if __cplusplus
+extern "C" {
+#endif
+
 typedef signed char int8_t;
 typedef short       int16_t;
 typedef int         int32_t;
@@ -65,5 +69,9 @@ EXPORT_FUNCTION void Echo_free(EchoContext *pContext);
 EXPORT_FUNCTION int  Echo_process(EchoContext *pContext,
 				                  uint8_t     *buffer,
 				                  uint32_t     len);
+
+#if __cplusplus
+}  // extern "C"
+#endif
 
 #endif
