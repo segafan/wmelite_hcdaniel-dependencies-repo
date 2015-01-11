@@ -32,7 +32,7 @@ int main(void)
 		return -1;
 	}
 
-	status = Echo_init(&context, 2, 2, 44100, 0.3f, 300);
+	status = Echo_init(&context, 1, 2, 44100, 0.3f, 300);
 
 	printf("--Echo init: %d.--\n", status);
 

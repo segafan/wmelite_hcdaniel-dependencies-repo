@@ -42,7 +42,7 @@ int  Echo_init(EchoContext *pContext,
 	pContext->bytes_per_channel = bytes_per_channel;
 	pContext->attenuationFactor = attenuationFactor;
 
-	pContext->bufferSize = (sampling_rate_hz * 1000) / echo_period_ms;
+	pContext->bufferSize = (sampling_rate_hz * echo_period_ms) / 1000;
 	pContext->bufferSize *= channels * bytes_per_channel;
 
 	pContext->inBuffer = (uint8_t *) malloc(pContext->bufferSize);
@@ -73,10 +73,21 @@ void Echo_free(EchoContext *pContext)
 static void apply_s16le(int16_t *buffer, int16_t *echoBuffer, uint32_t offset, uint32_t len, float attenuationFactor)
 {
 	uint32_t i;
+	int32_t sample;
 
 	for (i = 0; i < len; i++)
 	{
-		buffer[i]     = buffer[i] | ((int16_t) (((float) echoBuffer[i]) * attenuationFactor));
+		sample = ((int32_t) (((float) buffer[i]) * (1.0f - attenuationFactor)));
+		sample = sample + ((int16_t) (((float) echoBuffer[i]) * attenuationFactor));
+		if (sample < -32768)
+		{
+			sample = -32768;
+		}
+		if (sample > 32767)
+		{
+			sample = 32767;
+		}
+		buffer[i]     = (int16_t) sample;
 		echoBuffer[i] = buffer[i];
 	}
 }
@@ -85,34 +96,36 @@ int  Echo_process(EchoContext *pContext,
 				  uint8_t     *buffer,
 				  uint32_t     len)
 {
-	uint32_t processed = 0;
+	uint32_t bufferProcessed = 0;
 	uint32_t currSize;
-	uint32_t offset = pContext->echoBufferPtr;
+	uint32_t echoBufOffset = pContext->echoBufferPtr;
 
-	printf("Echo start, offset=%d.\n", offset);
+	printf("Echo start, offset=%d.\n", echoBufOffset);
 
-	while (processed < len)
+	while (bufferProcessed < len)
 	{
-		currSize = pContext->bufferSize;
-		if (currSize > len - processed)
+		currSize = len - bufferProcessed;
+		if (currSize > (pContext->bufferSize - echoBufOffset))
 		{
-			currSize = len - processed;
+			currSize = pContext->bufferSize - echoBufOffset;
 		}
 
-		memcpy(pContext->inBuffer + offset, buffer + processed, currSize - offset);
+		printf("Copy from %lx to %lx size %d.\n", buffer + bufferProcessed, pContext->inBuffer + echoBufOffset, currSize);
 
-		apply_s16le((int16_t *) pContext->inBuffer, (int16_t *) pContext->echoBuffer, offset, (currSize - offset) / 2, pContext->attenuationFactor);
+		memcpy(pContext->inBuffer + echoBufOffset, buffer + bufferProcessed, currSize);
 
-		memcpy(buffer + processed, pContext->inBuffer + offset, currSize - offset);
+		apply_s16le((int16_t *) pContext->inBuffer, (int16_t *) pContext->echoBuffer, echoBufOffset, currSize / 2, pContext->attenuationFactor);
 
-		processed += (currSize - offset);
+		memcpy(buffer + bufferProcessed, pContext->inBuffer + echoBufOffset, currSize);
 
-		offset = (offset + currSize) % pContext->bufferSize;
+		bufferProcessed += currSize;
+
+		echoBufOffset = (echoBufOffset + currSize) % pContext->bufferSize;
 	}
 
-	printf("Echo end, offset=%d.\n", offset);
+	printf("Echo end, offset=%d.\n", echoBufOffset);
 
-	pContext->echoBufferPtr = offset;
+	pContext->echoBufferPtr = echoBufOffset;
 
 	return 0;
 }
