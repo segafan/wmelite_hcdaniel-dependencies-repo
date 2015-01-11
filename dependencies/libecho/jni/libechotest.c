@@ -1,89 +1,53 @@
 
 #include <stdio.h>
 #include <stdlib.h>
+#include <error.h>
 
-#include <math.h>
-
-#include "Wrapper/ReverbLibrary.h"
+#include "libecho.h"
 
 #define MAX_BUFSIZE 100000
 
-char inbuf[MAX_BUFSIZE];
-char outbuf[MAX_BUFSIZE];
-
-char replydata[100];
-
-#define FRAMECOUNT 1024
+char buf[MAX_BUFSIZE];
 
 int main(void)
 {
-	int status, i, k;
-	ReverbContext context;
-	uint32_t replyCount;
+	int status, i;
+	EchoContext context;
+	FILE *in;
+	FILE *out;
 
-	audio_buffer_t audio_in;
-	audio_buffer_t audio_out;
-	float tmp;
+	in = fopen("O:\\wmelite-dependencies-for-linux-and-android\\dependencies\\libecho\\libecho\\libechotest\\in.pcm", "rb");
 
-	FILE *in = fopen("in.pcm", "rb");
-	FILE *out = fopen("out.pcm", "wb");
-
-	for (i = 0; i < MAX_BUFSIZE; i++)
+	if (in == NULL)
 	{
-		inbuf[i] = 0;
-		outbuf[i] = 0;
+		printf("Error! Infile not found, error=%d!\n", errno);
+		return -1;
 	}
 
+	out = fopen("O:\\wmelite-dependencies-for-linux-and-android\\dependencies\\libecho\\libecho\\libechotest\\out.pcm", "wb");
 
-	context.hInstance  = NULL;
-	context.auxiliary  = false;
-
-    context.preset     = true;
-    context.curPreset  = REVERB_PRESET_LAST + 1;
-	context.nextPreset = REVERB_PRESET_LARGEHALL;
-
-	status = Reverb_init(&context);
-
-	printf("--Reverb init: %d.--\n", status);
-
-	// no accumulation needed
-	context.config.outputCfg.accessMode = EFFECT_BUFFER_ACCESS_WRITE;
-
-	//status = Reverb_setConfig(&context, &(context.config));
-
-	//printf("--Reverb set config: %d.--\n", status);
-
-	audio_in.raw = inbuf;
-	audio_out.raw = outbuf;
-
-	audio_in.frameCount = FRAMECOUNT;
-	audio_out.frameCount = FRAMECOUNT;
-
-    // Allocate memory for reverb process (*2 is for STEREO)
-    context.InFrames32  = (LVM_INT32 *)malloc(LVREV_MAX_FRAME_SIZE * sizeof(LVM_INT32) * 2);
-    context.OutFrames32 = (LVM_INT32 *)malloc(LVREV_MAX_FRAME_SIZE * sizeof(LVM_INT32) * 2);
-
-    replyCount = sizeof(int);
-
-    status = Reverb_command(&context, EFFECT_CMD_ENABLE, 0, NULL, &replyCount, replydata);
-
-	printf("--Reverb command: %d.--\n", status);
-
-	while ((i = fread(inbuf, 2, FRAMECOUNT, in)) == FRAMECOUNT)
+	if (out == NULL)
 	{
-		status = Reverb_process(&context, &audio_in, &audio_out);
-
-		printf("--Reverb process: %d.--\n", status);
-
-		fwrite(outbuf, 2, FRAMECOUNT, out);
+		printf("Error! Outfile not open, error=%d!\n", errno);
+		return -1;
 	}
 
-	printf("Last i=%d.\n", i);
+	status = Echo_init(&context, 2, 2, 44100, 0.3f, 300);
 
-	free(context.InFrames32);
-	free(context.OutFrames32);
+	printf("--Echo init: %d.--\n", status);
 
-	Reverb_free(&context);
+	while ((i = fread(buf, 1, MAX_BUFSIZE, in)) > 0)
+	{
+		printf("--Echo before process: len=%d buf=%lx.\n", i, (uint32_t) buf);
+
+		status = Echo_process(&context, buf, i);
+
+		printf("--Echo process: %d.--\n", status);
+
+		fwrite(buf, 1, i, out);
+	}
+
+	Echo_free(&context);
 
 	fclose(in);
 	fclose(out);
