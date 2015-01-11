@@ -68,6 +68,8 @@ void Echo_free(EchoContext *pContext)
 {
 	free((void *) pContext->inBuffer);
 	free((void *) pContext->echoBuffer);
+	pContext->inBuffer = NULL;
+	pContext->echoBuffer = NULL;
 }
 
 static void apply_s16le(int16_t *buffer, int16_t *echoBuffer, uint32_t offset, uint32_t len, float attenuationFactor)
