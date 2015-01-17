@@ -27,6 +27,9 @@ THE SOFTWARE.
 #include <string.h>
 #include <stdio.h>
 
+// #define DEBUG_WITH_FILE_IO
+#define DEBUG_WITH_PRINTF
+
 int  Echo_init(EchoContext *pContext,
 			   uint8_t channels, 
 			   uint8_t bytes_per_channel, 
@@ -61,6 +64,10 @@ int  Echo_init(EchoContext *pContext,
 
 	pContext->echoBufferPtr = 0;
 
+#ifdef DEBUG_WITH_PRINTF
+	printf("Buffer size=%d.\n", pContext->bufferSize);
+#endif
+
 	return 0;
 }
 
@@ -77,7 +84,7 @@ static void apply_s16le(int16_t *buffer, int16_t *echoBuffer, uint32_t offset, u
 	uint32_t i;
 	int32_t sample;
 
-	for (i = 0; i < len; i++)
+	for (i = offset; i < (offset + len); i++)
 	{
 		sample = ((int32_t) (((float) buffer[i]) * (1.0f - attenuationFactor)));
 		sample = sample + ((int16_t) (((float) echoBuffer[i]) * attenuationFactor));
@@ -101,8 +108,15 @@ int  Echo_process(EchoContext *pContext,
 	uint32_t bufferProcessed = 0;
 	uint32_t currSize;
 	uint32_t echoBufOffset = pContext->echoBufferPtr;
+#ifdef DEBUG_WITH_FILE_IO
 
+	FILE *fi;
+
+#endif
+
+#ifdef DEBUG_WITH_PRINTF
 	printf("Echo start, offset=%d.\n", echoBufOffset);
+#endif
 
 	while (bufferProcessed < len)
 	{
@@ -112,11 +126,33 @@ int  Echo_process(EchoContext *pContext,
 			currSize = pContext->bufferSize - echoBufOffset;
 		}
 
-		printf("Copy from %lx to %lx size %d.\n", buffer + bufferProcessed, pContext->inBuffer + echoBufOffset, currSize);
+#ifdef DEBUG_WITH_PRINTF
+		printf("IN: Copy from %lx to %lx size %d.\n", buffer + bufferProcessed, pContext->inBuffer + echoBufOffset, currSize);
+#endif
 
 		memcpy(pContext->inBuffer + echoBufOffset, buffer + bufferProcessed, currSize);
 
-		apply_s16le((int16_t *) pContext->inBuffer, (int16_t *) pContext->echoBuffer, echoBufOffset, currSize / 2, pContext->attenuationFactor);
+#ifdef DEBUG_WITH_FILE_IO
+
+		fi = fopen("echo_in.pcm", "ab");
+		fwrite(pContext->inBuffer + echoBufOffset, 1, currSize, fi);
+		fclose(fi);
+
+#endif
+
+		apply_s16le((int16_t *) pContext->inBuffer, (int16_t *) pContext->echoBuffer, echoBufOffset / 2, currSize / 2, pContext->attenuationFactor);
+
+#ifdef DEBUG_WITH_FILE_IO
+
+		fi = fopen("echo_out.pcm", "ab");
+		fwrite(pContext->inBuffer + echoBufOffset, 1, currSize, fi);
+		fclose(fi);
+
+#endif
+
+#ifdef DEBUG_WITH_PRINTF
+		printf("OUT: Copy from %lx to %lx size %d.\n", pContext->inBuffer + echoBufOffset, buffer + bufferProcessed, currSize);
+#endif
 
 		memcpy(buffer + bufferProcessed, pContext->inBuffer + echoBufOffset, currSize);
 
@@ -125,7 +161,9 @@ int  Echo_process(EchoContext *pContext,
 		echoBufOffset = (echoBufOffset + currSize) % pContext->bufferSize;
 	}
 
+#ifdef DEBUG_WITH_PRINTF
 	printf("Echo end, offset=%d.\n", echoBufOffset);
+#endif
 
 	pContext->echoBufferPtr = echoBufOffset;
 

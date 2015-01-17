@@ -5,7 +5,7 @@
 
 #include "libecho.h"
 
-#define MAX_BUFSIZE 100000
+#define MAX_BUFSIZE 4096
 
 char buf[MAX_BUFSIZE];
 
@@ -38,7 +38,7 @@ int main(void)
 
 	while ((i = fread(buf, 1, MAX_BUFSIZE, in)) > 0)
 	{
-		printf("--Echo before process: len=%d buf=%lx.\n", i, (uint32_t) buf);
+		// printf("--Echo before process: len=%d buf=%lx.\n", i, (uint32_t) buf);
 
 		status = Echo_process(&context, buf, i);
 
