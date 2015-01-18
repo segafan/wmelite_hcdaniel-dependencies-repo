@@ -26,16 +26,22 @@ THE SOFTWARE.
 #define LIBECHO_H_INCLUDED
 
 #ifdef _WIN32
+
 #ifndef LIBECHO_NO_EXPORT_DLL_SYMBOLS
+
 #ifdef LIBECHO_EXPORTS
 #define EXPORT_FUNCTION __declspec(dllexport)
 #else
 #define EXPORT_FUNCTION __declspec(dllimport)
 #endif
+
 #else
 #define EXPORT_FUNCTION
-#endif
-#endif
+#endif // LIBECHO_NO_EXPORT_DLL_SYMBOLS
+
+#else
+#define EXPORT_FUNCTION
+#endif //_WIN32
 
 #if __cplusplus
 extern "C" {
