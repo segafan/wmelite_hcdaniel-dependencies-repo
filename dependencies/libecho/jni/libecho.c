@@ -28,7 +28,7 @@ THE SOFTWARE.
 #include <stdio.h>
 
 // #define DEBUG_WITH_FILE_IO
-#define DEBUG_WITH_PRINTF
+// #define DEBUG_WITH_PRINTF
 
 int  Echo_init(EchoContext *pContext,
 			   uint8_t channels, 
