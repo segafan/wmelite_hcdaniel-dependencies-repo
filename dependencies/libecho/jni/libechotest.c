@@ -5,6 +5,10 @@
 
 #include "libecho.h"
 
+#ifndef _WIN32
+#include <errno.h>
+#endif
+
 #define MAX_BUFSIZE 4096
 
 char buf[MAX_BUFSIZE];
