@@ -1,3 +1,3 @@
 #!/bin/bash
-cd jni && ndk-build
+cd jni && ndk-build clean && ndk-build
 

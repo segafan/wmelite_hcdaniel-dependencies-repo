@@ -61,7 +61,7 @@ LOCAL_ARM_MODE := arm
 LOCAL_SRC_FILES:= \
     Wrapper/ReverbLibrary.c
 
-LOCAL_MODULE:= libeffects
+LOCAL_MODULE:= libeffectsprivate
 
 LOCAL_C_INCLUDES += \
     $(LOCAL_PATH)/Wrapper    \
@@ -73,7 +73,7 @@ LOCAL_C_INCLUDES += \
 
 LOCAL_STATIC_LIBRARIES += libeffectscore
 
-LOCAL_CFLAGS += -fvisibility=hidden  -std=c99
+LOCAL_CFLAGS += -std=c99
 
 include $(BUILD_SHARED_LIBRARY)
 
