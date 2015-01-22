@@ -15,8 +15,8 @@ TESTOBJS=\
 INCS=\
     -Ijni/
 
-ARCHFLAGS=-m32
-CFLAGS=-fPIC -g -std=c99 $(ARCHFLAGS) -m32 -Wall
+ARCHFLAGS=
+CFLAGS=-fPIC -g -std=c99 $(ARCHFLAGS) -Wall
 # LIBFLAGS=-shared -Wl,-soname,libreverbwrapper.so
 LIBFLAGS=-fPIC -shared -Wl,-export-dynamic -lc
 
