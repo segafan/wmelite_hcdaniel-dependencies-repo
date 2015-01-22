@@ -23,12 +23,12 @@ LIBFLAGS=-fPIC -shared -Wl,-export-dynamic -lc
 $(OUTDIR)/%.o: jni/%.c
 	$(CC) $(INCS) -c -o $@ $< $(CFLAGS)
 
-all: mkdirs $(OBJS) libs echotest
+all: mkdirs libs echotest
 
 mkdirs:
 	mkdir -p out/
 
-libs:
+libs: $(OBJS)
 	$(CC) $(LIBFLAGS) $(ARCHFLAGS) -o $(OUTDIR)/libecho.so $(OBJS)
 	ar rcs $(OUTDIR)/libecho.a $(OBJS)
 
