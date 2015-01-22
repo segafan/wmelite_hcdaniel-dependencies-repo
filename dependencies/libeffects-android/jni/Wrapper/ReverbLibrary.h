@@ -20,15 +20,21 @@
 // from Reverb/lib
 #include "LVREV.h"
 
-// #include <stdint.h>
+#ifdef _WIN32
 
 typedef signed char int8_t;
-typedef short int16_t;
-typedef int int32_t;
+typedef short       int16_t;
+typedef int         int32_t;
 
-typedef unsigned char uint8_t;
+typedef unsigned char  uint8_t;
 typedef unsigned short uint16_t;
-typedef unsigned int uint32_t;
+typedef unsigned int   uint32_t;
+
+#else
+
+#include <stdint.h>
+
+#endif
 
 #include <audio_effects/effect_environmentalreverb.h>
 #include <audio_effects/effect_presetreverb.h>
@@ -116,7 +122,7 @@ EXPORT_FUNCTION void Reverb_getConfig       (ReverbContext *pContext, effect_con
 EXPORT_FUNCTION int  Reverb_setParameter    (ReverbContext *pContext, void *pParam, void *pValue);
 EXPORT_FUNCTION int  Reverb_getParameter    (ReverbContext *pContext,
 								             void          *pParam,
-											 size_t        *pValueSize,
+											 uint32_t        *pValueSize,
 											 void          *pValue);
 EXPORT_FUNCTION int Reverb_LoadPreset       (ReverbContext   *pContext);
 EXPORT_FUNCTION int Reverb_process(ReverbContext *pContext,

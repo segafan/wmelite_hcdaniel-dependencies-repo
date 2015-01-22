@@ -30,7 +30,8 @@ void    InstAlloc_Init( INST_ALLOC      *pms,
                         void            *StartAddr )
 {
     pms->TotalSize = 3;
-    pms->pNextMember = (LVM_UINT32)(((LVM_UINT32)StartAddr + 3) & 0xFFFFFFFC);/* This code will fail if the platform address space is more than 32-bits*/
+    pms->pNextMember = (((uintptr_t)StartAddr + 3) & (uintptr_t)~3);
+//    pms->pNextMember = (LVM_UINT32)(((LVM_UINT32)StartAddr + 3) & 0xFFFFFFFC);/* This code will fail if the platform address space is more than 32-bits*/
 }
 
 
