@@ -77,7 +77,8 @@ static SDL_AudioSpec used_mixer;
 static Mix_Music* music_compat_stream = NULL;
 static int volatile music_stopped = 0;
 static char *music_cmd = NULL;
-static int music_volume = MIX_MAX_VOLUME;
+// use a separate volume setting per music channel
+// static int music_volume = MIX_MAX_VOLUME;
 
 struct _Mix_Music {
     Mix_MusicType type;
@@ -123,6 +124,7 @@ struct _Mix_Music {
     int fade_step;
     int fade_steps;
 	Sint32 duration_ms;
+	int volume;
     int error;
 };
 #ifdef MID_MUSIC
@@ -271,9 +273,9 @@ void music_mixer(void *udata, Mix_Music * music_playing, Uint8 *master_stream, i
 			int fade_steps = music_playing->fade_steps;
 
 			if ( music_playing->fading == MIX_FADING_OUT ) {
-				volume = (music_volume * (fade_steps-fade_step)) / fade_steps;
+				volume = (music_playing->volume * (fade_steps-fade_step)) / fade_steps;
 			} else { /* Fading in */
-				volume = (music_volume * fade_step) / fade_steps;
+				volume = (music_playing->volume * fade_step) / fade_steps;
 			}
 			music_internal_volume(music_playing, volume);
 		} else {
@@ -1065,6 +1067,7 @@ int Mix_FadeInMusicPosCh(Mix_Music *music, int loops, int ms, int channel, doubl
     }
     music->fade_step = 0;
     music->fade_steps = ms/ms_per_step;
+	music->volume = MIX_MAX_VOLUME;
 
     /* Play the puppy */
     SDL_LockAudio();
@@ -1222,7 +1225,7 @@ static void music_internal_initialize_volume(Mix_Music *music_playing)
 	if ( music_playing->fading == MIX_FADING_IN ) {
 		music_internal_volume(music_playing, 0);
 	} else {
-		music_internal_volume(music_playing, music_volume);
+		music_internal_volume(music_playing, music_playing->volume);
 	}
 }
 
@@ -1299,17 +1302,14 @@ static void music_internal_volume(Mix_Music *music_playing, int volume)
 }
 int Mix_VolumeMusicCh(int volume, int channel)
 {
-    int prev_volume;
+    int prev_volume = -1;
 	Mix_Music* music_playing;
 
-    prev_volume = music_volume;
-    if ( volume < 0 ) {
-        return prev_volume;
-    }
+	// limit volume
     if ( volume > SDL_MIX_MAXVOLUME ) {
         volume = SDL_MIX_MAXVOLUME;
     }
-    music_volume = volume;
+
     SDL_LockAudio();
 	if ( channel == MUSIC_COMPAT_MAGIC_CHANNEL ) {
 		music_playing = music_compat_stream;
@@ -1317,7 +1317,15 @@ int Mix_VolumeMusicCh(int volume, int channel)
 		music_playing = _ChannelPlayingMusic(channel);
 	}
     if ( music_playing ) {
-    	music_internal_volume(music_playing, music_volume);
+		// find previous volume
+		prev_volume = music_playing->volume;
+		
+		// apply new volume if it wasnt a query
+		if (volume >= 0)
+		{
+			music_playing->volume = volume;
+			music_internal_volume(music_playing, volume);
+		}
     }
     SDL_UnlockAudio();
     return(prev_volume);
