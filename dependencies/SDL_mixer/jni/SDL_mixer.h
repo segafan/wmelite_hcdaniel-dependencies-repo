@@ -577,6 +577,9 @@ extern DECLSPEC int SDLCALL Mix_FadeInChannelTimed(int channel, Mix_Chunk *chunk
 extern DECLSPEC int SDLCALL Mix_SetLoops(int channel, int loops);
 extern DECLSPEC int SDLCALL Mix_SetLoopStart(int channel, int loop_start);
 
+extern DECLSPEC int SDLCALL Mix_SetMusicLoops(Mix_Music *music, int channel, int loops);
+extern DECLSPEC int SDLCALL Mix_SetMusicLoopStart(Mix_Music *music, int channel, double position);
+
 extern DECLSPEC int SDLCALL Mix_SetPlayPosition(int channel, int position);
 extern DECLSPEC int SDLCALL Mix_GetPlayLength(Mix_Chunk *chunk);
 
@@ -646,6 +649,8 @@ extern DECLSPEC int SDLCALL Mix_PausedMusic(void);
 extern DECLSPEC int SDLCALL Mix_SetMusicPositionCh(double position, int channel);
 /* For backwards compatibility. */
 extern DECLSPEC int SDLCALL Mix_SetMusicPosition(double position);
+
+extern DECLSPEC double SDLCALL Mix_GetMusicPositionCh(int channel);
 
 /* Check the status of a specific channel.
    If the specified channel is -1, check all channels.
