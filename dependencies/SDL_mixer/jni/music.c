@@ -126,6 +126,7 @@ struct _Mix_Music {
 	Sint32 duration_ms;
 	int volume;
     int error;
+	double loop_start;
 };
 #ifdef MID_MUSIC
 #ifdef USE_TIMIDITY_MIDI
@@ -240,7 +241,7 @@ static int music_halt_or_loop (Mix_Music * music_playing, int channel)
 				--music_playing->channel->music_looping;
 			}
 			current_fade = music_playing->fading;
-			music_internal_play(music_playing, 0.0, channel);
+			music_internal_play(music_playing, music_playing->loop_start, channel);
 			music_playing->fading = current_fade;
 			if ((channel != MUSIC_COMPAT_MAGIC_CHANNEL) && music_looping_hook) {
 				music_looping_hook(music_playing, channel);
@@ -1106,6 +1107,7 @@ int Mix_FadeInMusicPosCh(Mix_Music *music, int loops, int ms, int channel, doubl
 	if (loops > 0) {
 		--loops;
 	}
+	music->loop_start = 0.0; // looping at offset needs to be set by special function later
 	retval = music_internal_play(music, position, channel_to_use);
 	if (music->channel) {
 		music->channel->music_looping = loops;
@@ -1136,6 +1138,41 @@ int Mix_PlayMusicCh(Mix_Music *music, int loops, int channel)
 int Mix_PlayMusic(Mix_Music *music, int loops)
 {
 	return Mix_PlayMusicCh(music, loops, MUSIC_COMPAT_MAGIC_CHANNEL);
+}
+
+int Mix_SetMusicLoops(Mix_Music *music, int channel, int loops)
+{
+	if (loops < -1) {
+		loops = -1;
+	}
+
+    SDL_LockAudio();
+	
+	music->channel->music_looping = loops;
+
+    SDL_UnlockAudio();
+
+	return 0;
+}
+
+int Mix_SetMusicLoopStart(Mix_Music *music, int channel, double position)
+{
+	if (position < 0)
+	{
+		position = 0;
+	}
+	if (position > music->duration_ms)
+	{
+		position = music->duration_ms;
+	}
+
+    SDL_LockAudio();
+
+	music->loop_start = position;
+
+    SDL_UnlockAudio();
+
+	return 0;
 }
 
 /* Set the playing music position */
@@ -1217,6 +1254,12 @@ int Mix_SetMusicPositionCh(double position, int channel)
 int Mix_SetMusicPosition(double position)
 {
 	return Mix_SetMusicPositionCh(position, MUSIC_COMPAT_MAGIC_CHANNEL);
+}
+
+double Mix_GetMusicPositionCh(int channel)
+{
+	// ov_time_tell() for OGG
+	return 0.0f;
 }
 
 /* Set the music's initial volume */
