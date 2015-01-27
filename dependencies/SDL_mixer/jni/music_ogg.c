@@ -241,4 +241,9 @@ void OGG_jump_to_time(OGG_music *music, double time)
 #endif
 }
 
+double OGG_get_time(OGG_music *music)
+{
+	return vorbis.ov_time_tell(&music->vf);
+}
+
 #endif /* OGG_MUSIC */

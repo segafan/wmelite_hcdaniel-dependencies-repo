@@ -1256,10 +1256,63 @@ int Mix_SetMusicPosition(double position)
 	return Mix_SetMusicPositionCh(position, MUSIC_COMPAT_MAGIC_CHANNEL);
 }
 
+/* Get the current playing music position */
+double music_internal_getposition(Mix_Music *music_playing)
+{
+    double retval = -1.0;
+
+    switch (music_playing->type) {
+#ifdef MODPLUG_MUSIC
+        case MUS_MODPLUG:
+		break;
+#endif
+#ifdef MOD_MUSIC
+        case MUS_MOD:
+        break;
+#endif
+#ifdef OGG_MUSIC
+        case MUS_OGG:
+		retval = OGG_get_time(music_playing->data.ogg);
+        break;
+#endif
+#ifdef FLAC_MUSIC
+        case MUS_FLAC:
+        break;
+#endif
+#ifdef MP3_MUSIC
+        case MUS_MP3:
+        break;
+#endif
+#ifdef MP3_MAD_MUSIC
+        case MUS_MP3_MAD:
+        break;
+#endif
+        default:
+        /* TODO: Implement this for other music backends */
+        break;
+    }
+    return(retval);
+}
+
 double Mix_GetMusicPositionCh(int channel)
 {
-	// ov_time_tell() for OGG
-	return 0.0f;
+	double retval;
+	Mix_Music* music;
+
+	retval = -1.0;
+
+	SDL_LockAudio();
+	if (channel == MUSIC_COMPAT_MAGIC_CHANNEL) {
+		music = music_compat_stream;
+	} else {
+		music = _ChannelPlayingMusic(channel);
+	}
+	if (music) {
+		retval = music_internal_getposition(music);
+	}
+	SDL_UnlockAudio();
+
+	return retval;
 }
 
 /* Set the music's initial volume */
