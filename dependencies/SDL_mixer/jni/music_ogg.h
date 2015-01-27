@@ -75,4 +75,6 @@ extern void OGG_delete(OGG_music *music);
 /* Jump (seek) to a given position (time is in seconds) */
 extern void OGG_jump_to_time(OGG_music *music, double time);
 
+extern double OGG_get_time(OGG_music *music);
+
 #endif /* OGG_MUSIC */

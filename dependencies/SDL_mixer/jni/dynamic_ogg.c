@@ -94,6 +94,14 @@ int Mix_InitOgg()
             SDL_UnloadObject(vorbis.handle);
             return -1;
         }
+		vorbis.ov_time_tell =
+			(double (*)(OggVorbis_File *))
+			SDL_LoadFunction(vorbis.handle, "ov_time_tell");
+		if ( vorbis.ov_time_tell == NULL ) {
+			SDL_UnloadObject(vorbis.handle);
+			return -1;
+		}
+
     }
     ++vorbis.loaded;
 
@@ -130,6 +138,7 @@ int Mix_InitOgg()
 		vorbis.ov_time_total = ov_time_total;
         vorbis.ov_read = ov_read;
         vorbis.ov_time_seek = ov_time_seek;
+		vorbis.ov_time_tell = ov_time_tell;
     }
     ++vorbis.loaded;
 
