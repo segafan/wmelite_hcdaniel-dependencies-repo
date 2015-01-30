@@ -88,6 +88,6 @@ reverbwrappertest: $(TESTOBJS) $(TESTOBJS2)
 	$(CC) -fPIC -o $(OUTDIR)/reverbwrappertest2 $(ARCHFLAGS) -L$(OUTDIR) $(TESTOBJS2) -leffects -lm
 
 clean:
-	$(RM) -f $(OBJS) $(TESTOBJS) $(OUTDIR)/libreverbwrapper* $(OUTDIR)/reverbwrapper*
+	$(RM) -f $(OBJS) $(TESTOBJS) $(TESTOBJS2) $(OUTDIR)/libreverbwrapper* $(OUTDIR)/reverbwrapper*
 
 .PHONY: clean all

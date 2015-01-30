@@ -36,9 +36,9 @@ int main(void)
 
 
 	context.hInstance  = NULL;
-	context.auxiliary  = false;
+	context.boolAuxiliary  = 0;
 
-    context.preset     = true;
+    context.boolPreset     = 1;
     context.curPreset  = REVERB_PRESET_LAST + 1;
 	context.nextPreset = REVERB_PRESET_LARGEHALL;
 
