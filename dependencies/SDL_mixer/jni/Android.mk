@@ -107,6 +107,12 @@ ifeq ($(SUPPORT_OGG),true)
     ifeq ($(TARGET_ARCH_ABI),armeabi-v7a)
 	LOCAL_CFLAGS += -D_ARM_ASSEM_
     endif
+    ifeq ($(TARGET_ARCH_ABI),armeabi-v7a-hard)
+	LOCAL_CFLAGS += -D_ARM_ASSEM_
+    endif
+    ifeq ($(TARGET_ARCH_ABI),arm64-v8a_DISABLED)
+	LOCAL_CFLAGS += -D_ARM_ASSEM_
+    endif
     LOCAL_SRC_FILES += \
         $(VORBIS_LIBRARY_PATH)/mdct.c \
         $(VORBIS_LIBRARY_PATH)/block.c \
