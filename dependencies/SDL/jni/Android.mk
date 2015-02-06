@@ -12,7 +12,7 @@ LOCAL_MODULE := SDL2
 
 LOCAL_C_INCLUDES := $(LOCAL_PATH)/include
 
-LOCAL_ARM_MODE := arm
+# LOCAL_ARM_MODE := arm
 
 LOCAL_EXPORT_C_INCLUDES := $(LOCAL_C_INCLUDES)
 
@@ -45,8 +45,8 @@ LOCAL_SRC_FILES := \
 	$(wildcard $(LOCAL_PATH)/src/timer/*.c) \
 	$(wildcard $(LOCAL_PATH)/src/timer/unix/*.c) \
 	$(wildcard $(LOCAL_PATH)/src/video/*.c) \
-	$(wildcard $(LOCAL_PATH)/src/video/android/*.c) \
-	$(wildcard $(LOCAL_PATH)/src/test/*.c))
+	$(wildcard $(LOCAL_PATH)/src/video/android/*.c))
+#	$(wildcard $(LOCAL_PATH)/src/test/*.c))
 
 LOCAL_CFLAGS += -DGL_GLEXT_PROTOTYPES
 LOCAL_LDLIBS := -ldl -lGLESv1_CM -lGLESv2 -llog -landroid
