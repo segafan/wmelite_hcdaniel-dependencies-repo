@@ -22,6 +22,7 @@
 #include "SDL_stdinc.h"
 #include "SDL_assert.h"
 #include "SDL_log.h"
+#include "SDL_hints.h"
 
 #ifdef __ANDROID__
 
