@@ -3,7 +3,7 @@
 //
 // Design and implementation by
 // - Floris van den Berg (flvdberg@wxs.nl)
-// - Hervé Drolon (drolon@infonie.fr)
+// - Hervï¿½ Drolon (drolon@infonie.fr)
 //
 // Contributors:
 // - see changes log named 'Whatsnew.txt', see header of each .h and .cpp file
@@ -60,7 +60,12 @@
 				#define GCC_HASCLASSVISIBILITY
 			#endif
 		#endif // __GNUC__
+#if defined(__ANDROID__) && !defined(__LP64__) && defined( __arm__)
+//		#warning "Redefining callconf to ARM soft FP!"
+		#define DLL_CALLCONV __attribute__((pcs("aapcs")))
+#else
 		#define DLL_CALLCONV
+#endif
 		#if defined(GCC_HASCLASSVISIBILITY)
 			#define DLL_API __attribute__ ((visibility("default")))
 		#else
