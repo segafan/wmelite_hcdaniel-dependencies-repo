@@ -3,7 +3,7 @@ LOCAL_PATH:= $(call my-dir)
 # Reverb library
 include $(CLEAR_VARS)
 
-LOCAL_ARM_MODE := arm
+# LOCAL_ARM_MODE := arm
 
 LOCAL_SRC_FILES:= \
     Reverb/src/LVREV_ApplyNewSettings.c \
