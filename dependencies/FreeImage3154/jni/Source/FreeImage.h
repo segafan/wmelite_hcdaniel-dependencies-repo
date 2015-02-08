@@ -62,7 +62,8 @@
 		#endif // __GNUC__
 #if defined(__ANDROID__) && !defined(__LP64__) && defined( __arm__)
 //		#warning "Redefining callconf to ARM soft FP!"
-		#define DLL_CALLCONV __attribute__((pcs("aapcs")))
+//		#define DLL_CALLCONV __attribute__((pcs("aapcs")))
+		#define DLL_CALLCONV
 #else
 		#define DLL_CALLCONV
 #endif
