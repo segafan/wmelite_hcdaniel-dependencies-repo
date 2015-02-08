@@ -1,3 +1,7 @@
 #!/bin/bash
-cd jni && ndk-build clean && NDK_TOOLCHAIN_VERSION=4.6 ndk-build -j8
+if [ -z "$JENKINS_NICE_BUILD" ]; then
+cd jni && ndk-build clean && ndk-build -j8
+else
+cd jni && ndk-build clean && nice -n 20 ndk-build	
+fi
 
