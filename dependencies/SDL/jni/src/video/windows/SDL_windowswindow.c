@@ -619,8 +619,6 @@ WIN_DestroyWindow(_THIS, SDL_Window * window)
 {
     SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
 
-    window->driverdata = NULL;
-
     if (data) {
         ReleaseDC(data->hwnd, data->hdc);
         if (data->created) {
@@ -639,15 +637,17 @@ WIN_DestroyWindow(_THIS, SDL_Window * window)
         }
         SDL_free(data);
     }
+    window->driverdata = NULL;
 }
 
 SDL_bool
 WIN_GetWindowWMInfo(_THIS, SDL_Window * window, SDL_SysWMinfo * info)
 {
-    HWND hwnd = ((SDL_WindowData *) window->driverdata)->hwnd;
+    const SDL_WindowData *data = (const SDL_WindowData *) window->driverdata;
     if (info->version.major <= SDL_MAJOR_VERSION) {
         info->subsystem = SDL_SYSWM_WINDOWS;
-        info->info.win.window = hwnd;
+        info->info.win.window = data->hwnd;
+        info->info.win.hdc = data->hdc;
         return SDL_TRUE;
     } else {
         SDL_SetError("Application not compiled with SDL %d.%d\n",
@@ -783,6 +783,12 @@ WIN_UpdateClipCursor(SDL_Window *window)
     } else {
         ClipCursor(NULL);
     }
+}
+
+int
+WIN_SetWindowHitTest(SDL_Window *window, SDL_bool enabled)
+{
+    return 0;  /* just succeed, the real work is done elsewhere. */
 }
 
 #endif /* SDL_VIDEO_DRIVER_WINDOWS */

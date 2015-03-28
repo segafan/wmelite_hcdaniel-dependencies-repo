@@ -30,6 +30,7 @@
 #include "../../events/SDL_events_c.h"
 #include "../../events/SDL_touch_c.h"
 #include "../../events/scancodes_windows.h"
+#include "SDL_assert.h"
 
 /* Dropfile support */
 #include <shellapi.h>
@@ -438,33 +439,54 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             HRAWINPUT hRawInput = (HRAWINPUT)lParam;
             RAWINPUT inp;
             UINT size = sizeof(inp);
+            const SDL_bool isRelative = mouse->relative_mode || mouse->relative_mode_warp;
+            const SDL_bool isCapture = ((data->window->flags & SDL_WINDOW_MOUSE_CAPTURE) != 0);
 
-            if (!mouse->relative_mode || mouse->relative_mode_warp || mouse->focus != data->window) {
-                break;
+            if (!isRelative || mouse->focus != data->window) {
+                if (!isCapture) {
+                    break;
+                }
             }
 
             GetRawInputData(hRawInput, RID_INPUT, &inp, &size, sizeof(RAWINPUTHEADER));
 
             /* Mouse data */
             if (inp.header.dwType == RIM_TYPEMOUSE) {
-                RAWMOUSE* mouse = &inp.data.mouse;
+                if (isRelative) {
+                    RAWMOUSE* rawmouse = &inp.data.mouse;
 
-                if ((mouse->usFlags & 0x01) == MOUSE_MOVE_RELATIVE) {
-                    SDL_SendMouseMotion(data->window, 0, 1, (int)mouse->lLastX, (int)mouse->lLastY);
-                } else {
-                    /* synthesize relative moves from the abs position */
-                    static SDL_Point initialMousePoint;
-                    if (initialMousePoint.x == 0 && initialMousePoint.y == 0) {
-                        initialMousePoint.x = mouse->lLastX;
-                        initialMousePoint.y = mouse->lLastY;
+                    if ((rawmouse->usFlags & 0x01) == MOUSE_MOVE_RELATIVE) {
+                        SDL_SendMouseMotion(data->window, 0, 1, (int)rawmouse->lLastX, (int)rawmouse->lLastY);
+                    } else {
+                        /* synthesize relative moves from the abs position */
+                        static SDL_Point initialMousePoint;
+                        if (initialMousePoint.x == 0 && initialMousePoint.y == 0) {
+                            initialMousePoint.x = rawmouse->lLastX;
+                            initialMousePoint.y = rawmouse->lLastY;
+                        }
+
+                        SDL_SendMouseMotion(data->window, 0, 1, (int)(rawmouse->lLastX-initialMousePoint.x), (int)(rawmouse->lLastY-initialMousePoint.y) );
+
+                        initialMousePoint.x = rawmouse->lLastX;
+                        initialMousePoint.y = rawmouse->lLastY;
                     }
-
-                    SDL_SendMouseMotion(data->window, 0, 1, (int)(mouse->lLastX-initialMousePoint.x), (int)(mouse->lLastY-initialMousePoint.y));
-
-                    initialMousePoint.x = mouse->lLastX;
-                    initialMousePoint.y = mouse->lLastY;
+                    WIN_CheckRawMouseButtons(rawmouse->usButtonFlags, data);
+                } else if (isCapture) {
+                    /* we check for where Windows thinks the system cursor lives in this case, so we don't really lose mouse accel, etc. */
+                    POINT pt;
+                    GetCursorPos(&pt);
+                    if (WindowFromPoint(pt) != hwnd) {  /* if in the window, WM_MOUSEMOVE, etc, will cover it. */
+                        ScreenToClient(hwnd, &pt);
+                        SDL_SendMouseMotion(data->window, 0, 0, (int) pt.x, (int) pt.y);
+                        SDL_SendMouseButton(data->window, 0, GetAsyncKeyState(VK_LBUTTON) & 0x8000 ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_LEFT);
+                        SDL_SendMouseButton(data->window, 0, GetAsyncKeyState(VK_RBUTTON) & 0x8000 ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_RIGHT);
+                        SDL_SendMouseButton(data->window, 0, GetAsyncKeyState(VK_MBUTTON) & 0x8000 ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_MIDDLE);
+                        SDL_SendMouseButton(data->window, 0, GetAsyncKeyState(VK_XBUTTON1) & 0x8000 ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_X1);
+                        SDL_SendMouseButton(data->window, 0, GetAsyncKeyState(VK_XBUTTON2) & 0x8000 ? SDL_PRESSED : SDL_RELEASED, SDL_BUTTON_X2);
+                    }
+                } else {
+                    SDL_assert(0 && "Shouldn't happen");
                 }
-                WIN_CheckRawMouseButtons(mouse->usButtonFlags, data);
             }
         }
         break;
@@ -476,12 +498,12 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             s_AccumulatedMotion += GET_WHEEL_DELTA_WPARAM(wParam);
             if (s_AccumulatedMotion > 0) {
                 while (s_AccumulatedMotion >= WHEEL_DELTA) {
-                    SDL_SendMouseWheel(data->window, 0, 0, 1);
+                    SDL_SendMouseWheel(data->window, 0, 0, 1, SDL_MOUSEWHEEL_NORMAL);
                     s_AccumulatedMotion -= WHEEL_DELTA;
                 }
             } else {
                 while (s_AccumulatedMotion <= -WHEEL_DELTA) {
-                    SDL_SendMouseWheel(data->window, 0, 0, -1);
+                    SDL_SendMouseWheel(data->window, 0, 0, -1, SDL_MOUSEWHEEL_NORMAL);
                     s_AccumulatedMotion += WHEEL_DELTA;
                 }
             }
@@ -495,12 +517,12 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             s_AccumulatedMotion += GET_WHEEL_DELTA_WPARAM(wParam);
             if (s_AccumulatedMotion > 0) {
                 while (s_AccumulatedMotion >= WHEEL_DELTA) {
-                    SDL_SendMouseWheel(data->window, 0, 1, 0);
+                    SDL_SendMouseWheel(data->window, 0, 1, 0, SDL_MOUSEWHEEL_NORMAL);
                     s_AccumulatedMotion -= WHEEL_DELTA;
                 }
             } else {
                 while (s_AccumulatedMotion <= -WHEEL_DELTA) {
-                    SDL_SendMouseWheel(data->window, 0, -1, 0);
+                    SDL_SendMouseWheel(data->window, 0, -1, 0, SDL_MOUSEWHEEL_NORMAL);
                     s_AccumulatedMotion += WHEEL_DELTA;
                 }
             }
@@ -509,7 +531,7 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
 #ifdef WM_MOUSELEAVE
     case WM_MOUSELEAVE:
-        if (SDL_GetMouseFocus() == data->window && !SDL_GetMouse()->relative_mode) {
+        if (SDL_GetMouseFocus() == data->window && !SDL_GetMouse()->relative_mode && !(data->window->flags & SDL_WINDOW_MOUSE_CAPTURE)) {
             if (!IsIconic(hwnd)) {
                 POINT cursorPos;
                 GetCursorPos(&cursorPos);
@@ -537,10 +559,11 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
 
             GetKeyboardState(keyboardState);
             if (ToUnicode(wParam, (lParam >> 16) & 0xff, keyboardState, (LPWSTR)&utf32, 1, 0) > 0) {
-                WORD repetition;
-                for (repetition = lParam & 0xffff; repetition > 0; repetition--) {
-                    WIN_ConvertUTF32toUTF8(utf32, text);
-                    SDL_SendKeyboardText(text);
+                if (WIN_ConvertUTF32toUTF8(utf32, text)) {
+                    WORD repetition;
+                    for (repetition = lParam & 0xffff; repetition > 0; repetition--) {
+                        SDL_SendKeyboardText(text);
+                    }
                 }
             }
         }
@@ -863,6 +886,33 @@ WIN_WindowProc(HWND hwnd, UINT msg, WPARAM wParam, LPARAM lParam)
             return 0;
         }
         break;
+
+    case WM_NCHITTEST:
+        {
+            SDL_Window *window = data->window;
+            if (window->hit_test) {
+                POINT winpoint = { (int) LOWORD(lParam), (int) HIWORD(lParam) };
+                if (ScreenToClient(hwnd, &winpoint)) {
+                    const SDL_Point point = { (int) winpoint.x, (int) winpoint.y };
+                    const SDL_HitTestResult rc = window->hit_test(window, &point, window->hit_test_data);
+                    switch (rc) {
+                        case SDL_HITTEST_DRAGGABLE: return HTCAPTION;
+                        case SDL_HITTEST_RESIZE_TOPLEFT: return HTTOPLEFT;
+                        case SDL_HITTEST_RESIZE_TOP: return HTTOP;
+                        case SDL_HITTEST_RESIZE_TOPRIGHT: return HTTOPRIGHT;
+                        case SDL_HITTEST_RESIZE_RIGHT: return HTRIGHT;
+                        case SDL_HITTEST_RESIZE_BOTTOMRIGHT: return HTBOTTOMRIGHT;
+                        case SDL_HITTEST_RESIZE_BOTTOM: return HTBOTTOM;
+                        case SDL_HITTEST_RESIZE_BOTTOMLEFT: return HTBOTTOMLEFT;
+                        case SDL_HITTEST_RESIZE_LEFT: return HTLEFT;
+                        case SDL_HITTEST_NORMAL: return HTCLIENT;
+                    }
+                }
+                /* If we didn't return, this will call DefWindowProc below. */
+            }
+        }
+        break;
+
     }
 
     /* If there's a window proc, assume it's going to handle messages */

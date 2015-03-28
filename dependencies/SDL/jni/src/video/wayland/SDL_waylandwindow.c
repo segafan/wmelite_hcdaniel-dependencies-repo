@@ -29,6 +29,7 @@
 #include "SDL_waylandwindow.h"
 #include "SDL_waylandvideo.h"
 #include "SDL_waylandtouch.h"
+#include "SDL_waylanddyn.h"
 
 static void
 handle_ping(void *data, struct wl_shell_surface *shell_surface,
@@ -243,8 +244,6 @@ void Wayland_DestroyWindow(_THIS, SDL_Window *window)
     SDL_VideoData *data = _this->driverdata;
     SDL_WindowData *wind = window->driverdata;
 
-    window->driverdata = NULL;
-
     if (data) {
         SDL_EGL_DestroySurface(_this, wind->egl_surface);
         WAYLAND_wl_egl_window_destroy(wind->egl_window);
@@ -261,6 +260,7 @@ void Wayland_DestroyWindow(_THIS, SDL_Window *window)
         SDL_free(wind);
         WAYLAND_wl_display_flush(data->display);
     }
+    window->driverdata = NULL;
 }
 
 #endif /* SDL_VIDEO_DRIVER_WAYLAND && SDL_VIDEO_OPENGL_EGL */
