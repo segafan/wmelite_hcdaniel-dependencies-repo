@@ -34,6 +34,7 @@
 #include "../../events/SDL_mouse_c.h"
 #include "../../events/SDL_touch_c.h"
 #include "../../events/SDL_windowevents_c.h"
+#include "../../events/SDL_dropevents_c.h"
 #include "SDL_cocoavideo.h"
 #include "SDL_cocoashape.h"
 #include "SDL_cocoamouse.h"
@@ -52,15 +53,21 @@
 #define FULLSCREEN_MASK (SDL_WINDOW_FULLSCREEN_DESKTOP | SDL_WINDOW_FULLSCREEN)
 
 
-@interface SDLWindow : NSWindow
+@interface SDLWindow : NSWindow <NSDraggingDestination>
 /* These are needed for borderless/fullscreen windows */
 - (BOOL)canBecomeKeyWindow;
 - (BOOL)canBecomeMainWindow;
 - (void)sendEvent:(NSEvent *)event;
 - (void)doCommandBySelector:(SEL)aSelector;
+
+/* Handle drag-and-drop of files onto the SDL window. */
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender;
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender;
+- (BOOL)wantsPeriodicDraggingUpdates;
 @end
 
 @implementation SDLWindow
+
 - (BOOL)canBecomeKeyWindow
 {
     return YES;
@@ -96,6 +103,51 @@
 {
     /*NSLog(@"doCommandBySelector: %@\n", NSStringFromSelector(aSelector));*/
 }
+
+- (NSDragOperation)draggingEntered:(id <NSDraggingInfo>)sender
+{
+    return NSDragOperationGeneric;
+}
+
+- (BOOL)performDragOperation:(id <NSDraggingInfo>)sender
+{
+    NSURL *fileURL = [NSURL URLFromPasteboard:[sender draggingPasteboard]];
+    NSNumber *isAlias = nil;
+
+    if (fileURL == nil) {
+        return NO;
+    }
+
+    /* Functionality for resolving URL aliases was added with OS X 10.6. */
+    if ([fileURL respondsToSelector:@selector(getResourceValue:forKey:error:)]) {
+        [fileURL getResourceValue:&isAlias forKey:NSURLIsAliasFileKey error:nil];
+    }
+
+    /* If the URL is an alias, resolve it. */
+    if ([isAlias boolValue]) {
+        NSURLBookmarkResolutionOptions opts = NSURLBookmarkResolutionWithoutMounting | NSURLBookmarkResolutionWithoutUI;
+        NSData *bookmark = [NSURL bookmarkDataWithContentsOfURL:fileURL error:nil];
+        if (bookmark != nil) {
+            NSURL *resolvedURL = [NSURL URLByResolvingBookmarkData:bookmark
+                                                           options:opts
+                                                     relativeToURL:nil
+                                               bookmarkDataIsStale:nil
+                                                             error:nil];
+
+            if (resolvedURL != nil) {
+                fileURL = resolvedURL;
+            }
+        }
+    }
+
+    return (BOOL) SDL_SendDropFile([[fileURL path] UTF8String]);
+}
+
+- (BOOL)wantsPeriodicDraggingUpdates
+{
+    return NO;
+}
+
 @end
 
 
@@ -103,8 +155,7 @@ static Uint32 s_moveHack;
 
 static void ConvertNSRect(NSScreen *screen, BOOL fullscreen, NSRect *r)
 {
-    NSRect visibleScreen = fullscreen ? [screen frame] : [screen visibleFrame];
-    r->origin.y = (visibleScreen.origin.y + visibleScreen.size.height) - r->origin.y - r->size.height;
+    r->origin.y = CGDisplayPixelsHigh(kCGDirectMainDisplay) - r->origin.y - r->size.height;
 }
 
 static void
@@ -192,6 +243,7 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
     inFullscreenTransition = NO;
     pendingWindowOperation = PENDING_OPERATION_NONE;
     isMoving = NO;
+    isDragAreaRunning = NO;
 
     center = [NSNotificationCenter defaultCenter];
 
@@ -322,7 +374,6 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
     NSNotificationCenter *center;
     NSWindow *window = _data->nswindow;
     NSView *view = [window contentView];
-    NSArray *windows = nil;
 
     center = [NSNotificationCenter defaultCenter];
 
@@ -350,26 +401,6 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
     if ([view nextResponder] == self) {
         [view setNextResponder:nil];
     }
-
-    /* Make the next window in the z-order Key. If we weren't the foreground
-       when closed, this is a no-op.
-       !!! FIXME: Note that this is a hack, and there are corner cases where
-       !!! FIXME:  this fails (such as the About box). The typical nib+RunLoop
-       !!! FIXME:  handles this for Cocoa apps, but we bypass all that in SDL.
-       !!! FIXME:  We should remove this code when we find a better way to
-       !!! FIXME:  have the system do this for us. See discussion in
-       !!! FIXME:   http://bugzilla.libsdl.org/show_bug.cgi?id=1825
-    */
-    windows = [NSApp orderedWindows];
-    for (NSWindow *win in windows)
-    {
-        if (win == window) {
-            continue;
-        }
-
-        [win makeKeyAndOrderFront:self];
-        break;
-    }
 }
 
 - (BOOL)isMoving
@@ -385,16 +416,15 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
 
 - (void)windowDidFinishMoving
 {
-    if ([self isMoving])
-    {
+    if ([self isMoving]) {
         isMoving = NO;
 
         SDL_Mouse *mouse = SDL_GetMouse();
-        if (pendingWindowWarpX >= 0 && pendingWindowWarpY >= 0) {
-            mouse->WarpMouse(_data->window, pendingWindowWarpX, pendingWindowWarpY);
-            pendingWindowWarpX = pendingWindowWarpY = -1;
+        if (pendingWindowWarpX != INT_MAX && pendingWindowWarpY != INT_MAX) {
+            mouse->WarpMouseGlobal(pendingWindowWarpX, pendingWindowWarpY);
+            pendingWindowWarpX = pendingWindowWarpY = INT_MAX;
         }
-        if (mouse->relative_mode && SDL_GetMouseFocus() == _data->window) {
+        if (mouse->relative_mode && !mouse->relative_mode_warp && mouse->focus == _data->window) {
             mouse->SetRelativeMouseMode(SDL_TRUE);
         }
     }
@@ -414,7 +444,7 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
 - (void)windowWillMove:(NSNotification *)aNotification
 {
     if ([_data->nswindow isKindOfClass:[SDLWindow class]]) {
-        pendingWindowWarpX = pendingWindowWarpY = -1;
+        pendingWindowWarpX = pendingWindowWarpY = INT_MAX;
         isMoving = YES;
     }
 }
@@ -501,7 +531,7 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
 {
     SDL_Window *window = _data->window;
     SDL_Mouse *mouse = SDL_GetMouse();
-    if (mouse->relative_mode && ![self isMoving]) {
+    if (mouse->relative_mode && !mouse->relative_mode_warp && ![self isMoving]) {
         mouse->SetRelativeMouseMode(SDL_TRUE);
     }
 
@@ -533,7 +563,7 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
 - (void)windowDidResignKey:(NSNotification *)aNotification
 {
     SDL_Mouse *mouse = SDL_GetMouse();
-    if (mouse->relative_mode) {
+    if (mouse->relative_mode && !mouse->relative_mode_warp) {
         mouse->SetRelativeMouseMode(SDL_FALSE);
     }
 
@@ -663,9 +693,47 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
     /*Cocoa_HandleKeyEvent(SDL_GetVideoDevice(), theEvent);*/
 }
 
+/* We'll respond to selectors by doing nothing so we don't beep.
+ * The escape key gets converted to a "cancel" selector, etc.
+ */
+- (void)doCommandBySelector:(SEL)aSelector
+{
+    /*NSLog(@"doCommandBySelector: %@\n", NSStringFromSelector(aSelector));*/
+}
+
+- (BOOL)processHitTest:(NSEvent *)theEvent
+{
+    SDL_assert(isDragAreaRunning == [_data->nswindow isMovableByWindowBackground]);
+
+    if (_data->window->hit_test) {  /* if no hit-test, skip this. */
+        const NSPoint location = [theEvent locationInWindow];
+        const SDL_Point point = { (int) location.x, _data->window->h - (((int) location.y)-1) };
+        const SDL_HitTestResult rc = _data->window->hit_test(_data->window, &point, _data->window->hit_test_data);
+        if (rc == SDL_HITTEST_DRAGGABLE) {
+            if (!isDragAreaRunning) {
+                isDragAreaRunning = YES;
+                [_data->nswindow setMovableByWindowBackground:YES];
+            }
+            return YES;  /* dragging! */
+        }
+    }
+
+    if (isDragAreaRunning) {
+        isDragAreaRunning = NO;
+        [_data->nswindow setMovableByWindowBackground:NO];
+        return YES;  /* was dragging, drop event. */
+    }
+
+    return NO;  /* not a special area, carry on. */
+}
+
 - (void)mouseDown:(NSEvent *)theEvent
 {
     int button;
+
+    if ([self processHitTest:theEvent]) {
+        return;  /* dragging, drop event. */
+    }
 
     switch ([theEvent buttonNumber]) {
     case 0:
@@ -704,6 +772,10 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
 - (void)mouseUp:(NSEvent *)theEvent
 {
     int button;
+
+    if ([self processHitTest:theEvent]) {
+        return;  /* stopped dragging, drop event. */
+    }
 
     switch ([theEvent buttonNumber]) {
     case 0:
@@ -744,6 +816,10 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
     NSPoint point;
     int x, y;
 
+    if ([self processHitTest:theEvent]) {
+        return;  /* dragging, drop event. */
+    }
+
     if (mouse->relative_mode) {
         return;
     }
@@ -752,8 +828,8 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
     x = (int)point.x;
     y = (int)(window->h - point.y);
 
-    if (x < 0 || x >= window->w || y < 0 || y >= window->h) {
-        if (window->flags & SDL_WINDOW_INPUT_GRABBED) {
+    if (window->flags & SDL_WINDOW_INPUT_GRABBED) {
+        if (x < 0 || x >= window->w || y < 0 || y >= window->h) {
             if (x < 0) {
                 x = 0;
             } else if (x >= window->w) {
@@ -812,48 +888,48 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
 
 - (void)touchesBeganWithEvent:(NSEvent *) theEvent
 {
-    [self handleTouches:COCOA_TOUCH_DOWN withEvent:theEvent];
+    NSSet *touches = [theEvent touchesMatchingPhase:NSTouchPhaseAny inView:nil];
+    int existingTouchCount = 0;
+
+    for (NSTouch* touch in touches) {
+        if ([touch phase] != NSTouchPhaseBegan) {
+            existingTouchCount++;
+        }
+    }
+    if (existingTouchCount == 0) {
+        SDL_TouchID touchID = (SDL_TouchID)(intptr_t)[[touches anyObject] device];
+        int numFingers = SDL_GetNumTouchFingers(touchID);
+        DLog("Reset Lost Fingers: %d", numFingers);
+        for (--numFingers; numFingers >= 0; --numFingers) {
+            SDL_Finger* finger = SDL_GetTouchFinger(touchID, numFingers);
+            SDL_SendTouch(touchID, finger->id, SDL_FALSE, 0, 0, 0);
+        }
+    }
+
+    DLog("Began Fingers: %lu .. existing: %d", (unsigned long)[touches count], existingTouchCount);
+    [self handleTouches:NSTouchPhaseBegan withEvent:theEvent];
 }
 
 - (void)touchesMovedWithEvent:(NSEvent *) theEvent
 {
-    [self handleTouches:COCOA_TOUCH_MOVE withEvent:theEvent];
+    [self handleTouches:NSTouchPhaseMoved withEvent:theEvent];
 }
 
 - (void)touchesEndedWithEvent:(NSEvent *) theEvent
 {
-    [self handleTouches:COCOA_TOUCH_UP withEvent:theEvent];
+    [self handleTouches:NSTouchPhaseEnded withEvent:theEvent];
 }
 
 - (void)touchesCancelledWithEvent:(NSEvent *) theEvent
 {
-    [self handleTouches:COCOA_TOUCH_CANCELLED withEvent:theEvent];
+    [self handleTouches:NSTouchPhaseCancelled withEvent:theEvent];
 }
 
-- (void)handleTouches:(cocoaTouchType)type withEvent:(NSEvent *)event
+- (void)handleTouches:(NSTouchPhase) phase withEvent:(NSEvent *) theEvent
 {
-    NSSet *touches = 0;
-    NSEnumerator *enumerator;
-    NSTouch *touch;
+    NSSet *touches = [theEvent touchesMatchingPhase:phase inView:nil];
 
-    switch (type) {
-        case COCOA_TOUCH_DOWN:
-            touches = [event touchesMatchingPhase:NSTouchPhaseBegan inView:nil];
-            break;
-        case COCOA_TOUCH_UP:
-            touches = [event touchesMatchingPhase:NSTouchPhaseEnded inView:nil];
-            break;
-        case COCOA_TOUCH_CANCELLED:
-            touches = [event touchesMatchingPhase:NSTouchPhaseCancelled inView:nil];
-            break;
-        case COCOA_TOUCH_MOVE:
-            touches = [event touchesMatchingPhase:NSTouchPhaseMoved inView:nil];
-            break;
-    }
-
-    enumerator = [touches objectEnumerator];
-    touch = (NSTouch*)[enumerator nextObject];
-    while (touch) {
+    for (NSTouch *touch in touches) {
         const SDL_TouchID touchId = (SDL_TouchID)(intptr_t)[touch device];
         if (!SDL_GetTouch(touchId)) {
             if (SDL_AddTouch(touchId, "") < 0) {
@@ -867,20 +943,20 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
         /* Make the origin the upper left instead of the lower left */
         y = 1.0f - y;
 
-        switch (type) {
-        case COCOA_TOUCH_DOWN:
+        switch (phase) {
+        case NSTouchPhaseBegan:
             SDL_SendTouch(touchId, fingerId, SDL_TRUE, x, y, 1.0f);
             break;
-        case COCOA_TOUCH_UP:
-        case COCOA_TOUCH_CANCELLED:
+        case NSTouchPhaseEnded:
+        case NSTouchPhaseCancelled:
             SDL_SendTouch(touchId, fingerId, SDL_FALSE, x, y, 1.0f);
             break;
-        case COCOA_TOUCH_MOVE:
+        case NSTouchPhaseMoved:
             SDL_SendTouchMotion(touchId, fingerId, x, y, 1.0f);
             break;
+        default:
+            break;
         }
-
-        touch = (NSTouch*)[enumerator nextObject];
     }
 }
 
@@ -890,12 +966,21 @@ SetWindowStyle(SDL_Window * window, unsigned int style)
 
 /* The default implementation doesn't pass rightMouseDown to responder chain */
 - (void)rightMouseDown:(NSEvent *)theEvent;
+- (BOOL)mouseDownCanMoveWindow;
 @end
 
 @implementation SDLView
 - (void)rightMouseDown:(NSEvent *)theEvent
 {
     [[self nextResponder] rightMouseDown:theEvent];
+}
+
+- (BOOL)mouseDownCanMoveWindow
+{
+    /* Always say YES, but this doesn't do anything until we call
+       -[NSWindow setMovableByWindowBackground:YES], which we ninja-toggle
+       during mouse events when we're using a drag area. */
+    return YES;
 }
 
 - (void)resetCursorRects
@@ -921,7 +1006,7 @@ SetupWindowData(_THIS, SDL_Window * window, NSWindow *nswindow, SDL_bool created
     SDL_WindowData *data;
 
     /* Allocate the window data */
-    data = (SDL_WindowData *) SDL_calloc(1, sizeof(*data));
+    window->driverdata = data = (SDL_WindowData *) SDL_calloc(1, sizeof(*data));
     if (!data) {
         return SDL_OutOfMemory();
     }
@@ -1009,23 +1094,20 @@ Cocoa_CreateWindow(_THIS, SDL_Window * window)
     NSRect rect;
     SDL_Rect bounds;
     unsigned int style;
+    NSArray *screens = [NSScreen screens];
 
     Cocoa_GetDisplayBounds(_this, display, &bounds);
     rect.origin.x = window->x;
     rect.origin.y = window->y;
     rect.size.width = window->w;
     rect.size.height = window->h;
-    ConvertNSRect([[NSScreen screens] objectAtIndex:0], (window->flags & FULLSCREEN_MASK), &rect);
+    ConvertNSRect([screens objectAtIndex:0], (window->flags & FULLSCREEN_MASK), &rect);
 
     style = GetWindowStyle(window);
 
     /* Figure out which screen to place this window */
-    NSArray *screens = [NSScreen screens];
     NSScreen *screen = nil;
-    NSScreen *candidate;
-    int i, count = [screens count];
-    for (i = 0; i < count; ++i) {
-        candidate = [screens objectAtIndex:i];
+    for (NSScreen *candidate in screens) {
         NSRect screenRect = [candidate frame];
         if (rect.origin.x >= screenRect.origin.x &&
             rect.origin.x < screenRect.origin.x + screenRect.size.width &&
@@ -1048,7 +1130,7 @@ Cocoa_CreateWindow(_THIS, SDL_Window * window)
     [nswindow setBackgroundColor:[NSColor blackColor]];
 
     if (videodata->allow_spaces) {
-        SDL_assert(videodata->osversion >= 0x1070);
+        SDL_assert(floor(NSAppKitVersionNumber) > NSAppKitVersionNumber10_6);
         SDL_assert([nswindow respondsToSelector:@selector(toggleFullScreen:)]);
         /* we put FULLSCREEN_DESKTOP windows in their own Space, without a toggle button or menubar, later */
         if (window->flags & SDL_WINDOW_RESIZABLE) {
@@ -1069,6 +1151,9 @@ Cocoa_CreateWindow(_THIS, SDL_Window * window)
 
     [nswindow setContentView: contentView];
     [contentView release];
+
+    /* Allow files and folders to be dragged onto the window by users */
+    [nswindow registerForDraggedTypes:[NSArray arrayWithObject:(NSString *)kUTTypeFileURL]];
 
     [pool release];
 
@@ -1239,6 +1324,7 @@ Cocoa_RaiseWindow(_THIS, SDL_Window * window)
      */
     [windowData->listener pauseVisibleObservation];
     if (![nswindow isMiniaturized] && [nswindow isVisible]) {
+        [NSApp activateIgnoringOtherApps:YES];
         [nswindow makeKeyAndOrderFront:nil];
     }
     [windowData->listener resumeVisibleObservation];
@@ -1300,6 +1386,7 @@ Cocoa_RebuildWindow(SDL_WindowData * data, NSWindow * nswindow, unsigned style)
     [data->listener close];
     data->nswindow = [[SDLWindow alloc] initWithContentRect:[[nswindow contentView] frame] styleMask:style backing:NSBackingStoreBuffered defer:NO screen:[nswindow screen]];
     [data->nswindow setContentView:[nswindow contentView]];
+    [data->nswindow registerForDraggedTypes:[NSArray arrayWithObject:(NSString *)kUTTypeFileURL]];
     /* See comment in SetupWindowData. */
     [data->nswindow setOneShot:NO];
     [data->listener listen:data];
@@ -1488,8 +1575,6 @@ Cocoa_DestroyWindow(_THIS, SDL_Window * window)
     NSAutoreleasePool *pool = [[NSAutoreleasePool alloc] init];
     SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
 
-    window->driverdata = NULL;
-
     if (data) {
         [data->listener close];
         [data->listener release];
@@ -1506,6 +1591,8 @@ Cocoa_DestroyWindow(_THIS, SDL_Window * window)
 
         SDL_free(data);
     }
+    window->driverdata = NULL;
+
     [pool release];
 }
 
@@ -1565,6 +1652,12 @@ Cocoa_SetWindowFullscreenSpace(SDL_Window * window, SDL_bool state)
     [pool release];
 
     return succeeded;
+}
+
+int
+Cocoa_SetWindowHitTest(SDL_Window * window, SDL_bool enabled)
+{
+    return 0;  /* just succeed, the real work is done elsewhere. */
 }
 
 #endif /* SDL_VIDEO_DRIVER_COCOA */
