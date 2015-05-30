@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -371,14 +371,8 @@ void
 WIN_SetWindowTitle(_THIS, SDL_Window * window)
 {
     HWND hwnd = ((SDL_WindowData *) window->driverdata)->hwnd;
-    LPTSTR title;
-
-    if (window->title) {
-        title = WIN_UTF8ToString(window->title);
-    } else {
-        title = NULL;
-    }
-    SetWindowText(hwnd, title ? title : TEXT(""));
+    LPTSTR title = WIN_UTF8ToString(window->title);
+    SetWindowText(hwnd, title);
     SDL_free(title);
 }
 
@@ -621,6 +615,7 @@ WIN_DestroyWindow(_THIS, SDL_Window * window)
 
     if (data) {
         ReleaseDC(data->hwnd, data->hdc);
+        RemoveProp(data->hwnd, TEXT("SDL_WindowData"));
         if (data->created) {
             DestroyWindow(data->hwnd);
         } else {

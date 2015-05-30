@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -333,7 +333,7 @@ SetWindowBordered(Display *display, int screen, Window window, SDL_bool border)
 
         X11_XChangeProperty(display, window, WM_HINTS, WM_HINTS, 32,
                         PropModeReplace, (unsigned char *) &MWMHints,
-                        sizeof(MWMHints) / 4);
+                        sizeof(MWMHints) / sizeof(long));
     } else {  /* set the transient hints instead, if necessary */
         X11_XSetTransientForHint(display, window, RootWindow(display, screen));
     }
@@ -656,67 +656,39 @@ X11_SetWindowTitle(_THIS, SDL_Window * window)
 {
     SDL_WindowData *data = (SDL_WindowData *) window->driverdata;
     Display *display = data->videodata->display;
-    XTextProperty titleprop, iconprop;
+    XTextProperty titleprop;
     Status status;
-    const char *title = window->title;
-    const char *icon = NULL;
+    const char *title = window->title ? window->title : "";
+    char *title_locale = NULL;
 
 #ifdef X_HAVE_UTF8_STRING
     Atom _NET_WM_NAME = data->videodata->_NET_WM_NAME;
-    Atom _NET_WM_ICON_NAME = data->videodata->_NET_WM_ICON_NAME;
 #endif
 
-    if (title != NULL) {
-        char *title_locale = SDL_iconv_utf8_locale(title);
-        if (!title_locale) {
-            SDL_OutOfMemory();
-            return;
-        }
-        status = X11_XStringListToTextProperty(&title_locale, 1, &titleprop);
-        SDL_free(title_locale);
-        if (status) {
-            X11_XSetTextProperty(display, data->xwindow, &titleprop, XA_WM_NAME);
+    title_locale = SDL_iconv_utf8_locale(title);
+    if (!title_locale) {
+        SDL_OutOfMemory();
+        return;
+    }
+
+    status = X11_XStringListToTextProperty(&title_locale, 1, &titleprop);
+    SDL_free(title_locale);
+    if (status) {
+        X11_XSetTextProperty(display, data->xwindow, &titleprop, XA_WM_NAME);
+        X11_XFree(titleprop.value);
+    }
+#ifdef X_HAVE_UTF8_STRING
+    if (SDL_X11_HAVE_UTF8) {
+        status = X11_Xutf8TextListToTextProperty(display, (char **) &title, 1,
+                                            XUTF8StringStyle, &titleprop);
+        if (status == Success) {
+            X11_XSetTextProperty(display, data->xwindow, &titleprop,
+                                 _NET_WM_NAME);
             X11_XFree(titleprop.value);
         }
-#ifdef X_HAVE_UTF8_STRING
-        if (SDL_X11_HAVE_UTF8) {
-            status =
-                X11_Xutf8TextListToTextProperty(display, (char **) &title, 1,
-                                            XUTF8StringStyle, &titleprop);
-            if (status == Success) {
-                X11_XSetTextProperty(display, data->xwindow, &titleprop,
-                                 _NET_WM_NAME);
-                X11_XFree(titleprop.value);
-            }
-        }
-#endif
     }
-    if (icon != NULL) {
-        char *icon_locale = SDL_iconv_utf8_locale(icon);
-        if (!icon_locale) {
-            SDL_OutOfMemory();
-            return;
-        }
-        status = X11_XStringListToTextProperty(&icon_locale, 1, &iconprop);
-        SDL_free(icon_locale);
-        if (status) {
-            X11_XSetTextProperty(display, data->xwindow, &iconprop,
-                             XA_WM_ICON_NAME);
-            X11_XFree(iconprop.value);
-        }
-#ifdef X_HAVE_UTF8_STRING
-        if (SDL_X11_HAVE_UTF8) {
-            status =
-                X11_Xutf8TextListToTextProperty(display, (char **) &icon, 1,
-                                            XUTF8StringStyle, &iconprop);
-            if (status == Success) {
-                X11_XSetTextProperty(display, data->xwindow, &iconprop,
-                                 _NET_WM_ICON_NAME);
-                X11_XFree(iconprop.value);
-            }
-        }
 #endif
-    }
+
     X11_XFlush(display);
 }
 
@@ -912,6 +884,24 @@ X11_SetWindowBordered(_THIS, SDL_Window * window, SDL_bool bordered)
     X11_XCheckIfEvent(display, &event, &isMapNotify, (XPointer)&data->xwindow);
 }
 
+static SDL_bool
+X11_HasWindowManager(const SDL_WindowData *data)
+{
+    const SDL_DisplayData *displaydata =
+        (SDL_DisplayData *) SDL_GetDisplayForWindow(data->window)->driverdata;
+    Display *display = data->videodata->display;
+    const int screen  = displaydata->screen;
+    char atomname[16];
+    Atom atom;
+
+    /* Compliments to Chromium for this technique.
+        Window Managers are supposed to own "WM_Sx" selections, where
+        "x" is the screen number (ICCCM 2.8). */
+    SDL_snprintf(atomname, sizeof (atomname), "WM_S%d", screen);
+    atom = X11_XInternAtom(display, atomname, True);
+    return ((atom != None) && (X11_XGetSelectionOwner(display, atom) != None));
+}
+
 void
 X11_ShowWindow(_THIS, SDL_Window * window)
 {
@@ -925,6 +915,12 @@ X11_ShowWindow(_THIS, SDL_Window * window)
          * We use X11_XIfEvent because pXWindowEvent takes a mask rather than a type,
          * and XCheckTypedWindowEvent doesn't block */
         X11_XIfEvent(display, &event, &isMapNotify, (XPointer)&data->xwindow);
+        X11_XFlush(display);
+    }
+
+    if (!X11_HasWindowManager(data)) {
+        /* no WM means no FocusIn event, which confuses us. Force it. */
+        X11_XSetInputFocus(display, data->xwindow, RevertToNone, CurrentTime);
         X11_XFlush(display);
     }
 }
@@ -1357,9 +1353,12 @@ X11_SetWindowGrab(_THIS, SDL_Window * window, SDL_bool grabbed)
     if (oldstyle_fullscreen || grabbed) {
         /* Try to grab the mouse */
         for (;;) {
+            const unsigned int mask = ButtonPressMask | ButtonReleaseMask 
+                | PointerMotionMask | FocusChangeMask;
             int result =
-                X11_XGrabPointer(display, data->xwindow, True, 0, GrabModeAsync,
-                             GrabModeAsync, data->xwindow, None, CurrentTime);
+                X11_XGrabPointer(display, data->xwindow, False, mask, 
+                             GrabModeAsync, GrabModeAsync, data->xwindow, 
+                             None, CurrentTime);
             if (result == GrabSuccess) {
                 break;
             }

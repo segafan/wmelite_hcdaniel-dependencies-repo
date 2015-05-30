@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -139,6 +139,16 @@ JNIEXPORT void JNICALL SDL_Android_Init(JNIEnv* mEnv, jclass cls)
         __android_log_print(ANDROID_LOG_WARN, "SDL", "SDL: Couldn't locate Java callbacks, check that they're named and typed correctly");
     }
     __android_log_print(ANDROID_LOG_INFO, "SDL", "SDL_Android_Init() finished!");
+}
+
+/* Drop file */
+void Java_org_libsdl_app_SDLActivity_onNativeDropFile(
+                                    JNIEnv* env, jclass jcls,
+                                    jstring filename)
+{
+    const char *path = (*env)->GetStringUTFChars(env, filename, NULL);
+    SDL_SendDropFile(path);
+    (*env)->ReleaseStringUTFChars(env, filename, path);
 }
 
 /* Resize */
@@ -408,7 +418,7 @@ void Android_JNI_HintCallback(void *userdata, const char *name, const char *oldV
     JNIEnv *env = Android_JNI_GetEnv();
 
     jobject callback = (jobject)userdata;
-    jclass cls = (*env)->GetObjectClass(env, callback);
+   jclass cls = (*env)->GetObjectClass(env, callback);
     jmethodID method = (*env)->GetMethodID(env, cls, "callback", "(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V");
 
     jstring javaName     = (*env)->NewStringUTF(env, name);
@@ -476,7 +486,7 @@ static void LocalReferenceHolder_Cleanup(struct LocalReferenceHolder *refholder)
     }
 }
 
-static SDL_bool LocalReferenceHolder_IsActive()
+static SDL_bool LocalReferenceHolder_IsActive(void)
 {
     return s_active > 0;
 }
@@ -494,7 +504,7 @@ ANativeWindow* Android_JNI_GetNativeWindow(void)
     return anw;
 }
 
-void Android_JNI_SwapWindow()
+void Android_JNI_SwapWindow(void)
 {
     JNIEnv *mEnv = Android_JNI_GetEnv();
     (*mEnv)->CallStaticVoidMethod(mEnv, mActivityClass, midFlipBuffers);
@@ -646,12 +656,12 @@ int Android_JNI_OpenAudioDevice(int sampleRate, int is16Bit, int channelCount, i
     return audioBufferFrames;
 }
 
-void * Android_JNI_GetAudioBuffer()
+void * Android_JNI_GetAudioBuffer(void)
 {
     return audioBufferPinned;
 }
 
-void Android_JNI_WriteAudioBuffer()
+void Android_JNI_WriteAudioBuffer(void)
 {
     JNIEnv *mAudioEnv = Android_JNI_GetEnv();
 
@@ -666,7 +676,7 @@ void Android_JNI_WriteAudioBuffer()
     /* JNI_COMMIT means the changes are committed to the VM but the buffer remains pinned */
 }
 
-void Android_JNI_CloseAudioDevice()
+void Android_JNI_CloseAudioDevice(void)
 {
     JNIEnv *env = Android_JNI_GetEnv();
 
@@ -1168,7 +1178,7 @@ int Android_JNI_SetClipboardText(const char* text)
     return 0;
 }
 
-char* Android_JNI_GetClipboardText()
+char* Android_JNI_GetClipboardText(void)
 {
     SETUP_CLIPBOARD(SDL_strdup(""))
 
@@ -1194,7 +1204,7 @@ char* Android_JNI_GetClipboardText()
     return SDL_strdup("");
 }
 
-SDL_bool Android_JNI_HasClipboardText()
+SDL_bool Android_JNI_HasClipboardText(void)
 {
     SETUP_CLIPBOARD(SDL_FALSE)
 
@@ -1330,7 +1340,7 @@ int Android_JNI_GetTouchDeviceIds(int **ids) {
     return number;
 }
 
-void Android_JNI_PollInputDevices()
+void Android_JNI_PollInputDevices(void)
 {
     JNIEnv *env = Android_JNI_GetEnv();
     (*env)->CallStaticVoidMethod(env, mActivityClass, midPollInputDevices);    
@@ -1377,7 +1387,7 @@ void Android_JNI_ShowTextInput(SDL_Rect *inputRect)
                                inputRect->h );
 }
 
-void Android_JNI_HideTextInput()
+void Android_JNI_HideTextInput(void)
 {
     /* has to match Activity constant */
     const int COMMAND_TEXTEDIT_HIDE = 3;
@@ -1634,6 +1644,11 @@ const char * SDL_AndroidGetExternalStoragePath()
         LocalReferenceHolder_Cleanup(&refs);
     }
     return s_AndroidExternalFilesPath;
+}
+
+jclass Android_JNI_GetActivityClass(void)
+{
+    return mActivityClass;
 }
 
 #endif /* __ANDROID__ */

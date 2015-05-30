@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -56,7 +56,12 @@ static void
 SeparateEventsHintWatcher(void *userdata, const char *name,
                           const char *oldValue, const char *newValue)
 {
+    jclass mActivityClass = Android_JNI_GetActivityClass();
+    JNIEnv *env = Android_JNI_GetEnv();
+    jfieldID fid = (*env)->GetStaticFieldID(env, mActivityClass, "mSeparateMouseAndTouch", "Z");
+
     separate_mouse_and_touch = (newValue && (SDL_strcmp(newValue, "1") == 0));
+    (*env)->SetStaticBooleanField(env, mActivityClass, fid, separate_mouse_and_touch ? JNI_TRUE : JNI_FALSE);
 }
 
 void Android_InitTouch(void)
@@ -103,8 +108,8 @@ void Android_OnTouch(int touch_device_id_in, int pointer_finger_id_in, int actio
     switch (action) {
         case ACTION_DOWN:
             /* Primary pointer down */
-            Android_GetWindowCoordinates(x, y, &window_x, &window_y);
             if (!separate_mouse_and_touch) {
+                Android_GetWindowCoordinates(x, y, &window_x, &window_y);
                 /* send moved event */
                 SDL_SendMouseMotion(Android_Window, SDL_TOUCH_MOUSEID, 0, window_x, window_y);
                 /* send mouse down event */
@@ -118,8 +123,8 @@ void Android_OnTouch(int touch_device_id_in, int pointer_finger_id_in, int actio
 
         case ACTION_MOVE:
             if (!pointerFingerID) {
-                Android_GetWindowCoordinates(x, y, &window_x, &window_y);
                 if (!separate_mouse_and_touch) {
+                    Android_GetWindowCoordinates(x, y, &window_x, &window_y);
                     /* send moved event */
                     SDL_SendMouseMotion(Android_Window, SDL_TOUCH_MOUSEID, 0, window_x, window_y);
                 }
@@ -131,9 +136,9 @@ void Android_OnTouch(int touch_device_id_in, int pointer_finger_id_in, int actio
             /* Primary pointer up */
             if (!separate_mouse_and_touch) {
                 /* send mouse up */
-                pointerFingerID = (SDL_FingerID) 0;
                 SDL_SendMouseButton(Android_Window, SDL_TOUCH_MOUSEID, SDL_RELEASED, SDL_BUTTON_LEFT);
             }
+            pointerFingerID = (SDL_FingerID) 0;
         case ACTION_POINTER_UP:
             /* Non primary pointer up */
             SDL_SendTouch(touchDeviceId, fingerId, SDL_FALSE, x, y, p);

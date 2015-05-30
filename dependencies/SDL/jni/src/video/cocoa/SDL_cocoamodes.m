@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -192,8 +192,16 @@ GetDisplayMode(_THIS, const void *moderef, CVDisplayLinkRef link, SDL_DisplayMod
         mode->format = SDL_PIXELFORMAT_ARGB8888;
         break;
     case 8: /* We don't support palettized modes now */
-    default: /* Totally unrecognizable bit depth. */
+        SDL_free(data);
         return SDL_FALSE;
+    default:
+        /* Totally unrecognizable format. Maybe a new string reported by
+           CGDisplayModeCopyPixelEncoding() in a future platform SDK.
+           Just lie and call it 32-bit ARGB for now, so existing programs
+           don't completely fail on new setups. (most apps don't care about
+           the actual mode format anyhow.) */
+        mode->format = SDL_PIXELFORMAT_ARGB8888;
+        break;
     }
     mode->w = width;
     mode->h = height;

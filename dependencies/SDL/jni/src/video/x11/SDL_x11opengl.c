@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -392,7 +392,7 @@ X11_GL_InitExtensions(_THIS)
 /* glXChooseVisual and glXChooseFBConfig have some small differences in
  * the attribute encoding, it can be chosen with the for_FBConfig parameter.
  */
-int
+static int
 X11_GL_GetAttributes(_THIS, Display * display, int screen, int * attribs, int size, Bool for_FBConfig)
 {
     int i = 0;
@@ -474,9 +474,7 @@ X11_GL_GetAttributes(_THIS, Display * display, int screen, int * attribs, int si
 
     if (_this->gl_config.framebuffer_srgb_capable) {
         attribs[i++] = GLX_FRAMEBUFFER_SRGB_CAPABLE_ARB;
-        if( for_FBConfig ) {
-            attribs[i++] = True;
-        }
+        attribs[i++] = True;  /* always needed, for_FBConfig or not! */
     }
 
     if (_this->gl_config.accelerated >= 0 &&
