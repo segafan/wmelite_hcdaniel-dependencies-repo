@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -47,6 +47,13 @@
 #cmakedefine HAVE_GCC_ATOMICS @HAVE_GCC_ATOMICS@
 #cmakedefine HAVE_GCC_SYNC_LOCK_TEST_AND_SET @HAVE_GCC_SYNC_LOCK_TEST_AND_SET@
 
+#cmakedefine HAVE_D3D_H @HAVE_D3D_H@
+#cmakedefine HAVE_D3D11_H @HAVE_D3D11_H@
+#cmakedefine HAVE_DDRAW_H @HAVE_DDRAW_H@
+#cmakedefine HAVE_DSOUND_H @HAVE_DSOUND_H@
+#cmakedefine HAVE_DINPUT_H @HAVE_DINPUT_H@
+#cmakedefine HAVE_XAUDIO2_H @HAVE_XAUDIO2_H@
+#cmakedefine HAVE_XINPUT_H @HAVE_XINPUT_H@
 #cmakedefine HAVE_DXGI_H @HAVE_DXGI_H@
 
 /* Comment this if you want to build without any C library requirements */
@@ -289,6 +296,7 @@
 #cmakedefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XSS @SDL_VIDEO_DRIVER_X11_DYNAMIC_XSS@
 #cmakedefine SDL_VIDEO_DRIVER_X11_DYNAMIC_XVIDMODE @SDL_VIDEO_DRIVER_X11_DYNAMIC_XVIDMODE@
 #cmakedefine SDL_VIDEO_DRIVER_X11_XCURSOR @SDL_VIDEO_DRIVER_X11_XCURSOR@
+#cmakedefine SDL_VIDEO_DRIVER_X11_XDBE @SDL_VIDEO_DRIVER_X11_XDBE@
 #cmakedefine SDL_VIDEO_DRIVER_X11_XINERAMA @SDL_VIDEO_DRIVER_X11_XINERAMA@
 #cmakedefine SDL_VIDEO_DRIVER_X11_XINPUT2 @SDL_VIDEO_DRIVER_X11_XINPUT2@
 #cmakedefine SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH @SDL_VIDEO_DRIVER_X11_XINPUT2_SUPPORTS_MULTITOUCH@

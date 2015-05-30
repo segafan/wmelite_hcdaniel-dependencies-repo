@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -243,6 +243,9 @@ extern "C" {
  *  this is problematic. This functionality can be disabled by setting this
  *  hint.
  *
+ *  As of SDL 2.0.4, SDL_EnableScreenSaver and SDL_DisableScreenSaver accomplish
+ *  the same thing on iOS. They should be preferred over this hint.
+ *
  *  This variable can be set to the following values:
  *    "0"       - Enable idle timer
  *    "1"       - Disable idle timer
@@ -261,8 +264,9 @@ extern "C" {
 #define SDL_HINT_ORIENTATIONS "SDL_IOS_ORIENTATIONS"
     
 /**
- *  \brief  A variable controlling whether an Android built-in accelerometer should be
- *  listed as a joystick device, rather than listing actual joysticks only.
+ *  \brief  A variable controlling whether the Android / iOS built-in
+ *  accelerometer should be listed as a joystick device, rather than listing
+ *  actual joysticks only.
  *
  *  This variable can be set to the following values:
  *    "0"       - List only real joysticks and accept input from them
@@ -344,8 +348,19 @@ extern "C" {
 #define SDL_HINT_TIMER_RESOLUTION "SDL_TIMER_RESOLUTION"
 
 
+
 /**
- *  \brief If set to 1, then do not allow high-DPI windows. ("Retina" on Mac)
+*  \brief  A string specifying SDL's threads stack size in bytes or "0" for the backend's default size
+*
+*  Use this hint in case you need to set SDL's threads stack size to other than the default.
+*  This is specially useful if you build SDL against a non glibc libc library (such as musl) which
+*  provides a relatively small default thread stack size (a few kilobytes versus the default 8MB glibc uses).
+*  Support for this hint is currently available only in the pthread backend.
+*/
+#define SDL_HINT_THREAD_STACK_SIZE              "SDL_THREAD_STACK_SIZE"
+
+/**
+ *  \brief If set to 1, then do not allow high-DPI windows. ("Retina" on Mac and iOS)
  */
 #define SDL_HINT_VIDEO_HIGHDPI_DISABLED "SDL_VIDEO_HIGHDPI_DISABLED"
 
@@ -519,11 +534,6 @@ extern "C" {
  * \brief Android APK expansion patch file version. Should be a string number like "1", "2" etc.
  */
 #define SDL_HINT_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION "SDL_ANDROID_APK_EXPANSION_PATCH_FILE_VERSION"
-
-/**
- * \brief If set to 1, sets UI_LOW_PROFILE setting for SDLActivity
- */
-#define SDL_HINT_ANDROID_USE_UI_LOW_PROFILE "SDL_ANDROID_USE_UI_LOW_PROFILE"
 
 /**
  * \brief A variable to control whether certain IMEs should handle text editing internally instead of sending SDL_TEXTEDITING events.

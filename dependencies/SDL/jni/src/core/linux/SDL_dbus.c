@@ -1,6 +1,6 @@
 /*
   Simple DirectMedia Layer
-  Copyright (C) 1997-2014 Sam Lantinga <slouken@libsdl.org>
+  Copyright (C) 1997-2015 Sam Lantinga <slouken@libsdl.org>
 
   This software is provided 'as-is', without any express or implied
   warranty.  In no event will the authors be held liable for any damages
@@ -45,6 +45,7 @@ load_dbus_syms(void)
     SDL_DBUS_SYM(connection_set_exit_on_disconnect);
     SDL_DBUS_SYM(connection_get_is_connected);
     SDL_DBUS_SYM(connection_add_filter);
+    SDL_DBUS_SYM(connection_try_register_object_path);
     SDL_DBUS_SYM(connection_send);
     SDL_DBUS_SYM(connection_send_with_reply_and_block);
     SDL_DBUS_SYM(connection_close);
