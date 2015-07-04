@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Scheme
-   LastUpgradeVersion = "0630"
+   LastUpgradeVersion = "0640"
    version = "1.3">
    <BuildAction
       parallelizeBuildables = "YES"
@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6567441E1B35B4A500D96DAD"
-               BuildableName = "liblibeffects.a"
-               BlueprintName = "libeffects"
-               ReferencedContainer = "container:libeffects.xcodeproj">
+               BlueprintIdentifier = "65CA5BF61B48343500A7268E"
+               BuildableName = "libreverb.a"
+               BlueprintName = "reverb"
+               ReferencedContainer = "container:reverb.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -42,10 +42,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6567441E1B35B4A500D96DAD"
-            BuildableName = "liblibeffects.a"
-            BlueprintName = "libeffects"
-            ReferencedContainer = "container:libeffects.xcodeproj">
+            BlueprintIdentifier = "65CA5BF61B48343500A7268E"
+            BuildableName = "libreverb.a"
+            BlueprintName = "reverb"
+            ReferencedContainer = "container:reverb.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -60,10 +60,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6567441E1B35B4A500D96DAD"
-            BuildableName = "liblibeffects.a"
-            BlueprintName = "libeffects"
-            ReferencedContainer = "container:libeffects.xcodeproj">
+            BlueprintIdentifier = "65CA5BF61B48343500A7268E"
+            BuildableName = "libreverb.a"
+            BlueprintName = "reverb"
+            ReferencedContainer = "container:reverb.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
