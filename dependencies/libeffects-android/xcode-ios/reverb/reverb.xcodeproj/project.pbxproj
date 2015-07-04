@@ -1,0 +1,847 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		65CA5D251B48366500A7268E /* libreverb.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 65CA5D191B48366500A7268E /* libreverb.a */; };
+		65CA5DAE1B4836BE00A7268E /* Abs_32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D411B4836BE00A7268E /* Abs_32.c */; };
+		65CA5DAF1B4836BE00A7268E /* Add2_Sat_16x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D421B4836BE00A7268E /* Add2_Sat_16x16.c */; };
+		65CA5DB01B4836BE00A7268E /* Add2_Sat_32x32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D431B4836BE00A7268E /* Add2_Sat_32x32.c */; };
+		65CA5DB11B4836BE00A7268E /* AGC_MIX_VOL_2St1Mon_D32_WRA.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D441B4836BE00A7268E /* AGC_MIX_VOL_2St1Mon_D32_WRA.c */; };
+		65CA5DB21B4836BE00A7268E /* BP_1I_D16F16C14_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D451B4836BE00A7268E /* BP_1I_D16F16C14_TRC_WRA_01.c */; };
+		65CA5DB31B4836BE00A7268E /* BP_1I_D16F16Css_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D461B4836BE00A7268E /* BP_1I_D16F16Css_TRC_WRA_01_Init.c */; };
+		65CA5DB41B4836BE00A7268E /* BP_1I_D16F32C30_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D481B4836BE00A7268E /* BP_1I_D16F32C30_TRC_WRA_01.c */; };
+		65CA5DB51B4836BE00A7268E /* BP_1I_D16F32Cll_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D491B4836BE00A7268E /* BP_1I_D16F32Cll_TRC_WRA_01_Init.c */; };
+		65CA5DB61B4836BE00A7268E /* BP_1I_D32F32C30_TRC_WRA_02.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D4B1B4836BE00A7268E /* BP_1I_D32F32C30_TRC_WRA_02.c */; };
+		65CA5DB71B4836BE00A7268E /* BP_1I_D32F32Cll_TRC_WRA_02_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D4C1B4836BE00A7268E /* BP_1I_D32F32Cll_TRC_WRA_02_Init.c */; };
+		65CA5DB81B4836BE00A7268E /* BQ_1I_D16F16C15_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D4E1B4836BE00A7268E /* BQ_1I_D16F16C15_TRC_WRA_01.c */; };
+		65CA5DB91B4836BE00A7268E /* BQ_1I_D16F16Css_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D4F1B4836BE00A7268E /* BQ_1I_D16F16Css_TRC_WRA_01_Init.c */; };
+		65CA5DBA1B4836BE00A7268E /* BQ_1I_D16F32C14_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D511B4836BE00A7268E /* BQ_1I_D16F32C14_TRC_WRA_01.c */; };
+		65CA5DBB1B4836BE00A7268E /* BQ_1I_D16F32Css_TRC_WRA_01_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D521B4836BE00A7268E /* BQ_1I_D16F32Css_TRC_WRA_01_init.c */; };
+		65CA5DBC1B4836BE00A7268E /* BQ_2I_D16F16C14_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D541B4836BE00A7268E /* BQ_2I_D16F16C14_TRC_WRA_01.c */; };
+		65CA5DBD1B4836BE00A7268E /* BQ_2I_D16F16C15_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D551B4836BE00A7268E /* BQ_2I_D16F16C15_TRC_WRA_01.c */; };
+		65CA5DBE1B4836BE00A7268E /* BQ_2I_D16F16Css_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D561B4836BE00A7268E /* BQ_2I_D16F16Css_TRC_WRA_01_Init.c */; };
+		65CA5DBF1B4836BE00A7268E /* BQ_2I_D16F32C13_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D581B4836BE00A7268E /* BQ_2I_D16F32C13_TRC_WRA_01.c */; };
+		65CA5DC01B4836BE00A7268E /* BQ_2I_D16F32C14_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D591B4836BE00A7268E /* BQ_2I_D16F32C14_TRC_WRA_01.c */; };
+		65CA5DC11B4836BE00A7268E /* BQ_2I_D16F32C15_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D5A1B4836BE00A7268E /* BQ_2I_D16F32C15_TRC_WRA_01.c */; };
+		65CA5DC21B4836BE00A7268E /* BQ_2I_D16F32Css_TRC_WRA_01_init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D5B1B4836BE00A7268E /* BQ_2I_D16F32Css_TRC_WRA_01_init.c */; };
+		65CA5DC31B4836BE00A7268E /* BQ_2I_D32F32C30_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D5D1B4836BE00A7268E /* BQ_2I_D32F32C30_TRC_WRA_01.c */; };
+		65CA5DC41B4836BE00A7268E /* BQ_2I_D32F32Cll_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D5E1B4836BE00A7268E /* BQ_2I_D32F32Cll_TRC_WRA_01_Init.c */; };
+		65CA5DC51B4836BE00A7268E /* Copy_16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D611B4836BE00A7268E /* Copy_16.c */; };
+		65CA5DC61B4836BE00A7268E /* Core_MixHard_2St_D32C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D621B4836BE00A7268E /* Core_MixHard_2St_D32C31_SAT.c */; };
+		65CA5DC71B4836BE00A7268E /* Core_MixInSoft_D32C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D631B4836BE00A7268E /* Core_MixInSoft_D32C31_SAT.c */; };
+		65CA5DC81B4836BE00A7268E /* Core_MixSoft_1St_D32C31_WRA.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D641B4836BE00A7268E /* Core_MixSoft_1St_D32C31_WRA.c */; };
+		65CA5DC91B4836BE00A7268E /* dB_to_Lin32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D651B4836BE00A7268E /* dB_to_Lin32.c */; };
+		65CA5DCA1B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D661B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01_Init.c */; };
+		65CA5DCB1B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D681B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01.c */; };
+		65CA5DCC1B4836BE00A7268E /* DelayAllPass_Sat_32x16To32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D691B4836BE00A7268E /* DelayAllPass_Sat_32x16To32.c */; };
+		65CA5DCD1B4836BE00A7268E /* DelayMix_16x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D6A1B4836BE00A7268E /* DelayMix_16x16.c */; };
+		65CA5DCE1B4836BE00A7268E /* DelayWrite_32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D6B1B4836BE00A7268E /* DelayWrite_32.c */; };
+		65CA5DCF1B4836BE00A7268E /* FO_1I_D16F16C15_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D6D1B4836BE00A7268E /* FO_1I_D16F16C15_TRC_WRA_01.c */; };
+		65CA5DD01B4836BE00A7268E /* FO_1I_D16F16Css_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D6E1B4836BE00A7268E /* FO_1I_D16F16Css_TRC_WRA_01_Init.c */; };
+		65CA5DD11B4836BE00A7268E /* FO_1I_D32F32C31_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D701B4836BE00A7268E /* FO_1I_D32F32C31_TRC_WRA_01.c */; };
+		65CA5DD21B4836BE00A7268E /* FO_1I_D32F32Cll_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D711B4836BE00A7268E /* FO_1I_D32F32Cll_TRC_WRA_01_Init.c */; };
+		65CA5DD31B4836BE00A7268E /* FO_2I_D16F32C15_LShx_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D731B4836BE00A7268E /* FO_2I_D16F32C15_LShx_TRC_WRA_01.c */; };
+		65CA5DD41B4836BE00A7268E /* FO_2I_D16F32Css_LShx_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D741B4836BE00A7268E /* FO_2I_D16F32Css_LShx_TRC_WRA_01_Init.c */; };
+		65CA5DD51B4836BE00A7268E /* From2iToMono_16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D761B4836BE00A7268E /* From2iToMono_16.c */; };
+		65CA5DD61B4836BE00A7268E /* From2iToMono_32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D771B4836BE00A7268E /* From2iToMono_32.c */; };
+		65CA5DD71B4836BE00A7268E /* From2iToMS_16x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D781B4836BE00A7268E /* From2iToMS_16x16.c */; };
+		65CA5DD81B4836BE00A7268E /* InstAlloc.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D791B4836BE00A7268E /* InstAlloc.c */; };
+		65CA5DD91B4836BE00A7268E /* Int16LShiftToInt32_16x32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D7A1B4836BE00A7268E /* Int16LShiftToInt32_16x32.c */; };
+		65CA5DDA1B4836BE00A7268E /* Int32RShiftToInt16_Sat_32x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D7B1B4836BE00A7268E /* Int32RShiftToInt16_Sat_32x16.c */; };
+		65CA5DDB1B4836BE00A7268E /* JoinTo2i_32x32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D7C1B4836BE00A7268E /* JoinTo2i_32x32.c */; };
+		65CA5DDC1B4836BE00A7268E /* LoadConst_16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D7D1B4836BE00A7268E /* LoadConst_16.c */; };
+		65CA5DDD1B4836BE00A7268E /* LoadConst_32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D7E1B4836BE00A7268E /* LoadConst_32.c */; };
+		65CA5DDE1B4836BE00A7268E /* LVC_Core_MixHard_1St_2i_D16C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D7F1B4836BE00A7268E /* LVC_Core_MixHard_1St_2i_D16C31_SAT.c */; };
+		65CA5DDF1B4836BE00A7268E /* LVC_Core_MixHard_2St_D16C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D801B4836BE00A7268E /* LVC_Core_MixHard_2St_D16C31_SAT.c */; };
+		65CA5DE01B4836BE00A7268E /* LVC_Core_MixInSoft_D16C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D811B4836BE00A7268E /* LVC_Core_MixInSoft_D16C31_SAT.c */; };
+		65CA5DE11B4836BE00A7268E /* LVC_Core_MixSoft_1St_2i_D16C31_WRA.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D821B4836BE00A7268E /* LVC_Core_MixSoft_1St_2i_D16C31_WRA.c */; };
+		65CA5DE21B4836BE00A7268E /* LVC_Core_MixSoft_1St_D16C31_WRA.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D831B4836BE00A7268E /* LVC_Core_MixSoft_1St_D16C31_WRA.c */; };
+		65CA5DE31B4836BE00A7268E /* LVC_Mixer_GetCurrent.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D841B4836BE00A7268E /* LVC_Mixer_GetCurrent.c */; };
+		65CA5DE41B4836BE00A7268E /* LVC_Mixer_GetTarget.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D851B4836BE00A7268E /* LVC_Mixer_GetTarget.c */; };
+		65CA5DE51B4836BE00A7268E /* LVC_Mixer_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D861B4836BE00A7268E /* LVC_Mixer_Init.c */; };
+		65CA5DE61B4836BE00A7268E /* LVC_Mixer_SetTarget.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D881B4836BE00A7268E /* LVC_Mixer_SetTarget.c */; };
+		65CA5DE71B4836BE00A7268E /* LVC_Mixer_SetTimeConstant.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D891B4836BE00A7268E /* LVC_Mixer_SetTimeConstant.c */; };
+		65CA5DE81B4836BE00A7268E /* LVC_Mixer_VarSlope_SetTimeConstant.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D8A1B4836BE00A7268E /* LVC_Mixer_VarSlope_SetTimeConstant.c */; };
+		65CA5DE91B4836BE00A7268E /* LVC_MixInSoft_D16C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D8C1B4836BE00A7268E /* LVC_MixInSoft_D16C31_SAT.c */; };
+		65CA5DEA1B4836BE00A7268E /* LVC_MixSoft_1St_2i_D16C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D8D1B4836BE00A7268E /* LVC_MixSoft_1St_2i_D16C31_SAT.c */; };
+		65CA5DEB1B4836BE00A7268E /* LVC_MixSoft_1St_D16C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D8E1B4836BE00A7268E /* LVC_MixSoft_1St_D16C31_SAT.c */; };
+		65CA5DEC1B4836BE00A7268E /* LVC_MixSoft_2St_D16C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D8F1B4836BE00A7268E /* LVC_MixSoft_2St_D16C31_SAT.c */; };
+		65CA5DED1B4836BE00A7268E /* LVM_FO_HPF.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D901B4836BE00A7268E /* LVM_FO_HPF.c */; };
+		65CA5DEE1B4836BE00A7268E /* LVM_FO_LPF.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D911B4836BE00A7268E /* LVM_FO_LPF.c */; };
+		65CA5DEF1B4836BE00A7268E /* LVM_GetOmega.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D921B4836BE00A7268E /* LVM_GetOmega.c */; };
+		65CA5DF01B4836BE00A7268E /* LVM_Mixer_TimeConstant.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D941B4836BE00A7268E /* LVM_Mixer_TimeConstant.c */; };
+		65CA5DF11B4836BE00A7268E /* LVM_Polynomial.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D951B4836BE00A7268E /* LVM_Polynomial.c */; };
+		65CA5DF21B4836BE00A7268E /* LVM_Power10.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D961B4836BE00A7268E /* LVM_Power10.c */; };
+		65CA5DF31B4836BE00A7268E /* LVM_Timer_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D971B4836BE00A7268E /* LVM_Timer_Init.c */; };
+		65CA5DF41B4836BE00A7268E /* LVM_Timer.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D991B4836BE00A7268E /* LVM_Timer.c */; };
+		65CA5DF51B4836BE00A7268E /* Mac3s_Sat_16x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D9A1B4836BE00A7268E /* Mac3s_Sat_16x16.c */; };
+		65CA5DF61B4836BE00A7268E /* Mac3s_Sat_32x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D9B1B4836BE00A7268E /* Mac3s_Sat_32x16.c */; };
+		65CA5DF71B4836BE00A7268E /* MixInSoft_D32C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D9D1B4836BE00A7268E /* MixInSoft_D32C31_SAT.c */; };
+		65CA5DF81B4836BE00A7268E /* MixSoft_1St_D32C31_WRA.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D9E1B4836BE00A7268E /* MixSoft_1St_D32C31_WRA.c */; };
+		65CA5DF91B4836BE00A7268E /* MixSoft_2St_D32C31_SAT.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5D9F1B4836BE00A7268E /* MixSoft_2St_D32C31_SAT.c */; };
+		65CA5DFA1B4836BE00A7268E /* MonoTo2I_16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA01B4836BE00A7268E /* MonoTo2I_16.c */; };
+		65CA5DFB1B4836BE00A7268E /* MonoTo2I_32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA11B4836BE00A7268E /* MonoTo2I_32.c */; };
+		65CA5DFC1B4836BE00A7268E /* MSTo2i_Sat_16x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA21B4836BE00A7268E /* MSTo2i_Sat_16x16.c */; };
+		65CA5DFD1B4836BE00A7268E /* mult3s_16x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA31B4836BE00A7268E /* mult3s_16x16.c */; };
+		65CA5DFE1B4836BE00A7268E /* Mult3s_32x16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA41B4836BE00A7268E /* Mult3s_32x16.c */; };
+		65CA5DFF1B4836BE00A7268E /* NonLinComp_D16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA51B4836BE00A7268E /* NonLinComp_D16.c */; };
+		65CA5E001B4836BE00A7268E /* PK_2I_D32F32C14G11_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA61B4836BE00A7268E /* PK_2I_D32F32C14G11_TRC_WRA_01.c */; };
+		65CA5E011B4836BE00A7268E /* PK_2I_D32F32C30G11_TRC_WRA_01.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA71B4836BE00A7268E /* PK_2I_D32F32C30G11_TRC_WRA_01.c */; };
+		65CA5E021B4836BE00A7268E /* PK_2I_D32F32CllGss_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DA81B4836BE00A7268E /* PK_2I_D32F32CllGss_TRC_WRA_01_Init.c */; };
+		65CA5E031B4836BE00A7268E /* PK_2I_D32F32CssGss_TRC_WRA_01_Init.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DAA1B4836BE00A7268E /* PK_2I_D32F32CssGss_TRC_WRA_01_Init.c */; };
+		65CA5E041B4836BE00A7268E /* Shift_Sat_v16xv16.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DAC1B4836BE00A7268E /* Shift_Sat_v16xv16.c */; };
+		65CA5E051B4836BE00A7268E /* Shift_Sat_v32xv32.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5DAD1B4836BE00A7268E /* Shift_Sat_v32xv32.c */; };
+		65CA5E121B4836FF00A7268E /* LVREV_ApplyNewSettings.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E081B4836FF00A7268E /* LVREV_ApplyNewSettings.c */; };
+		65CA5E131B4836FF00A7268E /* LVREV_ClearAudioBuffers.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E091B4836FF00A7268E /* LVREV_ClearAudioBuffers.c */; };
+		65CA5E141B4836FF00A7268E /* LVREV_GetControlParameters.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E0A1B4836FF00A7268E /* LVREV_GetControlParameters.c */; };
+		65CA5E151B4836FF00A7268E /* LVREV_GetInstanceHandle.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E0B1B4836FF00A7268E /* LVREV_GetInstanceHandle.c */; };
+		65CA5E161B4836FF00A7268E /* LVREV_GetMemoryTable.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E0C1B4836FF00A7268E /* LVREV_GetMemoryTable.c */; };
+		65CA5E171B4836FF00A7268E /* LVREV_Process.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E0E1B4836FF00A7268E /* LVREV_Process.c */; };
+		65CA5E181B4836FF00A7268E /* LVREV_SetControlParameters.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E0F1B4836FF00A7268E /* LVREV_SetControlParameters.c */; };
+		65CA5E191B4836FF00A7268E /* LVREV_Tables.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E101B4836FF00A7268E /* LVREV_Tables.c */; };
+		65CA5E1C1B48370D00A7268E /* ReverbLibrary.c in Sources */ = {isa = PBXBuildFile; fileRef = 65CA5E1A1B48370D00A7268E /* ReverbLibrary.c */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		65CA5D261B48366500A7268E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 65CA5D111B48366500A7268E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 65CA5D181B48366500A7268E;
+			remoteInfo = reverb;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		65CA5D171B48366500A7268E /* CopyFiles */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "include/$(PRODUCT_NAME)";
+			dstSubfolderSpec = 16;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
+/* Begin PBXFileReference section */
+		65CA5D191B48366500A7268E /* libreverb.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libreverb.a; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CA5D241B48366500A7268E /* reverbTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = reverbTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		65CA5D2A1B48366500A7268E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		65CA5D331B48369B00A7268E /* effect_environmentalreverb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = effect_environmentalreverb.h; path = ../../jni/audio_effects/effect_environmentalreverb.h; sourceTree = "<group>"; };
+		65CA5D341B48369B00A7268E /* effect_presetreverb.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = effect_presetreverb.h; path = ../../jni/audio_effects/effect_presetreverb.h; sourceTree = "<group>"; };
+		65CA5D351B4836AB00A7268E /* AGC.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AGC.h; path = ../../jni/Common/lib/AGC.h; sourceTree = "<group>"; };
+		65CA5D361B4836AB00A7268E /* BIQUAD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BIQUAD.h; path = ../../jni/Common/lib/BIQUAD.h; sourceTree = "<group>"; };
+		65CA5D371B4836AB00A7268E /* CompLim.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CompLim.h; path = ../../jni/Common/lib/CompLim.h; sourceTree = "<group>"; };
+		65CA5D381B4836AB00A7268E /* Filter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filter.h; path = ../../jni/Common/lib/Filter.h; sourceTree = "<group>"; };
+		65CA5D391B4836AB00A7268E /* InstAlloc.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = InstAlloc.h; path = ../../jni/Common/lib/InstAlloc.h; sourceTree = "<group>"; };
+		65CA5D3A1B4836AB00A7268E /* LVM_Common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVM_Common.h; path = ../../jni/Common/lib/LVM_Common.h; sourceTree = "<group>"; };
+		65CA5D3B1B4836AB00A7268E /* LVM_Macros.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVM_Macros.h; path = ../../jni/Common/lib/LVM_Macros.h; sourceTree = "<group>"; };
+		65CA5D3C1B4836AB00A7268E /* LVM_Timer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVM_Timer.h; path = ../../jni/Common/lib/LVM_Timer.h; sourceTree = "<group>"; };
+		65CA5D3D1B4836AB00A7268E /* LVM_Types.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVM_Types.h; path = ../../jni/Common/lib/LVM_Types.h; sourceTree = "<group>"; };
+		65CA5D3E1B4836AB00A7268E /* Mixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mixer.h; path = ../../jni/Common/lib/Mixer.h; sourceTree = "<group>"; };
+		65CA5D3F1B4836AB00A7268E /* ScalarArithmetic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ScalarArithmetic.h; path = ../../jni/Common/lib/ScalarArithmetic.h; sourceTree = "<group>"; };
+		65CA5D401B4836AB00A7268E /* VectorArithmetic.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = VectorArithmetic.h; path = ../../jni/Common/lib/VectorArithmetic.h; sourceTree = "<group>"; };
+		65CA5D411B4836BE00A7268E /* Abs_32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Abs_32.c; path = ../../jni/Common/src/Abs_32.c; sourceTree = "<group>"; };
+		65CA5D421B4836BE00A7268E /* Add2_Sat_16x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Add2_Sat_16x16.c; path = ../../jni/Common/src/Add2_Sat_16x16.c; sourceTree = "<group>"; };
+		65CA5D431B4836BE00A7268E /* Add2_Sat_32x32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Add2_Sat_32x32.c; path = ../../jni/Common/src/Add2_Sat_32x32.c; sourceTree = "<group>"; };
+		65CA5D441B4836BE00A7268E /* AGC_MIX_VOL_2St1Mon_D32_WRA.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = AGC_MIX_VOL_2St1Mon_D32_WRA.c; path = ../../jni/Common/src/AGC_MIX_VOL_2St1Mon_D32_WRA.c; sourceTree = "<group>"; };
+		65CA5D451B4836BE00A7268E /* BP_1I_D16F16C14_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BP_1I_D16F16C14_TRC_WRA_01.c; path = ../../jni/Common/src/BP_1I_D16F16C14_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D461B4836BE00A7268E /* BP_1I_D16F16Css_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BP_1I_D16F16Css_TRC_WRA_01_Init.c; path = ../../jni/Common/src/BP_1I_D16F16Css_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D471B4836BE00A7268E /* BP_1I_D16F16Css_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BP_1I_D16F16Css_TRC_WRA_01_Private.h; path = ../../jni/Common/src/BP_1I_D16F16Css_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D481B4836BE00A7268E /* BP_1I_D16F32C30_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BP_1I_D16F32C30_TRC_WRA_01.c; path = ../../jni/Common/src/BP_1I_D16F32C30_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D491B4836BE00A7268E /* BP_1I_D16F32Cll_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BP_1I_D16F32Cll_TRC_WRA_01_Init.c; path = ../../jni/Common/src/BP_1I_D16F32Cll_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D4A1B4836BE00A7268E /* BP_1I_D16F32Cll_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BP_1I_D16F32Cll_TRC_WRA_01_Private.h; path = ../../jni/Common/src/BP_1I_D16F32Cll_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D4B1B4836BE00A7268E /* BP_1I_D32F32C30_TRC_WRA_02.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BP_1I_D32F32C30_TRC_WRA_02.c; path = ../../jni/Common/src/BP_1I_D32F32C30_TRC_WRA_02.c; sourceTree = "<group>"; };
+		65CA5D4C1B4836BE00A7268E /* BP_1I_D32F32Cll_TRC_WRA_02_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BP_1I_D32F32Cll_TRC_WRA_02_Init.c; path = ../../jni/Common/src/BP_1I_D32F32Cll_TRC_WRA_02_Init.c; sourceTree = "<group>"; };
+		65CA5D4D1B4836BE00A7268E /* BP_1I_D32F32Cll_TRC_WRA_02_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BP_1I_D32F32Cll_TRC_WRA_02_Private.h; path = ../../jni/Common/src/BP_1I_D32F32Cll_TRC_WRA_02_Private.h; sourceTree = "<group>"; };
+		65CA5D4E1B4836BE00A7268E /* BQ_1I_D16F16C15_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_1I_D16F16C15_TRC_WRA_01.c; path = ../../jni/Common/src/BQ_1I_D16F16C15_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D4F1B4836BE00A7268E /* BQ_1I_D16F16Css_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_1I_D16F16Css_TRC_WRA_01_Init.c; path = ../../jni/Common/src/BQ_1I_D16F16Css_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D501B4836BE00A7268E /* BQ_1I_D16F16Css_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BQ_1I_D16F16Css_TRC_WRA_01_Private.h; path = ../../jni/Common/src/BQ_1I_D16F16Css_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D511B4836BE00A7268E /* BQ_1I_D16F32C14_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_1I_D16F32C14_TRC_WRA_01.c; path = ../../jni/Common/src/BQ_1I_D16F32C14_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D521B4836BE00A7268E /* BQ_1I_D16F32Css_TRC_WRA_01_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_1I_D16F32Css_TRC_WRA_01_init.c; path = ../../jni/Common/src/BQ_1I_D16F32Css_TRC_WRA_01_init.c; sourceTree = "<group>"; };
+		65CA5D531B4836BE00A7268E /* BQ_1I_D16F32Css_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BQ_1I_D16F32Css_TRC_WRA_01_Private.h; path = ../../jni/Common/src/BQ_1I_D16F32Css_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D541B4836BE00A7268E /* BQ_2I_D16F16C14_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D16F16C14_TRC_WRA_01.c; path = ../../jni/Common/src/BQ_2I_D16F16C14_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D551B4836BE00A7268E /* BQ_2I_D16F16C15_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D16F16C15_TRC_WRA_01.c; path = ../../jni/Common/src/BQ_2I_D16F16C15_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D561B4836BE00A7268E /* BQ_2I_D16F16Css_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D16F16Css_TRC_WRA_01_Init.c; path = ../../jni/Common/src/BQ_2I_D16F16Css_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D571B4836BE00A7268E /* BQ_2I_D16F16Css_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BQ_2I_D16F16Css_TRC_WRA_01_Private.h; path = ../../jni/Common/src/BQ_2I_D16F16Css_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D581B4836BE00A7268E /* BQ_2I_D16F32C13_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D16F32C13_TRC_WRA_01.c; path = ../../jni/Common/src/BQ_2I_D16F32C13_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D591B4836BE00A7268E /* BQ_2I_D16F32C14_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D16F32C14_TRC_WRA_01.c; path = ../../jni/Common/src/BQ_2I_D16F32C14_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D5A1B4836BE00A7268E /* BQ_2I_D16F32C15_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D16F32C15_TRC_WRA_01.c; path = ../../jni/Common/src/BQ_2I_D16F32C15_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D5B1B4836BE00A7268E /* BQ_2I_D16F32Css_TRC_WRA_01_init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D16F32Css_TRC_WRA_01_init.c; path = ../../jni/Common/src/BQ_2I_D16F32Css_TRC_WRA_01_init.c; sourceTree = "<group>"; };
+		65CA5D5C1B4836BE00A7268E /* BQ_2I_D16F32Css_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BQ_2I_D16F32Css_TRC_WRA_01_Private.h; path = ../../jni/Common/src/BQ_2I_D16F32Css_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D5D1B4836BE00A7268E /* BQ_2I_D32F32C30_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D32F32C30_TRC_WRA_01.c; path = ../../jni/Common/src/BQ_2I_D32F32C30_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D5E1B4836BE00A7268E /* BQ_2I_D32F32Cll_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = BQ_2I_D32F32Cll_TRC_WRA_01_Init.c; path = ../../jni/Common/src/BQ_2I_D32F32Cll_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D5F1B4836BE00A7268E /* BQ_2I_D32F32Cll_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = BQ_2I_D32F32Cll_TRC_WRA_01_Private.h; path = ../../jni/Common/src/BQ_2I_D32F32Cll_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D601B4836BE00A7268E /* CompLim_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CompLim_private.h; path = ../../jni/Common/src/CompLim_private.h; sourceTree = "<group>"; };
+		65CA5D611B4836BE00A7268E /* Copy_16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Copy_16.c; path = ../../jni/Common/src/Copy_16.c; sourceTree = "<group>"; };
+		65CA5D621B4836BE00A7268E /* Core_MixHard_2St_D32C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Core_MixHard_2St_D32C31_SAT.c; path = ../../jni/Common/src/Core_MixHard_2St_D32C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D631B4836BE00A7268E /* Core_MixInSoft_D32C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Core_MixInSoft_D32C31_SAT.c; path = ../../jni/Common/src/Core_MixInSoft_D32C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D641B4836BE00A7268E /* Core_MixSoft_1St_D32C31_WRA.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Core_MixSoft_1St_D32C31_WRA.c; path = ../../jni/Common/src/Core_MixSoft_1St_D32C31_WRA.c; sourceTree = "<group>"; };
+		65CA5D651B4836BE00A7268E /* dB_to_Lin32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = dB_to_Lin32.c; path = ../../jni/Common/src/dB_to_Lin32.c; sourceTree = "<group>"; };
+		65CA5D661B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DC_2I_D16_TRC_WRA_01_Init.c; path = ../../jni/Common/src/DC_2I_D16_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D671B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = DC_2I_D16_TRC_WRA_01_Private.h; path = ../../jni/Common/src/DC_2I_D16_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D681B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DC_2I_D16_TRC_WRA_01.c; path = ../../jni/Common/src/DC_2I_D16_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D691B4836BE00A7268E /* DelayAllPass_Sat_32x16To32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DelayAllPass_Sat_32x16To32.c; path = ../../jni/Common/src/DelayAllPass_Sat_32x16To32.c; sourceTree = "<group>"; };
+		65CA5D6A1B4836BE00A7268E /* DelayMix_16x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DelayMix_16x16.c; path = ../../jni/Common/src/DelayMix_16x16.c; sourceTree = "<group>"; };
+		65CA5D6B1B4836BE00A7268E /* DelayWrite_32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = DelayWrite_32.c; path = ../../jni/Common/src/DelayWrite_32.c; sourceTree = "<group>"; };
+		65CA5D6C1B4836BE00A7268E /* Filters.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Filters.h; path = ../../jni/Common/src/Filters.h; sourceTree = "<group>"; };
+		65CA5D6D1B4836BE00A7268E /* FO_1I_D16F16C15_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FO_1I_D16F16C15_TRC_WRA_01.c; path = ../../jni/Common/src/FO_1I_D16F16C15_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D6E1B4836BE00A7268E /* FO_1I_D16F16Css_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FO_1I_D16F16Css_TRC_WRA_01_Init.c; path = ../../jni/Common/src/FO_1I_D16F16Css_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D6F1B4836BE00A7268E /* FO_1I_D16F16Css_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FO_1I_D16F16Css_TRC_WRA_01_Private.h; path = ../../jni/Common/src/FO_1I_D16F16Css_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D701B4836BE00A7268E /* FO_1I_D32F32C31_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FO_1I_D32F32C31_TRC_WRA_01.c; path = ../../jni/Common/src/FO_1I_D32F32C31_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D711B4836BE00A7268E /* FO_1I_D32F32Cll_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FO_1I_D32F32Cll_TRC_WRA_01_Init.c; path = ../../jni/Common/src/FO_1I_D32F32Cll_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D721B4836BE00A7268E /* FO_1I_D32F32Cll_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FO_1I_D32F32Cll_TRC_WRA_01_Private.h; path = ../../jni/Common/src/FO_1I_D32F32Cll_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D731B4836BE00A7268E /* FO_2I_D16F32C15_LShx_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FO_2I_D16F32C15_LShx_TRC_WRA_01.c; path = ../../jni/Common/src/FO_2I_D16F32C15_LShx_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5D741B4836BE00A7268E /* FO_2I_D16F32Css_LShx_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = FO_2I_D16F32Css_LShx_TRC_WRA_01_Init.c; path = ../../jni/Common/src/FO_2I_D16F32Css_LShx_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5D751B4836BE00A7268E /* FO_2I_D16F32Css_LShx_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = FO_2I_D16F32Css_LShx_TRC_WRA_01_Private.h; path = ../../jni/Common/src/FO_2I_D16F32Css_LShx_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5D761B4836BE00A7268E /* From2iToMono_16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = From2iToMono_16.c; path = ../../jni/Common/src/From2iToMono_16.c; sourceTree = "<group>"; };
+		65CA5D771B4836BE00A7268E /* From2iToMono_32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = From2iToMono_32.c; path = ../../jni/Common/src/From2iToMono_32.c; sourceTree = "<group>"; };
+		65CA5D781B4836BE00A7268E /* From2iToMS_16x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = From2iToMS_16x16.c; path = ../../jni/Common/src/From2iToMS_16x16.c; sourceTree = "<group>"; };
+		65CA5D791B4836BE00A7268E /* InstAlloc.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = InstAlloc.c; path = ../../jni/Common/src/InstAlloc.c; sourceTree = "<group>"; };
+		65CA5D7A1B4836BE00A7268E /* Int16LShiftToInt32_16x32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Int16LShiftToInt32_16x32.c; path = ../../jni/Common/src/Int16LShiftToInt32_16x32.c; sourceTree = "<group>"; };
+		65CA5D7B1B4836BE00A7268E /* Int32RShiftToInt16_Sat_32x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Int32RShiftToInt16_Sat_32x16.c; path = ../../jni/Common/src/Int32RShiftToInt16_Sat_32x16.c; sourceTree = "<group>"; };
+		65CA5D7C1B4836BE00A7268E /* JoinTo2i_32x32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = JoinTo2i_32x32.c; path = ../../jni/Common/src/JoinTo2i_32x32.c; sourceTree = "<group>"; };
+		65CA5D7D1B4836BE00A7268E /* LoadConst_16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LoadConst_16.c; path = ../../jni/Common/src/LoadConst_16.c; sourceTree = "<group>"; };
+		65CA5D7E1B4836BE00A7268E /* LoadConst_32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LoadConst_32.c; path = ../../jni/Common/src/LoadConst_32.c; sourceTree = "<group>"; };
+		65CA5D7F1B4836BE00A7268E /* LVC_Core_MixHard_1St_2i_D16C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Core_MixHard_1St_2i_D16C31_SAT.c; path = ../../jni/Common/src/LVC_Core_MixHard_1St_2i_D16C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D801B4836BE00A7268E /* LVC_Core_MixHard_2St_D16C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Core_MixHard_2St_D16C31_SAT.c; path = ../../jni/Common/src/LVC_Core_MixHard_2St_D16C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D811B4836BE00A7268E /* LVC_Core_MixInSoft_D16C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Core_MixInSoft_D16C31_SAT.c; path = ../../jni/Common/src/LVC_Core_MixInSoft_D16C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D821B4836BE00A7268E /* LVC_Core_MixSoft_1St_2i_D16C31_WRA.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Core_MixSoft_1St_2i_D16C31_WRA.c; path = ../../jni/Common/src/LVC_Core_MixSoft_1St_2i_D16C31_WRA.c; sourceTree = "<group>"; };
+		65CA5D831B4836BE00A7268E /* LVC_Core_MixSoft_1St_D16C31_WRA.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Core_MixSoft_1St_D16C31_WRA.c; path = ../../jni/Common/src/LVC_Core_MixSoft_1St_D16C31_WRA.c; sourceTree = "<group>"; };
+		65CA5D841B4836BE00A7268E /* LVC_Mixer_GetCurrent.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Mixer_GetCurrent.c; path = ../../jni/Common/src/LVC_Mixer_GetCurrent.c; sourceTree = "<group>"; };
+		65CA5D851B4836BE00A7268E /* LVC_Mixer_GetTarget.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Mixer_GetTarget.c; path = ../../jni/Common/src/LVC_Mixer_GetTarget.c; sourceTree = "<group>"; };
+		65CA5D861B4836BE00A7268E /* LVC_Mixer_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Mixer_Init.c; path = ../../jni/Common/src/LVC_Mixer_Init.c; sourceTree = "<group>"; };
+		65CA5D871B4836BE00A7268E /* LVC_Mixer_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVC_Mixer_Private.h; path = ../../jni/Common/src/LVC_Mixer_Private.h; sourceTree = "<group>"; };
+		65CA5D881B4836BE00A7268E /* LVC_Mixer_SetTarget.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Mixer_SetTarget.c; path = ../../jni/Common/src/LVC_Mixer_SetTarget.c; sourceTree = "<group>"; };
+		65CA5D891B4836BE00A7268E /* LVC_Mixer_SetTimeConstant.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Mixer_SetTimeConstant.c; path = ../../jni/Common/src/LVC_Mixer_SetTimeConstant.c; sourceTree = "<group>"; };
+		65CA5D8A1B4836BE00A7268E /* LVC_Mixer_VarSlope_SetTimeConstant.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_Mixer_VarSlope_SetTimeConstant.c; path = ../../jni/Common/src/LVC_Mixer_VarSlope_SetTimeConstant.c; sourceTree = "<group>"; };
+		65CA5D8B1B4836BE00A7268E /* LVC_Mixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVC_Mixer.h; path = ../../jni/Common/src/LVC_Mixer.h; sourceTree = "<group>"; };
+		65CA5D8C1B4836BE00A7268E /* LVC_MixInSoft_D16C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_MixInSoft_D16C31_SAT.c; path = ../../jni/Common/src/LVC_MixInSoft_D16C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D8D1B4836BE00A7268E /* LVC_MixSoft_1St_2i_D16C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_MixSoft_1St_2i_D16C31_SAT.c; path = ../../jni/Common/src/LVC_MixSoft_1St_2i_D16C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D8E1B4836BE00A7268E /* LVC_MixSoft_1St_D16C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_MixSoft_1St_D16C31_SAT.c; path = ../../jni/Common/src/LVC_MixSoft_1St_D16C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D8F1B4836BE00A7268E /* LVC_MixSoft_2St_D16C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVC_MixSoft_2St_D16C31_SAT.c; path = ../../jni/Common/src/LVC_MixSoft_2St_D16C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D901B4836BE00A7268E /* LVM_FO_HPF.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVM_FO_HPF.c; path = ../../jni/Common/src/LVM_FO_HPF.c; sourceTree = "<group>"; };
+		65CA5D911B4836BE00A7268E /* LVM_FO_LPF.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVM_FO_LPF.c; path = ../../jni/Common/src/LVM_FO_LPF.c; sourceTree = "<group>"; };
+		65CA5D921B4836BE00A7268E /* LVM_GetOmega.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVM_GetOmega.c; path = ../../jni/Common/src/LVM_GetOmega.c; sourceTree = "<group>"; };
+		65CA5D931B4836BE00A7268E /* LVM_Mixer_FilterCoeffs.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVM_Mixer_FilterCoeffs.h; path = ../../jni/Common/src/LVM_Mixer_FilterCoeffs.h; sourceTree = "<group>"; };
+		65CA5D941B4836BE00A7268E /* LVM_Mixer_TimeConstant.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVM_Mixer_TimeConstant.c; path = ../../jni/Common/src/LVM_Mixer_TimeConstant.c; sourceTree = "<group>"; };
+		65CA5D951B4836BE00A7268E /* LVM_Polynomial.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVM_Polynomial.c; path = ../../jni/Common/src/LVM_Polynomial.c; sourceTree = "<group>"; };
+		65CA5D961B4836BE00A7268E /* LVM_Power10.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVM_Power10.c; path = ../../jni/Common/src/LVM_Power10.c; sourceTree = "<group>"; };
+		65CA5D971B4836BE00A7268E /* LVM_Timer_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVM_Timer_Init.c; path = ../../jni/Common/src/LVM_Timer_Init.c; sourceTree = "<group>"; };
+		65CA5D981B4836BE00A7268E /* LVM_Timer_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVM_Timer_Private.h; path = ../../jni/Common/src/LVM_Timer_Private.h; sourceTree = "<group>"; };
+		65CA5D991B4836BE00A7268E /* LVM_Timer.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVM_Timer.c; path = ../../jni/Common/src/LVM_Timer.c; sourceTree = "<group>"; };
+		65CA5D9A1B4836BE00A7268E /* Mac3s_Sat_16x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Mac3s_Sat_16x16.c; path = ../../jni/Common/src/Mac3s_Sat_16x16.c; sourceTree = "<group>"; };
+		65CA5D9B1B4836BE00A7268E /* Mac3s_Sat_32x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Mac3s_Sat_32x16.c; path = ../../jni/Common/src/Mac3s_Sat_32x16.c; sourceTree = "<group>"; };
+		65CA5D9C1B4836BE00A7268E /* Mixer_private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = Mixer_private.h; path = ../../jni/Common/src/Mixer_private.h; sourceTree = "<group>"; };
+		65CA5D9D1B4836BE00A7268E /* MixInSoft_D32C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MixInSoft_D32C31_SAT.c; path = ../../jni/Common/src/MixInSoft_D32C31_SAT.c; sourceTree = "<group>"; };
+		65CA5D9E1B4836BE00A7268E /* MixSoft_1St_D32C31_WRA.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MixSoft_1St_D32C31_WRA.c; path = ../../jni/Common/src/MixSoft_1St_D32C31_WRA.c; sourceTree = "<group>"; };
+		65CA5D9F1B4836BE00A7268E /* MixSoft_2St_D32C31_SAT.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MixSoft_2St_D32C31_SAT.c; path = ../../jni/Common/src/MixSoft_2St_D32C31_SAT.c; sourceTree = "<group>"; };
+		65CA5DA01B4836BE00A7268E /* MonoTo2I_16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MonoTo2I_16.c; path = ../../jni/Common/src/MonoTo2I_16.c; sourceTree = "<group>"; };
+		65CA5DA11B4836BE00A7268E /* MonoTo2I_32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MonoTo2I_32.c; path = ../../jni/Common/src/MonoTo2I_32.c; sourceTree = "<group>"; };
+		65CA5DA21B4836BE00A7268E /* MSTo2i_Sat_16x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = MSTo2i_Sat_16x16.c; path = ../../jni/Common/src/MSTo2i_Sat_16x16.c; sourceTree = "<group>"; };
+		65CA5DA31B4836BE00A7268E /* mult3s_16x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = mult3s_16x16.c; path = ../../jni/Common/src/mult3s_16x16.c; sourceTree = "<group>"; };
+		65CA5DA41B4836BE00A7268E /* Mult3s_32x16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Mult3s_32x16.c; path = ../../jni/Common/src/Mult3s_32x16.c; sourceTree = "<group>"; };
+		65CA5DA51B4836BE00A7268E /* NonLinComp_D16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = NonLinComp_D16.c; path = ../../jni/Common/src/NonLinComp_D16.c; sourceTree = "<group>"; };
+		65CA5DA61B4836BE00A7268E /* PK_2I_D32F32C14G11_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = PK_2I_D32F32C14G11_TRC_WRA_01.c; path = ../../jni/Common/src/PK_2I_D32F32C14G11_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5DA71B4836BE00A7268E /* PK_2I_D32F32C30G11_TRC_WRA_01.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = PK_2I_D32F32C30G11_TRC_WRA_01.c; path = ../../jni/Common/src/PK_2I_D32F32C30G11_TRC_WRA_01.c; sourceTree = "<group>"; };
+		65CA5DA81B4836BE00A7268E /* PK_2I_D32F32CllGss_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = PK_2I_D32F32CllGss_TRC_WRA_01_Init.c; path = ../../jni/Common/src/PK_2I_D32F32CllGss_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5DA91B4836BE00A7268E /* PK_2I_D32F32CllGss_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PK_2I_D32F32CllGss_TRC_WRA_01_Private.h; path = ../../jni/Common/src/PK_2I_D32F32CllGss_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5DAA1B4836BE00A7268E /* PK_2I_D32F32CssGss_TRC_WRA_01_Init.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = PK_2I_D32F32CssGss_TRC_WRA_01_Init.c; path = ../../jni/Common/src/PK_2I_D32F32CssGss_TRC_WRA_01_Init.c; sourceTree = "<group>"; };
+		65CA5DAB1B4836BE00A7268E /* PK_2I_D32F32CssGss_TRC_WRA_01_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PK_2I_D32F32CssGss_TRC_WRA_01_Private.h; path = ../../jni/Common/src/PK_2I_D32F32CssGss_TRC_WRA_01_Private.h; sourceTree = "<group>"; };
+		65CA5DAC1B4836BE00A7268E /* Shift_Sat_v16xv16.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Shift_Sat_v16xv16.c; path = ../../jni/Common/src/Shift_Sat_v16xv16.c; sourceTree = "<group>"; };
+		65CA5DAD1B4836BE00A7268E /* Shift_Sat_v32xv32.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = Shift_Sat_v32xv32.c; path = ../../jni/Common/src/Shift_Sat_v32xv32.c; sourceTree = "<group>"; };
+		65CA5E061B4836E400A7268E /* audio_effect.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = audio_effect.h; path = ../../jni/hardware/audio_effect.h; sourceTree = "<group>"; };
+		65CA5E071B4836F200A7268E /* LVREV.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVREV.h; path = ../../jni/Reverb/lib/LVREV.h; sourceTree = "<group>"; };
+		65CA5E081B4836FF00A7268E /* LVREV_ApplyNewSettings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVREV_ApplyNewSettings.c; path = ../../jni/Reverb/src/LVREV_ApplyNewSettings.c; sourceTree = "<group>"; };
+		65CA5E091B4836FF00A7268E /* LVREV_ClearAudioBuffers.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVREV_ClearAudioBuffers.c; path = ../../jni/Reverb/src/LVREV_ClearAudioBuffers.c; sourceTree = "<group>"; };
+		65CA5E0A1B4836FF00A7268E /* LVREV_GetControlParameters.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVREV_GetControlParameters.c; path = ../../jni/Reverb/src/LVREV_GetControlParameters.c; sourceTree = "<group>"; };
+		65CA5E0B1B4836FF00A7268E /* LVREV_GetInstanceHandle.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVREV_GetInstanceHandle.c; path = ../../jni/Reverb/src/LVREV_GetInstanceHandle.c; sourceTree = "<group>"; };
+		65CA5E0C1B4836FF00A7268E /* LVREV_GetMemoryTable.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVREV_GetMemoryTable.c; path = ../../jni/Reverb/src/LVREV_GetMemoryTable.c; sourceTree = "<group>"; };
+		65CA5E0D1B4836FF00A7268E /* LVREV_Private.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVREV_Private.h; path = ../../jni/Reverb/src/LVREV_Private.h; sourceTree = "<group>"; };
+		65CA5E0E1B4836FF00A7268E /* LVREV_Process.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVREV_Process.c; path = ../../jni/Reverb/src/LVREV_Process.c; sourceTree = "<group>"; };
+		65CA5E0F1B4836FF00A7268E /* LVREV_SetControlParameters.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVREV_SetControlParameters.c; path = ../../jni/Reverb/src/LVREV_SetControlParameters.c; sourceTree = "<group>"; };
+		65CA5E101B4836FF00A7268E /* LVREV_Tables.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = LVREV_Tables.c; path = ../../jni/Reverb/src/LVREV_Tables.c; sourceTree = "<group>"; };
+		65CA5E111B4836FF00A7268E /* LVREV_Tables.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LVREV_Tables.h; path = ../../jni/Reverb/src/LVREV_Tables.h; sourceTree = "<group>"; };
+		65CA5E1A1B48370D00A7268E /* ReverbLibrary.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; name = ReverbLibrary.c; path = ../../jni/Wrapper/ReverbLibrary.c; sourceTree = "<group>"; };
+		65CA5E1B1B48370D00A7268E /* ReverbLibrary.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = ReverbLibrary.h; path = ../../jni/Wrapper/ReverbLibrary.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		65CA5D161B48366500A7268E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65CA5D211B48366500A7268E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65CA5D251B48366500A7268E /* libreverb.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		65CA5D101B48366500A7268E = {
+			isa = PBXGroup;
+			children = (
+				65CA5E1A1B48370D00A7268E /* ReverbLibrary.c */,
+				65CA5E1B1B48370D00A7268E /* ReverbLibrary.h */,
+				65CA5E081B4836FF00A7268E /* LVREV_ApplyNewSettings.c */,
+				65CA5E091B4836FF00A7268E /* LVREV_ClearAudioBuffers.c */,
+				65CA5E0A1B4836FF00A7268E /* LVREV_GetControlParameters.c */,
+				65CA5E0B1B4836FF00A7268E /* LVREV_GetInstanceHandle.c */,
+				65CA5E0C1B4836FF00A7268E /* LVREV_GetMemoryTable.c */,
+				65CA5E0D1B4836FF00A7268E /* LVREV_Private.h */,
+				65CA5E0E1B4836FF00A7268E /* LVREV_Process.c */,
+				65CA5E0F1B4836FF00A7268E /* LVREV_SetControlParameters.c */,
+				65CA5E101B4836FF00A7268E /* LVREV_Tables.c */,
+				65CA5E111B4836FF00A7268E /* LVREV_Tables.h */,
+				65CA5E071B4836F200A7268E /* LVREV.h */,
+				65CA5E061B4836E400A7268E /* audio_effect.h */,
+				65CA5D411B4836BE00A7268E /* Abs_32.c */,
+				65CA5D421B4836BE00A7268E /* Add2_Sat_16x16.c */,
+				65CA5D431B4836BE00A7268E /* Add2_Sat_32x32.c */,
+				65CA5D441B4836BE00A7268E /* AGC_MIX_VOL_2St1Mon_D32_WRA.c */,
+				65CA5D451B4836BE00A7268E /* BP_1I_D16F16C14_TRC_WRA_01.c */,
+				65CA5D461B4836BE00A7268E /* BP_1I_D16F16Css_TRC_WRA_01_Init.c */,
+				65CA5D471B4836BE00A7268E /* BP_1I_D16F16Css_TRC_WRA_01_Private.h */,
+				65CA5D481B4836BE00A7268E /* BP_1I_D16F32C30_TRC_WRA_01.c */,
+				65CA5D491B4836BE00A7268E /* BP_1I_D16F32Cll_TRC_WRA_01_Init.c */,
+				65CA5D4A1B4836BE00A7268E /* BP_1I_D16F32Cll_TRC_WRA_01_Private.h */,
+				65CA5D4B1B4836BE00A7268E /* BP_1I_D32F32C30_TRC_WRA_02.c */,
+				65CA5D4C1B4836BE00A7268E /* BP_1I_D32F32Cll_TRC_WRA_02_Init.c */,
+				65CA5D4D1B4836BE00A7268E /* BP_1I_D32F32Cll_TRC_WRA_02_Private.h */,
+				65CA5D4E1B4836BE00A7268E /* BQ_1I_D16F16C15_TRC_WRA_01.c */,
+				65CA5D4F1B4836BE00A7268E /* BQ_1I_D16F16Css_TRC_WRA_01_Init.c */,
+				65CA5D501B4836BE00A7268E /* BQ_1I_D16F16Css_TRC_WRA_01_Private.h */,
+				65CA5D511B4836BE00A7268E /* BQ_1I_D16F32C14_TRC_WRA_01.c */,
+				65CA5D521B4836BE00A7268E /* BQ_1I_D16F32Css_TRC_WRA_01_init.c */,
+				65CA5D531B4836BE00A7268E /* BQ_1I_D16F32Css_TRC_WRA_01_Private.h */,
+				65CA5D541B4836BE00A7268E /* BQ_2I_D16F16C14_TRC_WRA_01.c */,
+				65CA5D551B4836BE00A7268E /* BQ_2I_D16F16C15_TRC_WRA_01.c */,
+				65CA5D561B4836BE00A7268E /* BQ_2I_D16F16Css_TRC_WRA_01_Init.c */,
+				65CA5D571B4836BE00A7268E /* BQ_2I_D16F16Css_TRC_WRA_01_Private.h */,
+				65CA5D581B4836BE00A7268E /* BQ_2I_D16F32C13_TRC_WRA_01.c */,
+				65CA5D591B4836BE00A7268E /* BQ_2I_D16F32C14_TRC_WRA_01.c */,
+				65CA5D5A1B4836BE00A7268E /* BQ_2I_D16F32C15_TRC_WRA_01.c */,
+				65CA5D5B1B4836BE00A7268E /* BQ_2I_D16F32Css_TRC_WRA_01_init.c */,
+				65CA5D5C1B4836BE00A7268E /* BQ_2I_D16F32Css_TRC_WRA_01_Private.h */,
+				65CA5D5D1B4836BE00A7268E /* BQ_2I_D32F32C30_TRC_WRA_01.c */,
+				65CA5D5E1B4836BE00A7268E /* BQ_2I_D32F32Cll_TRC_WRA_01_Init.c */,
+				65CA5D5F1B4836BE00A7268E /* BQ_2I_D32F32Cll_TRC_WRA_01_Private.h */,
+				65CA5D601B4836BE00A7268E /* CompLim_private.h */,
+				65CA5D611B4836BE00A7268E /* Copy_16.c */,
+				65CA5D621B4836BE00A7268E /* Core_MixHard_2St_D32C31_SAT.c */,
+				65CA5D631B4836BE00A7268E /* Core_MixInSoft_D32C31_SAT.c */,
+				65CA5D641B4836BE00A7268E /* Core_MixSoft_1St_D32C31_WRA.c */,
+				65CA5D651B4836BE00A7268E /* dB_to_Lin32.c */,
+				65CA5D661B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01_Init.c */,
+				65CA5D671B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01_Private.h */,
+				65CA5D681B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01.c */,
+				65CA5D691B4836BE00A7268E /* DelayAllPass_Sat_32x16To32.c */,
+				65CA5D6A1B4836BE00A7268E /* DelayMix_16x16.c */,
+				65CA5D6B1B4836BE00A7268E /* DelayWrite_32.c */,
+				65CA5D6C1B4836BE00A7268E /* Filters.h */,
+				65CA5D6D1B4836BE00A7268E /* FO_1I_D16F16C15_TRC_WRA_01.c */,
+				65CA5D6E1B4836BE00A7268E /* FO_1I_D16F16Css_TRC_WRA_01_Init.c */,
+				65CA5D6F1B4836BE00A7268E /* FO_1I_D16F16Css_TRC_WRA_01_Private.h */,
+				65CA5D701B4836BE00A7268E /* FO_1I_D32F32C31_TRC_WRA_01.c */,
+				65CA5D711B4836BE00A7268E /* FO_1I_D32F32Cll_TRC_WRA_01_Init.c */,
+				65CA5D721B4836BE00A7268E /* FO_1I_D32F32Cll_TRC_WRA_01_Private.h */,
+				65CA5D731B4836BE00A7268E /* FO_2I_D16F32C15_LShx_TRC_WRA_01.c */,
+				65CA5D741B4836BE00A7268E /* FO_2I_D16F32Css_LShx_TRC_WRA_01_Init.c */,
+				65CA5D751B4836BE00A7268E /* FO_2I_D16F32Css_LShx_TRC_WRA_01_Private.h */,
+				65CA5D761B4836BE00A7268E /* From2iToMono_16.c */,
+				65CA5D771B4836BE00A7268E /* From2iToMono_32.c */,
+				65CA5D781B4836BE00A7268E /* From2iToMS_16x16.c */,
+				65CA5D791B4836BE00A7268E /* InstAlloc.c */,
+				65CA5D7A1B4836BE00A7268E /* Int16LShiftToInt32_16x32.c */,
+				65CA5D7B1B4836BE00A7268E /* Int32RShiftToInt16_Sat_32x16.c */,
+				65CA5D7C1B4836BE00A7268E /* JoinTo2i_32x32.c */,
+				65CA5D7D1B4836BE00A7268E /* LoadConst_16.c */,
+				65CA5D7E1B4836BE00A7268E /* LoadConst_32.c */,
+				65CA5D7F1B4836BE00A7268E /* LVC_Core_MixHard_1St_2i_D16C31_SAT.c */,
+				65CA5D801B4836BE00A7268E /* LVC_Core_MixHard_2St_D16C31_SAT.c */,
+				65CA5D811B4836BE00A7268E /* LVC_Core_MixInSoft_D16C31_SAT.c */,
+				65CA5D821B4836BE00A7268E /* LVC_Core_MixSoft_1St_2i_D16C31_WRA.c */,
+				65CA5D831B4836BE00A7268E /* LVC_Core_MixSoft_1St_D16C31_WRA.c */,
+				65CA5D841B4836BE00A7268E /* LVC_Mixer_GetCurrent.c */,
+				65CA5D851B4836BE00A7268E /* LVC_Mixer_GetTarget.c */,
+				65CA5D861B4836BE00A7268E /* LVC_Mixer_Init.c */,
+				65CA5D871B4836BE00A7268E /* LVC_Mixer_Private.h */,
+				65CA5D881B4836BE00A7268E /* LVC_Mixer_SetTarget.c */,
+				65CA5D891B4836BE00A7268E /* LVC_Mixer_SetTimeConstant.c */,
+				65CA5D8A1B4836BE00A7268E /* LVC_Mixer_VarSlope_SetTimeConstant.c */,
+				65CA5D8B1B4836BE00A7268E /* LVC_Mixer.h */,
+				65CA5D8C1B4836BE00A7268E /* LVC_MixInSoft_D16C31_SAT.c */,
+				65CA5D8D1B4836BE00A7268E /* LVC_MixSoft_1St_2i_D16C31_SAT.c */,
+				65CA5D8E1B4836BE00A7268E /* LVC_MixSoft_1St_D16C31_SAT.c */,
+				65CA5D8F1B4836BE00A7268E /* LVC_MixSoft_2St_D16C31_SAT.c */,
+				65CA5D901B4836BE00A7268E /* LVM_FO_HPF.c */,
+				65CA5D911B4836BE00A7268E /* LVM_FO_LPF.c */,
+				65CA5D921B4836BE00A7268E /* LVM_GetOmega.c */,
+				65CA5D931B4836BE00A7268E /* LVM_Mixer_FilterCoeffs.h */,
+				65CA5D941B4836BE00A7268E /* LVM_Mixer_TimeConstant.c */,
+				65CA5D951B4836BE00A7268E /* LVM_Polynomial.c */,
+				65CA5D961B4836BE00A7268E /* LVM_Power10.c */,
+				65CA5D971B4836BE00A7268E /* LVM_Timer_Init.c */,
+				65CA5D981B4836BE00A7268E /* LVM_Timer_Private.h */,
+				65CA5D991B4836BE00A7268E /* LVM_Timer.c */,
+				65CA5D9A1B4836BE00A7268E /* Mac3s_Sat_16x16.c */,
+				65CA5D9B1B4836BE00A7268E /* Mac3s_Sat_32x16.c */,
+				65CA5D9C1B4836BE00A7268E /* Mixer_private.h */,
+				65CA5D9D1B4836BE00A7268E /* MixInSoft_D32C31_SAT.c */,
+				65CA5D9E1B4836BE00A7268E /* MixSoft_1St_D32C31_WRA.c */,
+				65CA5D9F1B4836BE00A7268E /* MixSoft_2St_D32C31_SAT.c */,
+				65CA5DA01B4836BE00A7268E /* MonoTo2I_16.c */,
+				65CA5DA11B4836BE00A7268E /* MonoTo2I_32.c */,
+				65CA5DA21B4836BE00A7268E /* MSTo2i_Sat_16x16.c */,
+				65CA5DA31B4836BE00A7268E /* mult3s_16x16.c */,
+				65CA5DA41B4836BE00A7268E /* Mult3s_32x16.c */,
+				65CA5DA51B4836BE00A7268E /* NonLinComp_D16.c */,
+				65CA5DA61B4836BE00A7268E /* PK_2I_D32F32C14G11_TRC_WRA_01.c */,
+				65CA5DA71B4836BE00A7268E /* PK_2I_D32F32C30G11_TRC_WRA_01.c */,
+				65CA5DA81B4836BE00A7268E /* PK_2I_D32F32CllGss_TRC_WRA_01_Init.c */,
+				65CA5DA91B4836BE00A7268E /* PK_2I_D32F32CllGss_TRC_WRA_01_Private.h */,
+				65CA5DAA1B4836BE00A7268E /* PK_2I_D32F32CssGss_TRC_WRA_01_Init.c */,
+				65CA5DAB1B4836BE00A7268E /* PK_2I_D32F32CssGss_TRC_WRA_01_Private.h */,
+				65CA5DAC1B4836BE00A7268E /* Shift_Sat_v16xv16.c */,
+				65CA5DAD1B4836BE00A7268E /* Shift_Sat_v32xv32.c */,
+				65CA5D351B4836AB00A7268E /* AGC.h */,
+				65CA5D361B4836AB00A7268E /* BIQUAD.h */,
+				65CA5D371B4836AB00A7268E /* CompLim.h */,
+				65CA5D381B4836AB00A7268E /* Filter.h */,
+				65CA5D391B4836AB00A7268E /* InstAlloc.h */,
+				65CA5D3A1B4836AB00A7268E /* LVM_Common.h */,
+				65CA5D3B1B4836AB00A7268E /* LVM_Macros.h */,
+				65CA5D3C1B4836AB00A7268E /* LVM_Timer.h */,
+				65CA5D3D1B4836AB00A7268E /* LVM_Types.h */,
+				65CA5D3E1B4836AB00A7268E /* Mixer.h */,
+				65CA5D3F1B4836AB00A7268E /* ScalarArithmetic.h */,
+				65CA5D401B4836AB00A7268E /* VectorArithmetic.h */,
+				65CA5D331B48369B00A7268E /* effect_environmentalreverb.h */,
+				65CA5D341B48369B00A7268E /* effect_presetreverb.h */,
+				65CA5D281B48366500A7268E /* reverbTests */,
+				65CA5D1A1B48366500A7268E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		65CA5D1A1B48366500A7268E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				65CA5D191B48366500A7268E /* libreverb.a */,
+				65CA5D241B48366500A7268E /* reverbTests.xctest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		65CA5D281B48366500A7268E /* reverbTests */ = {
+			isa = PBXGroup;
+			children = (
+				65CA5D291B48366500A7268E /* Supporting Files */,
+			);
+			path = reverbTests;
+			sourceTree = "<group>";
+		};
+		65CA5D291B48366500A7268E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				65CA5D2A1B48366500A7268E /* Info.plist */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		65CA5D181B48366500A7268E /* reverb */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65CA5D2D1B48366500A7268E /* Build configuration list for PBXNativeTarget "reverb" */;
+			buildPhases = (
+				65CA5D151B48366500A7268E /* Sources */,
+				65CA5D161B48366500A7268E /* Frameworks */,
+				65CA5D171B48366500A7268E /* CopyFiles */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = reverb;
+			productName = reverb;
+			productReference = 65CA5D191B48366500A7268E /* libreverb.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		65CA5D231B48366500A7268E /* reverbTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 65CA5D301B48366500A7268E /* Build configuration list for PBXNativeTarget "reverbTests" */;
+			buildPhases = (
+				65CA5D201B48366500A7268E /* Sources */,
+				65CA5D211B48366500A7268E /* Frameworks */,
+				65CA5D221B48366500A7268E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				65CA5D271B48366500A7268E /* PBXTargetDependency */,
+			);
+			name = reverbTests;
+			productName = reverbTests;
+			productReference = 65CA5D241B48366500A7268E /* reverbTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		65CA5D111B48366500A7268E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0640;
+				ORGANIZATIONNAME = "Daniel Sobe";
+				TargetAttributes = {
+					65CA5D181B48366500A7268E = {
+						CreatedOnToolsVersion = 6.4;
+					};
+					65CA5D231B48366500A7268E = {
+						CreatedOnToolsVersion = 6.4;
+					};
+				};
+			};
+			buildConfigurationList = 65CA5D141B48366500A7268E /* Build configuration list for PBXProject "reverb" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 65CA5D101B48366500A7268E;
+			productRefGroup = 65CA5D1A1B48366500A7268E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				65CA5D181B48366500A7268E /* reverb */,
+				65CA5D231B48366500A7268E /* reverbTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		65CA5D221B48366500A7268E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		65CA5D151B48366500A7268E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				65CA5DCF1B4836BE00A7268E /* FO_1I_D16F16C15_TRC_WRA_01.c in Sources */,
+				65CA5E031B4836BE00A7268E /* PK_2I_D32F32CssGss_TRC_WRA_01_Init.c in Sources */,
+				65CA5DEC1B4836BE00A7268E /* LVC_MixSoft_2St_D16C31_SAT.c in Sources */,
+				65CA5DBB1B4836BE00A7268E /* BQ_1I_D16F32Css_TRC_WRA_01_init.c in Sources */,
+				65CA5DAF1B4836BE00A7268E /* Add2_Sat_16x16.c in Sources */,
+				65CA5DD51B4836BE00A7268E /* From2iToMono_16.c in Sources */,
+				65CA5DFA1B4836BE00A7268E /* MonoTo2I_16.c in Sources */,
+				65CA5DE81B4836BE00A7268E /* LVC_Mixer_VarSlope_SetTimeConstant.c in Sources */,
+				65CA5DDB1B4836BE00A7268E /* JoinTo2i_32x32.c in Sources */,
+				65CA5DB41B4836BE00A7268E /* BP_1I_D16F32C30_TRC_WRA_01.c in Sources */,
+				65CA5DF81B4836BE00A7268E /* MixSoft_1St_D32C31_WRA.c in Sources */,
+				65CA5DD91B4836BE00A7268E /* Int16LShiftToInt32_16x32.c in Sources */,
+				65CA5DCD1B4836BE00A7268E /* DelayMix_16x16.c in Sources */,
+				65CA5DE61B4836BE00A7268E /* LVC_Mixer_SetTarget.c in Sources */,
+				65CA5DD81B4836BE00A7268E /* InstAlloc.c in Sources */,
+				65CA5DBF1B4836BE00A7268E /* BQ_2I_D16F32C13_TRC_WRA_01.c in Sources */,
+				65CA5DDD1B4836BE00A7268E /* LoadConst_32.c in Sources */,
+				65CA5DF71B4836BE00A7268E /* MixInSoft_D32C31_SAT.c in Sources */,
+				65CA5DD11B4836BE00A7268E /* FO_1I_D32F32C31_TRC_WRA_01.c in Sources */,
+				65CA5E021B4836BE00A7268E /* PK_2I_D32F32CllGss_TRC_WRA_01_Init.c in Sources */,
+				65CA5DC81B4836BE00A7268E /* Core_MixSoft_1St_D32C31_WRA.c in Sources */,
+				65CA5DC91B4836BE00A7268E /* dB_to_Lin32.c in Sources */,
+				65CA5DD01B4836BE00A7268E /* FO_1I_D16F16Css_TRC_WRA_01_Init.c in Sources */,
+				65CA5E171B4836FF00A7268E /* LVREV_Process.c in Sources */,
+				65CA5E121B4836FF00A7268E /* LVREV_ApplyNewSettings.c in Sources */,
+				65CA5DC61B4836BE00A7268E /* Core_MixHard_2St_D32C31_SAT.c in Sources */,
+				65CA5DC01B4836BE00A7268E /* BQ_2I_D16F32C14_TRC_WRA_01.c in Sources */,
+				65CA5DD31B4836BE00A7268E /* FO_2I_D16F32C15_LShx_TRC_WRA_01.c in Sources */,
+				65CA5DE31B4836BE00A7268E /* LVC_Mixer_GetCurrent.c in Sources */,
+				65CA5DC21B4836BE00A7268E /* BQ_2I_D16F32Css_TRC_WRA_01_init.c in Sources */,
+				65CA5DDF1B4836BE00A7268E /* LVC_Core_MixHard_2St_D16C31_SAT.c in Sources */,
+				65CA5DC71B4836BE00A7268E /* Core_MixInSoft_D32C31_SAT.c in Sources */,
+				65CA5DFF1B4836BE00A7268E /* NonLinComp_D16.c in Sources */,
+				65CA5DFD1B4836BE00A7268E /* mult3s_16x16.c in Sources */,
+				65CA5DC11B4836BE00A7268E /* BQ_2I_D16F32C15_TRC_WRA_01.c in Sources */,
+				65CA5DCA1B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01_Init.c in Sources */,
+				65CA5DF11B4836BE00A7268E /* LVM_Polynomial.c in Sources */,
+				65CA5DFB1B4836BE00A7268E /* MonoTo2I_32.c in Sources */,
+				65CA5DB91B4836BE00A7268E /* BQ_1I_D16F16Css_TRC_WRA_01_Init.c in Sources */,
+				65CA5DB21B4836BE00A7268E /* BP_1I_D16F16C14_TRC_WRA_01.c in Sources */,
+				65CA5E191B4836FF00A7268E /* LVREV_Tables.c in Sources */,
+				65CA5DFC1B4836BE00A7268E /* MSTo2i_Sat_16x16.c in Sources */,
+				65CA5DD71B4836BE00A7268E /* From2iToMS_16x16.c in Sources */,
+				65CA5DB51B4836BE00A7268E /* BP_1I_D16F32Cll_TRC_WRA_01_Init.c in Sources */,
+				65CA5DF21B4836BE00A7268E /* LVM_Power10.c in Sources */,
+				65CA5DE01B4836BE00A7268E /* LVC_Core_MixInSoft_D16C31_SAT.c in Sources */,
+				65CA5E001B4836BE00A7268E /* PK_2I_D32F32C14G11_TRC_WRA_01.c in Sources */,
+				65CA5DE51B4836BE00A7268E /* LVC_Mixer_Init.c in Sources */,
+				65CA5DBE1B4836BE00A7268E /* BQ_2I_D16F16Css_TRC_WRA_01_Init.c in Sources */,
+				65CA5DCE1B4836BE00A7268E /* DelayWrite_32.c in Sources */,
+				65CA5DE71B4836BE00A7268E /* LVC_Mixer_SetTimeConstant.c in Sources */,
+				65CA5DE11B4836BE00A7268E /* LVC_Core_MixSoft_1St_2i_D16C31_WRA.c in Sources */,
+				65CA5DEA1B4836BE00A7268E /* LVC_MixSoft_1St_2i_D16C31_SAT.c in Sources */,
+				65CA5DAE1B4836BE00A7268E /* Abs_32.c in Sources */,
+				65CA5DDC1B4836BE00A7268E /* LoadConst_16.c in Sources */,
+				65CA5DBA1B4836BE00A7268E /* BQ_1I_D16F32C14_TRC_WRA_01.c in Sources */,
+				65CA5DB11B4836BE00A7268E /* AGC_MIX_VOL_2St1Mon_D32_WRA.c in Sources */,
+				65CA5DF01B4836BE00A7268E /* LVM_Mixer_TimeConstant.c in Sources */,
+				65CA5DE91B4836BE00A7268E /* LVC_MixInSoft_D16C31_SAT.c in Sources */,
+				65CA5DDA1B4836BE00A7268E /* Int32RShiftToInt16_Sat_32x16.c in Sources */,
+				65CA5DD61B4836BE00A7268E /* From2iToMono_32.c in Sources */,
+				65CA5DE41B4836BE00A7268E /* LVC_Mixer_GetTarget.c in Sources */,
+				65CA5E181B4836FF00A7268E /* LVREV_SetControlParameters.c in Sources */,
+				65CA5DF61B4836BE00A7268E /* Mac3s_Sat_32x16.c in Sources */,
+				65CA5DCC1B4836BE00A7268E /* DelayAllPass_Sat_32x16To32.c in Sources */,
+				65CA5DB71B4836BE00A7268E /* BP_1I_D32F32Cll_TRC_WRA_02_Init.c in Sources */,
+				65CA5DB61B4836BE00A7268E /* BP_1I_D32F32C30_TRC_WRA_02.c in Sources */,
+				65CA5DCB1B4836BE00A7268E /* DC_2I_D16_TRC_WRA_01.c in Sources */,
+				65CA5E151B4836FF00A7268E /* LVREV_GetInstanceHandle.c in Sources */,
+				65CA5DBD1B4836BE00A7268E /* BQ_2I_D16F16C15_TRC_WRA_01.c in Sources */,
+				65CA5E041B4836BE00A7268E /* Shift_Sat_v16xv16.c in Sources */,
+				65CA5DBC1B4836BE00A7268E /* BQ_2I_D16F16C14_TRC_WRA_01.c in Sources */,
+				65CA5E011B4836BE00A7268E /* PK_2I_D32F32C30G11_TRC_WRA_01.c in Sources */,
+				65CA5DC41B4836BE00A7268E /* BQ_2I_D32F32Cll_TRC_WRA_01_Init.c in Sources */,
+				65CA5DC51B4836BE00A7268E /* Copy_16.c in Sources */,
+				65CA5E161B4836FF00A7268E /* LVREV_GetMemoryTable.c in Sources */,
+				65CA5DB81B4836BE00A7268E /* BQ_1I_D16F16C15_TRC_WRA_01.c in Sources */,
+				65CA5DF91B4836BE00A7268E /* MixSoft_2St_D32C31_SAT.c in Sources */,
+				65CA5DD21B4836BE00A7268E /* FO_1I_D32F32Cll_TRC_WRA_01_Init.c in Sources */,
+				65CA5DB01B4836BE00A7268E /* Add2_Sat_32x32.c in Sources */,
+				65CA5DEE1B4836BE00A7268E /* LVM_FO_LPF.c in Sources */,
+				65CA5DF51B4836BE00A7268E /* Mac3s_Sat_16x16.c in Sources */,
+				65CA5E1C1B48370D00A7268E /* ReverbLibrary.c in Sources */,
+				65CA5DFE1B4836BE00A7268E /* Mult3s_32x16.c in Sources */,
+				65CA5E131B4836FF00A7268E /* LVREV_ClearAudioBuffers.c in Sources */,
+				65CA5E141B4836FF00A7268E /* LVREV_GetControlParameters.c in Sources */,
+				65CA5DEB1B4836BE00A7268E /* LVC_MixSoft_1St_D16C31_SAT.c in Sources */,
+				65CA5E051B4836BE00A7268E /* Shift_Sat_v32xv32.c in Sources */,
+				65CA5DF41B4836BE00A7268E /* LVM_Timer.c in Sources */,
+				65CA5DD41B4836BE00A7268E /* FO_2I_D16F32Css_LShx_TRC_WRA_01_Init.c in Sources */,
+				65CA5DC31B4836BE00A7268E /* BQ_2I_D32F32C30_TRC_WRA_01.c in Sources */,
+				65CA5DDE1B4836BE00A7268E /* LVC_Core_MixHard_1St_2i_D16C31_SAT.c in Sources */,
+				65CA5DED1B4836BE00A7268E /* LVM_FO_HPF.c in Sources */,
+				65CA5DB31B4836BE00A7268E /* BP_1I_D16F16Css_TRC_WRA_01_Init.c in Sources */,
+				65CA5DF31B4836BE00A7268E /* LVM_Timer_Init.c in Sources */,
+				65CA5DEF1B4836BE00A7268E /* LVM_GetOmega.c in Sources */,
+				65CA5DE21B4836BE00A7268E /* LVC_Core_MixSoft_1St_D16C31_WRA.c in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		65CA5D201B48366500A7268E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		65CA5D271B48366500A7268E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 65CA5D181B48366500A7268E /* reverb */;
+			targetProxy = 65CA5D261B48366500A7268E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		65CA5D2B1B48366500A7268E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		65CA5D2C1B48366500A7268E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.4;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		65CA5D2E1B48366500A7268E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../../jni/,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		65CA5D2F1B48366500A7268E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = (
+					"$(ARCHS_STANDARD)",
+					armv7s,
+				);
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/include,
+					../../jni/,
+				);
+				OTHER_LDFLAGS = "-ObjC";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SKIP_INSTALL = YES;
+			};
+			name = Release;
+		};
+		65CA5D311B48366500A7268E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = reverbTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Debug;
+		};
+		65CA5D321B48366500A7268E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(inherited)",
+				);
+				INFOPLIST_FILE = reverbTests/Info.plist;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		65CA5D141B48366500A7268E /* Build configuration list for PBXProject "reverb" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65CA5D2B1B48366500A7268E /* Debug */,
+				65CA5D2C1B48366500A7268E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		65CA5D2D1B48366500A7268E /* Build configuration list for PBXNativeTarget "reverb" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65CA5D2E1B48366500A7268E /* Debug */,
+				65CA5D2F1B48366500A7268E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		65CA5D301B48366500A7268E /* Build configuration list for PBXNativeTarget "reverbTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				65CA5D311B48366500A7268E /* Debug */,
+				65CA5D321B48366500A7268E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 65CA5D111B48366500A7268E /* Project object */;
+}
