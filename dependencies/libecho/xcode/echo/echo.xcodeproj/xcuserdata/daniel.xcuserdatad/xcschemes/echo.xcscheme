@@ -14,10 +14,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6562CCFE1B46FA1200423EDB"
-               BuildableName = "liblibecho.a"
-               BlueprintName = "libecho"
-               ReferencedContainer = "container:libecho.xcodeproj">
+               BlueprintIdentifier = "6588C2FE1B483128003A3627"
+               BuildableName = "libecho.a"
+               BlueprintName = "echo"
+               ReferencedContainer = "container:echo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
          <BuildActionEntry
@@ -28,10 +28,10 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6562CD091B46FA1200423EDB"
-               BuildableName = "libechoTests.xctest"
-               BlueprintName = "libechoTests"
-               ReferencedContainer = "container:libecho.xcodeproj">
+               BlueprintIdentifier = "6588C3091B483128003A3627"
+               BuildableName = "echoTests.xctest"
+               BlueprintName = "echoTests"
+               ReferencedContainer = "container:echo.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
       </BuildActionEntries>
@@ -46,20 +46,20 @@
             skipped = "NO">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "6562CD091B46FA1200423EDB"
-               BuildableName = "libechoTests.xctest"
-               BlueprintName = "libechoTests"
-               ReferencedContainer = "container:libecho.xcodeproj">
+               BlueprintIdentifier = "6588C3091B483128003A3627"
+               BuildableName = "echoTests.xctest"
+               BlueprintName = "echoTests"
+               ReferencedContainer = "container:echo.xcodeproj">
             </BuildableReference>
          </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6562CCFE1B46FA1200423EDB"
-            BuildableName = "liblibecho.a"
-            BlueprintName = "libecho"
-            ReferencedContainer = "container:libecho.xcodeproj">
+            BlueprintIdentifier = "6588C2FE1B483128003A3627"
+            BuildableName = "libecho.a"
+            BlueprintName = "echo"
+            ReferencedContainer = "container:echo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </TestAction>
@@ -75,10 +75,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6562CCFE1B46FA1200423EDB"
-            BuildableName = "liblibecho.a"
-            BlueprintName = "libecho"
-            ReferencedContainer = "container:libecho.xcodeproj">
+            BlueprintIdentifier = "6588C2FE1B483128003A3627"
+            BuildableName = "libecho.a"
+            BlueprintName = "echo"
+            ReferencedContainer = "container:echo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
       <AdditionalOptions>
@@ -93,10 +93,10 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "6562CCFE1B46FA1200423EDB"
-            BuildableName = "liblibecho.a"
-            BlueprintName = "libecho"
-            ReferencedContainer = "container:libecho.xcodeproj">
+            BlueprintIdentifier = "6588C2FE1B483128003A3627"
+            BuildableName = "libecho.a"
+            BlueprintName = "echo"
+            ReferencedContainer = "container:echo.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
    </ProfileAction>
