@@ -91,7 +91,7 @@ $(STATICLIB_SIM)-i386: $(MODULES_i386)
 	$(LIBTOOL_SIM) -arch_only $(ARCH_SIM_I386) -o $@ $(MODULES_i386)
 
 $(STATICLIB_SIM)-x86_64: $(MODULES_x86_64)
-	$(LIBTOOL_SIM) -arch_only $(ARCH_SIM_X86_64) -o $@ $(MODULES_X86_64)
+	$(LIBTOOL_SIM) -arch_only $(ARCH_SIM_X86_64) -o $@ $(MODULES_x86_64)
 
 .c.o-i386:
 	$(CC_SIM) -arch $(ARCH_SIM_I386) $(CFLAGS_SIM) -c $< -o $@
