@@ -62,15 +62,15 @@ STATICLIB_PHONE = lib$(TARGET)-iphone.a
 HEADER = Source/FreeImage.h
 
 .SUFFIXES: .o-i386 .o-x86_64 .o-armv7 .o-armv7s .o-arm64
-MODULES_ARMV7 =  $(SRCS:.c=.o-armv7)
+MODULES_ARMV7 =  $(SRCS_NO_ZLIB:.c=.o-armv7)
 MODULES_ARMV7 := $(MODULES_ARMV7:.cpp=.o-armv7)
-MODULES_ARMV7S =  $(SRCS:.c=.o-armv7s)
+MODULES_ARMV7S =  $(SRCS_NO_ZLIB:.c=.o-armv7s)
 MODULES_ARMV7S := $(MODULES_ARMV7S:.cpp=.o-armv7s)
-MODULES_ARM64 =  $(SRCS:.c=.o-arm64)
+MODULES_ARM64 =  $(SRCS_NO_ZLIB:.c=.o-arm64)
 MODULES_ARM64 := $(MODULES_ARM64:.cpp=.o-arm64)
-MODULES_i386 = $(SRCS:.c=.o-i386)
+MODULES_i386 = $(SRCS_NO_ZLIB:.c=.o-i386)
 MODULES_i386 := $(MODULES_i386:.cpp=.o-i386)
-MODULES_x86_64 = $(SRCS:.c=.o-x86_64)
+MODULES_x86_64 = $(SRCS_NO_ZLIB:.c=.o-x86_64)
 MODULES_x86_64 := $(MODULES_x86_64:.cpp=.o-x86_64)
 
 default: all
