@@ -49,13 +49,13 @@ CFLAGS_SIM = $(CFLAGS) $(EXTRA_CFLAGS_SIM)
 LDFLAGS_SIM = $(EXTRA_LDFLAGS_SIM)
 CXX_SIM = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 CXXFLAGS_SIM += $(EXTRA_CFLAGS_SIM) -fvisibility-inlines-hidden
-LIBTOOL_SIM = /Developer/Platforms/$(PLATFORM_SIM).platform/Developer/usr/bin/libtool
+LIBTOOL_SIM = /Applications/Xcode.app/Contents/Developer/Platforms/$(PLATFORM_PHONE).platform/Developer/usr/bin/libtool
 
 CFLAGS_PHONE = $(CFLAGS) $(EXTRA_CFLAGS_PHONE)
 LDFLAGS_PHONE += $(EXTRA_LDFLAGS_PHONE)
 CXX_PHONE = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/bin/clang
 CXXFLAGS_PHONE += $(EXTRA_CFLAGS_PHONE) -fvisibility-inlines-hidden
-LIBTOOL_PHONE = /Developer/Platforms/$(PLATFORM_PHONE).platform/Developer/usr/bin/libtool
+LIBTOOL_PHONE = /Applications/Xcode.app/Contents/Developer/Platforms/$(PLATFORM_PHONE).platform/Developer/usr/bin/libtool
 
 TARGET = freeimage
 STATICLIB_SIM = lib$(TARGET)-iphonesimulator.a
