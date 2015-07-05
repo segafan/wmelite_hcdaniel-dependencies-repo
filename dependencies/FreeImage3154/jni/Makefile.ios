@@ -12,9 +12,6 @@ IPHONESIM_DEPLOYMENT_TARGET = 8.4
 PLATFORM_SIM = iPhoneSimulator
 PLATFORM_PHONE = iPhoneOS
 
-ARCH_SIM = i386
-ARCH_PHONE = armv7
-
 ARCH_SIM_I386 = i386
 ARCH_SIM_X86_64 = x86_64
 ARCH_PHONE_ARMV7 = armv7
@@ -57,16 +54,24 @@ CXX_PHONE = /Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.x
 CXXFLAGS_PHONE += $(EXTRA_CFLAGS_PHONE) -fvisibility-inlines-hidden
 LIBTOOL_PHONE = /Applications/Xcode.app/Contents/Developer/Platforms/$(PLATFORM_PHONE).platform/Developer/usr/bin/libtool
 
+LIPO = lipo
+
 TARGET = freeimage
 STATICLIB_SIM = lib$(TARGET)-iphonesimulator.a
 STATICLIB_PHONE = lib$(TARGET)-iphone.a
 HEADER = Source/FreeImage.h
 
-.SUFFIXES: .o-i686 .o-arm
-MODULES_ARM = $(SRCS:.c=.o-arm)
-MODULES_ARM := $(MODULES_ARM:.cpp=.o-arm)
-MODULES_i686 = $(SRCS:.c=.o-i686)
-MODULES_i686 := $(MODULES_i686:.cpp=.o-i686)
+.SUFFIXES: .o-i386 .o-x86_64 .o-armv7 .o-armv7s .o-arm64
+MODULES_ARMV7 =  $(SRCS:.c=.o-armv7)
+MODULES_ARMV7 := $(MODULES_ARMV7:.cpp=.o-armv7)
+MODULES_ARMV7S =  $(SRCS:.c=.o-armv7s)
+MODULES_ARMV7S := $(MODULES_ARMV7S:.cpp=.o-armv7s)
+MODULES_ARM64 =  $(SRCS:.c=.o-arm64)
+MODULES_ARM64 := $(MODULES_ARM64:.cpp=.o-arm64)
+MODULES_i386 = $(SRCS:.c=.o-i386)
+MODULES_i386 := $(MODULES_i386:.cpp=.o-i386)
+MODULES_x86_64 = $(SRCS:.c=.o-x86_64)
+MODULES_x86_64 := $(MODULES_x86_64:.cpp=.o-x86_64)
 
 default: all
 
@@ -79,23 +84,47 @@ dist: FreeImage
 
 FreeImage: $(STATICLIB_SIM) $(STATICLIB_PHONE)
 
-$(STATICLIB_SIM): $(MODULES_i686)
-	$(LIBTOOL_SIM) -arch_only $(ARCH_SIM) -o $@ $(MODULES_i686)
+$(STATICLIB_SIM): $(STATICLIB_SIM)-i386 $(STATICLIB_SIM)-x86_64
+	$(LIPO) -create $(STATICLIB_SIM)-i386 $(STATICLIB_SIM)-x86_64 -output $(STATICLIB_SIM)
 
-.c.o-i686:
+$(STATICLIB_SIM)-i386: $(MODULES_i386)
+	$(LIBTOOL_SIM) -arch_only $(ARCH_SIM_I386) -o $@ $(MODULES_i386)
+
+$(STATICLIB_SIM)-x86_64: $(MODULES_x86_64)
+	$(LIBTOOL_SIM) -arch_only $(ARCH_SIM_X86_64) -o $@ $(MODULES_X86_64)
+
+.c.o-i386:
 	$(CC_SIM) $(CFLAGS_SIM) -c $< -o $@
 
-.cpp.o-i686:
+.cpp.o-i386:
 	$(CXX_SIM) $(CXXFLAGS_SIM) -c $< -o $@
 
-$(STATICLIB_PHONE): $(MODULES_ARM)
-	$(LIBTOOL_PHONE) -arch_only $(ARCH_PHONE) -o $@ $(MODULES_ARM)
+.c.o-x86_64:
+	$(CC_SIM) $(CFLAGS_SIM) -c $< -o $@
 
-.c.o-arm:
+.cpp.o-x86_64:
+	$(CXX_SIM) $(CXXFLAGS_SIM) -c $< -o $@
+
+$(STATICLIB_PHONE): $(MODULES_ARMV7) $(MODULES_ARMV7S) $(MODULES_ARM64)
+	$(LIBTOOL_PHONE) -arch_only $(ARCH_PHONE) -o $@ $(MODULES_ARMV7)
+
+.c.o-armv7:
 	$(CC_PHONE) $(CFLAGS_PHONE) -c $< -o $@
 
-.cpp.o-arm:
+.cpp.o-armv7:
+	$(CXX_PHONE) $(CXXFLAGS_PHONE) -c $< -o $@
+
+.c.o-armv7s:
+	$(CC_PHONE) $(CFLAGS_PHONE) -c $< -o $@
+
+.cpp.o-armv7s:
+	$(CXX_PHONE) $(CXXFLAGS_PHONE) -c $< -o $@
+
+.c.o-arm64:
+	$(CC_PHONE) $(CFLAGS_PHONE) -c $< -o $@
+
+.cpp.o-arm64:
 	$(CXX_PHONE) $(CXXFLAGS_PHONE) -c $< -o $@
 
 clean:
-	rm -f core Dist/*.* u2dtmp* $(MODULES_i686) $(MODULES_ARM) $(STATICLIB_SIM) $(STATICLIB_PHONE)
+	rm -f core Dist/*.* u2dtmp* $(MODULES_i386) $(MODULES_x86_64) $(MODULES_ARMV7) $(MODULES_ARMV7S) $(MODULES_ARM64) $(STATICLIB_SIM) $(STATICLIB_PHONE)
